@@ -1,0 +1,335 @@
+{
+    "longName": "Applied Mathematics and Statistics",
+    "shortName": "AMS",
+    "version": "Spring 2021",
+    "date": "2021-03-17",
+    "minGPA": 3.0,
+    "minCredits": 30,
+    "numBHigherCredit": 18,
+    "nonElectiveGPA": 3.0,
+    "coreRequirements":[
+        {
+            "track": "Computational Applied Mathematics",
+            "requiredCourses": [
+                {
+                    "name": "Differential Equations and Boundary Value Problems",
+                    "courseNumber": "AMS 501",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Applications of Complex Analysis",
+                    "courseNumber": "AMS 503",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Analytical Methods for Applied Mathematics and Statistics",
+                    "courseNumber": "AMS 510",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Numerical Analysis I",
+                    "courseNumber": "AMS 526",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Numerical Analysis II",
+                    "courseNumber": "AMS 527",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Numerical Analysis III",
+                    "courseNumber": "AMS 528",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Fundamentals of Computing",
+                    "courseNumber": "AMS 595",
+                    "type": "required",
+                    "credits": 1
+                }
+                
+            ], 
+            "electiveCourses":[
+                {
+                    "totalCredits": 12,
+                    "type": "general"                    
+                }
+            ]
+        },
+        {
+            "track": "Computational Biology",
+            "requiredCourses": [
+                {
+                    "name": "Introduction to Probability",
+                    "courseNumber": "AMS 507",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Analytical Methods for Applied Mathematics and Statistics",
+                    "courseNumber": "AMS 510",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": ["Graduate Biochemistry", "Biomolecular Structure and Analysis"],
+                    "courseNumber": ["CHE 541", "MCB 520"],
+                    "type": "or",
+                    "credits": [3,3]
+                },
+                {
+                    "name": "Laboratory Rotations in Computational Biology",
+                    "courseNumber": "AMS 531",
+                    "type": "rotation",
+                    "rotations": 2,
+                    "credits": 0
+                },
+                {
+                    "name": "Journal Club in Computational Biology",
+                    "courseNumber": "AMS 532",
+                    "type": "rotation",
+                    "rotations": 2,
+                    "credits": 0
+                    
+                },
+                {
+                    "name": "Numerical Methods and Algorithms in Computational Biology",
+                    "courseNumber": "AMS 533",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Intro to Computational Structural Biology & Drug Design",
+                    "courseNumber": "AMS 535",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Biological Networks & Dynamics",
+                    "courseNumber": "AMS 537",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Introduction to Physical & Quantitative Biology",
+                    "courseNumber": "AMS 539",
+                    "type": "required",
+                    "credits": 0
+                },
+                {
+                    "name": "Computational Biology",
+                    "courseNumber": "AMS 549",
+                    "type": "required",
+                    "credits": 3
+                }
+                
+                
+            ], 
+            "electiveCourses":[
+                {
+                    "totalCredits": 9,
+                    "type": "general"                     
+                                 
+                }
+            ]
+        },
+        {
+            "track": "Operations Research",
+            "requiredCourses": [                
+                {
+                    "name": "Analytical Methods for Applied Mathematics and Statistics",
+                    "courseNumber": "AMS 510",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Introduction to Probability",
+                    "courseNumber": "AMS 507",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Linear Programming",
+                    "courseNumber": "AMS 540",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Stochastic Models",
+                    "courseNumber": "AMS 550",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Simulation and Modeling",
+                    "courseNumber": "AMS 553/ CSE 529",
+                    "type": "required",
+                    "credits": 0
+                },
+                {
+                    "courseRange": "AMS 570 - 586",
+                    "type": "one of many",
+                    "credits": 3
+                },
+                {
+                    "name": "Fundamentals of Computing",
+                    "courseNumber": "AMS 595",
+                    "type": "required",
+                    "credits": 1
+                }
+            ], 
+            "electiveCourses":[
+                {
+                    "totalCredits": 12,
+                    "courseRange":"AMS 542 - 556",
+                    "substitutionRange": ["AMS 570-586", "AMS 511-523"],
+                    "substitutionTypes": ["One of", "One of"],
+                    "type": "with substitution"                  
+                }
+            ]
+        },
+        {
+            "track": "Statistics",
+            "requiredCourses": [                
+                {
+                    "name": "Analytical Methods for Applied Mathematics and Statistics",
+                    "courseNumber": "AMS 510",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Introduction to Probability",
+                    "courseNumber": "AMS 507",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Mathematical Statistics I",
+                    "courseNumber": "AMS 570",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Exploratory Data Analysis",
+                    "courseNumber": "AMS 572",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Design & Analysis of Categorical Data",
+                    "courseNumber": "AMS 573",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "courseRange": "Regression Theory",
+                    "type": "AMS 578",
+                    "credits": 3
+                },
+                {
+                    "name": "Design of Experiments",
+                    "courseNumber": "AMS 582",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Statistical Computing",
+                    "courseNumber": "AMS 597",
+                    "type": "required",
+                    "credits": 3
+                }
+            ], 
+            "electiveCourses":[
+                {
+                    "totalCredits": 6,
+                    "type": "general"                  
+                }
+            ]
+        },
+        {
+            "track": "Quantitative Finance",
+            "requiredCourses": [   
+                {
+                    "name": "Introduction to Probability",
+                    "courseNumber": "AMS 507",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Analytical Methods for Applied Mathematics and Statistics",
+                    "courseNumber": "AMS 510",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Foundations of Quantitative Finance",
+                    "courseNumber": "AMS 511",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": " Capital Markets & Portfolio Theory",
+                    "courseNumber": "AMS 512",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Financial Derivatives and Stochastic Calculus",
+                    "courseNumber": "AMS 513",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Computational Finance",
+                    "courseNumber": "AMS 514",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Statistical Methods in Finance",
+                    "courseNumber": "AMS 516",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Quantitative Risk Management",
+                    "courseNumber": "AMS 517",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Advanced Stochastic Models, Risk Assessment & Portfolio Optimization",
+                    "courseNumber": "AMS 518",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Data Analysis I",
+                    "courseNumber": "AMS 572",
+                    "type": "required",
+                    "credits": 3
+                },
+                {
+                    "name": "Investment Analysis",
+                    "courseNumber": "FIN 539",
+                    "type": "required",
+                    "credits": 3
+                }
+            ], 
+            "electiveCourses":[
+                {
+                    "totalCredits": 3,
+                    "type": "general"                  
+                }
+            ]
+        }
+    ],
+    "finalReccomendation": "required",
+    "timeLimit": 3
+}

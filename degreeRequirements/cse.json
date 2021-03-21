@@ -1,0 +1,199 @@
+{
+    "longName": "Computer Science",
+    "shortName": "CSE",
+    "version": "Spring 2021",
+    "date": "2021-03-17",
+    "minGPA": 3.0,
+    "minCredits": 31,
+    "proficiencyRequirements":[
+        {
+            "type": "bridge",
+            "gradeRequirement": "C or Higher",
+            "bridgeCourseRange": "CSE 581-584"
+        },
+        {
+            "type": "proficiency",
+            "gradeRequirement": "B or Higher",
+            "bridgeCourseRange": "CSE 587",
+            "ugradEquivalent": "CSE 320",
+            "credits": 3
+        }
+    ],
+    "trackRequirements":[
+        {
+            "track": "Advanced Project",
+            "requiredCourses":[
+                {
+                    "name":"Advanced Project in Computer Science I",
+                    "courseNumber": "CSE 523",
+					"credits": 3
+                },
+                {
+                    "name":"Advanced Project in Computer Science II",
+                    "courseNumber": "CSE 524",
+					"credits": 3
+                }
+            ],
+            "facutlyName": "Scott Stoller"
+        },
+        {
+            "track": "Special Project",
+            "requiredCourses":[
+                {
+                    "name":"Basic Project in Computer Science",
+                    "courseNumber": "CSE 522",
+					"credits": 3
+                }               
+            ]
+        },
+        {
+            "track": "Thesis",  
+            "requiredCourses":[
+                {
+                    "name":"MS Thesis Research",
+                    "courseNumber": "CSE 599",
+					"credits": 3,
+                    "reapeat": 9
+                }               
+            ]
+            
+        }
+    ],
+    "courseRequirements":[
+        {
+            "area": "Theory",
+            "gradeRequirement": "C or Higher",
+            "requiredCourses":[
+                {
+                    "name":" Machine Learning",
+                    "courseNumber": "CSE 512",
+					"credits": 3
+                },
+                {
+                    "name":" Principles Programming Languages",
+                    "courseNumber": "CSE 526",
+					"credits": 3
+                },
+                {
+                    "name":" Theory of Computation",
+                    "courseNumber": "CSE 540",
+					"credits": 3
+                },
+                {
+                    "name":" Logic in Computer Science",
+                    "courseNumber": "CSE 541",
+					"credits": 3
+                },
+                {
+                    "name":" Discrete Mathematics",
+                    "courseNumber": "CSE 547",
+					"credits": 3
+                },
+                {
+                    "name":" Analysis of Algorithms",
+                    "courseNumber": "CSE 548",
+					"credits": 3
+                },
+                {
+                    "name":" Computational Biology",
+                    "courseNumber": "CSE 549",
+					"credits": 3
+                }
+            ],
+            "type": "at least one of"
+        },
+        
+        {
+            "area": "Systems",
+            "gradeRequirement": "C or Higher",
+            "requiredCourses":[
+                {
+                    "name":" Computer Architecture",
+                    "courseNumber": "CSE 502",
+					"credits": 3
+                },
+                {
+                    "name":" Compiler Design",
+                    "courseNumber": "CSE 504",
+					"credits": 3
+                },
+                {
+                    "name":" Operating Systems",
+                    "courseNumber": "CSE 506",
+					"credits": 3
+                },
+                {
+                    "name":" Network Security",
+                    "courseNumber": "CSE 508",
+					"credits": 3
+                },
+                {
+                    "name":" Computer System Security",
+                    "courseNumber": "CSE 509",
+					"credits": 3
+                },
+                {
+                    "name":" Theory of Database Systems",
+                    "courseNumber": "CSE 532",
+					"credits": 3
+                },
+                {
+                    "name":" Fundamentals of Computer Networks",
+                    "courseNumber": "CSE 534",
+					"credits": 3
+                },
+                {
+                    "name":" Distributed Systems",
+                    "courseNumber": "CSE 535",
+					"credits": 3
+                }
+        
+            ],
+            "type": "at least one of"
+        },
+        
+        {
+            "area": "Information and Intelligent Systems",
+            "gradeRequirement": "C or Higher",
+            "requiredCourses":[
+                {
+                    "name":" Computing with Logic",
+                    "courseNumber": "CSE 505",
+					"credits": 3
+                },
+                {
+                    "name":" Data Science Fundamentals",
+                    "courseNumber": "CSE 519",
+					"credits": 3
+                },
+                {
+                    "name":" Introduction to Computer Vision",
+                    "courseNumber": "CSE 527",
+					"credits": 3
+                },
+                {
+                    "name":" Computer Graphics",
+                    "courseNumber": "CSE 528",
+					"credits": 3
+                },
+                {
+                    "name":" Artificial Intelligence",
+                    "courseNumber": "CSE 537",
+					"credits": 3
+                },
+                {
+                    "name":" Natural Language Processing",
+                    "courseNumber": "CSE 538",
+					"credits": 3
+                },
+                {
+                    "name":" Visualization",
+                    "courseNumber": "CSE 564",
+					"credits": 3
+                }
+            ],
+            "type": "at least one of"
+        }
+    ]
+    
+}
