@@ -1,0 +1,210 @@
+{
+    "longName": "Biomedical Engineerning",
+    "shortName": "BMI",
+    "version": "Spring 2021",
+    "date": "2021-03-17",
+    "minGPA": 3.0,
+    "minCredits": 33,
+
+    "trackRequirements":[
+        {
+            "track": "Thesis",
+            "requiredCourses":[
+                {
+                    "name":"Biomedical Engineering Research",
+                    "courseNumber": "BMI 599",
+					"credits": 6
+                },
+                {
+                    "name":"Engineering Principles in Cell Biology",
+                    "courseNumber": "BMI 501",
+					"credits": 3
+                },
+                {
+                    "name":"Advanced Numerical & Computation Analysis Applied to Biological Systems",
+                    "courseNumber": "BMI 502",
+					"credits": 3
+                },
+                {
+                    "name":" undamentals of the Bioscience Industry",
+                    "courseNumber": "BMI 509",
+                    "credits": 3,
+                    "substitute courses":["MBA 502","MBA 503","MBA 504","MBA 505","MBA 506","MBA 507","MBA 511","MBA 589"]
+                }
+                
+            
+            
+                
+            ]
+        },
+        {
+            "track": "Project",
+            "requiredCourses":[
+                {
+                    "name":"Approved Project",
+                    "courseNumber": "N/A",
+					"credits": null
+                },
+                {
+                    "name":"Engineering Principles in Cell Biology",
+                    "courseNumber": "BMI 501",
+					"credits": 3
+                },
+                {
+                    "name":"Advanced Numerical & Computation Analysis Applied to Biological Systems",
+                    "courseNumber": "BMI 502",
+					"credits": 3
+                }
+            ]
+        }
+    ],
+    "courseRequirements":[
+        {
+            "area": "Biomedical Principles",
+            "gradeRequirement": "C or Higher",
+            "requiredCourses":[
+                {
+                    "name":"Principles and Practice of Biomedical Engineering",
+                    "courseNumber": "BMI 505",
+					"credits": 3
+                },
+                {
+                    "name":"Lab Rotation I",
+                    "courseNumber": "BMI 520",
+					"credits": null
+                },
+                {
+                    "name":"Lab Rotation II",
+                    "courseNumber": "BMI 521",
+					"credits": null
+                },
+                {
+                    "name":" Practicum in Teaching",
+                    "courseNumber": "BMI 698",
+					"credits": 1
+                }
+        
+            ],
+            "type": "all", 
+            "additionalRequirements":[
+                {
+                    "BMIclasses": 4,
+                    "electives":2
+                }
+
+            ]
+        },
+        
+        {
+            "area": "Biomedical Design",
+            "gradeRequirement": "C or Higher",
+            "requiredCourses":[
+                {
+                    "name":"Principles and Practice of Biomedical Engineering",
+                    "courseNumber": "BMI 505",
+					"credits": 3
+                },
+                {
+                    "name":"Biomedical Nanofabrication",
+                    "courseNumber": "BMI 581",
+					"credits": 3
+                },
+                {
+                    "name":"BMI 520: Lab Rotation I",
+                    "courseNumber": "BMI 520",
+					"credits": 3,
+                    "sub":["BMI 521"]
+                }
+            ],
+            "type": "at least one of",
+            "additionalRequirements":[
+                {
+                    "BMIclasses": 4,
+                    "electives":2
+                }
+
+            ]
+        },
+        {
+            "area": "Biomedical Entrepreneurship",
+            "gradeRequirement": "C or Higher",
+            "requiredCourses":[
+                {
+                    "name":"Lab Rotation II",
+                    "courseNumber": "BMI 521",
+					"credits": 3
+                },
+                {
+                    "name":"Biomedical Nanofabrication",
+                    "courseNumber": "BMI 581",
+					"credits": 3
+                },
+                {
+                    "name":" Lab Rotation I",
+                    "courseNumber": "BMI 520",
+					"credits": 3,
+                    "sub":["BMI 521"]
+                },
+                [
+                    {
+                    "name":"Foundations of Science Communication I",
+                    "courseNumber": "JRN 501",
+					"credits": 3
+                    },
+                    {
+                    "name":"N/A",
+                    "courseNumber": "JRN 502",
+					"credits": null
+                    },
+                    {
+                        "name":"Foundations of Science Communication II",
+                        "courseNumber": "JRN 503",
+                        "credits": 3
+                    },
+                    {
+                        "name":" N/A",
+                        "courseNumber": "JRN 504",
+                        "credits": 3
+                    },
+                    {
+                        "name":"N/A",
+                        "courseNumber": "JRN 508",
+                        "credits": 3
+                    },
+                    {
+                        "name":"N/A",
+                        "courseNumber": "JRN 509",
+                        "credits": 3
+                    },
+                    {
+                        "name":"N/A",
+                        "courseNumber": "JRN 511",
+                        "credits": 3
+                    },
+                    {
+                        "name":"N/A",
+                        "courseNumber": "JRN 512",
+                        "credits": 3
+                    }
+                   
+                   
+                   
+
+
+
+                ]
+            ],
+            "type": "at least one of",
+            "additionalRequirements":[
+                {
+                    "BMIclasses": 3,
+                    "electives":3
+                }
+
+            ]
+            
+            
+        }
+    ]
+    
+}
