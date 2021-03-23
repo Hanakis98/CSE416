@@ -1,0 +1,31 @@
+{
+    "objectid" : 12345,
+    "username": "sample",
+    "password": "pass",
+    "schoolID": 123456789,
+    "name": "John Smith",
+    "GPA" : 3.4,
+    "DegreeRequirements":{
+        "deparment": "CSe",
+        "track_topic": "Security",
+        "withThesis": true,
+        "withProject": false,
+        "version" :2018,
+        "totalGPA" :3.0,
+        "nonElectiveGPA": 3.0,
+        "minCredits": 31,
+        "recommendation" :true,
+        "timeLimit" : 6,
+        "proficencyReqs":[
+
+        ],
+        "courseRequirements":[
+
+
+        ]
+
+
+    }
+
+
+}
