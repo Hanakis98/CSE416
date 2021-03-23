@@ -9,15 +9,22 @@ const uri = 'mongodb+srv://ted:<rfYMsIXkluwYrYaA>@cse416.23kfi.mongodb.net/CSE41
 // Database Name
 const dbName = "CSE416"
 
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, keepAlive: 1 });
+
+
+
 function initialize(dbName, dbCollectionName, successCallback, failureCallback){
 
-  MongoClient.connect(uri, function(err, dbInstance) {
-      if (err){
-          console.log('[MongoDB connection] ERROR:')
-      } else {
-
-      }
-
-  });
+  client.connect(err => {
+    const database = client.db(dbName)
+    const collection = database.collection(dbCollectionName)
+    
+    successCallback(collection)
+    client.close()
+  }); 
 
 }
+
+module.exports = {
+  initialize
+};
