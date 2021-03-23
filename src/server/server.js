@@ -12,17 +12,15 @@ const db = require('./db')
 
 // Database Name
 const dbName = "CSE416"
-const collectionName = "CSE416"
+const collectionName = "sample_analytics"
 
 server.listen(port, () => {
     console.log(`Server listening at ${port}`);
 });
 
 db.initialize(dbName, collectionName, function(collection) { // successCallback
-    collection.find().toArray(function(err, result){
-        if (err) throw err;
-            console.log(result);
-    })
+   x = collection.find()
+    console.log (x.toArray());
 
 }, function(err) { // failureCallback
     throw (err);

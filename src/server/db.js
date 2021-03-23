@@ -16,11 +16,11 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 function initialize(dbName, dbCollectionName, successCallback, failureCallback){
 
   client.connect(err => {
-    const database = client.db(dbName)
-    const collection = database.collection(dbCollectionName)
+    const database = client.db(dbName);
+    const collection = database.collection(dbCollectionName);
     
-    successCallback(collection)
-    client.close()
+    successCallback(collection);
+    client.close();
   }); 
 
 }
