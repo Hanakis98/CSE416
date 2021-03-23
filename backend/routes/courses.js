@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../database");
 const dbName = "CSE416";
-const collectionName = "Users";
+const collectionName = "Courses";
 
 
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
 
-    router.get("/allStudents", (request, response) => {
+    router.get("/allCourses", (request, response) => {
         // return updated list
         dbCollection.find().toArray((error, result) => {
             if (error) throw error;
