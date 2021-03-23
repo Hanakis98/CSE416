@@ -1,30 +1,23 @@
-const MongoClient = require('mongodb').MongoClient;
+// import and use mongodb.MongoClient
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
 
-const test = require('assert');
+const dbConnectionUrl = 'mongodb+srv://ted:123@cse416.23kfi.mongodb.net/CSE416?retryWrites=true&w=majority'; 
 
-// Connection url
+function initialize(dbName, dbCollectionName, successCallback, failureCallback) {
+  const client = new MongoClient(dbConnectionUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+	client.connect(function (err, dbInstance) {
+		if (err) {
+			console.log(`[MongoDB connection] ERROR: ${err}`);
+			failureCallback(err);        // this should be "caught" by the calling function
+		} else {
+			const dbObject = dbInstance.db(dbName);
+			const dbCollection = dbObject.collection(dbCollectionName);
 
-const uri = 'mongodb+srv://ted:<rfYMsIXkluwYrYaA>@cse416.23kfi.mongodb.net/CSE416?retryWrites=true&w=majority';
-
-// Database Name
-const dbName = "CSE416"
-
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, keepAlive: 1 });
-
-
-
-function initialize(dbName, dbCollectionName, successCallback, failureCallback){
-
-  client.connect(err => {
-    const database = client.db(dbName)
-    const collection = database.collection(dbCollectionName)
-    
-    successCallback(collection)
-    client.close()
-  }); 
-
+			console.log("[MongoDB connection] SUCCESS");
+			successCallback(dbCollection);
+		}
+	});
 }
 
-module.exports = {
-  initialize
-};
+module.exports = { initialize };

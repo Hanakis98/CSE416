@@ -1,29 +1,26 @@
-const express = require('express');
-
+const express = require("express");
 const server = express();
 
 const body_parser = require("body-parser");
 
+// parse JSON (application/json content-type)
 server.use(body_parser.json());
 
 const port = 4000;
 
-const db = require('./db')
+// << db setup >>
+const db = require("./db");
+const dbName = "CSE416";
+const collectionName = "Users";
 
-// Database Name
-const dbName = "CSE416"
-const collectionName = "CSE416"
+db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+   // get all items
+   dbCollection.find().toArray(function (err, result) {
+      if (err) throw err;
+      console.log(result);
 
-server.listen(port, () => {
-    console.log(`Server listening at ${port}`);
-});
-
-db.initialize(dbName, collectionName, function(collection) { // successCallback
-    collection.find().toArray(function(err, result){
-        if (err) throw err;
-            console.log(result);
-    })
-
+      // << return response to client >>
+    });
 }, function(err) { // failureCallback
     throw (err);
 });
