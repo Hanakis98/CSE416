@@ -23,9 +23,16 @@ app.use("/courses", coursesRoutes);
 
  
 
+app.get("/", (request, response) => {
+    console.log("HELLO FROM EXPRESS")
+});
+
+
 app.listen(port, function() {
     console.log("Runnning on " + port);
 });
+
+
 
 module.exports = app;
 
