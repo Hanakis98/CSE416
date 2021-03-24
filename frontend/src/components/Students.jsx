@@ -6,7 +6,7 @@ export default class Students extends Component {
         super(props);
         this.state = {
             isOpen: false,
-            students: []
+            students: [],
         };
     }
 
@@ -142,6 +142,20 @@ export default class Students extends Component {
             });
     }
 
+    searchStudent = (name) => {
+       if (name !== ""){
+            this.readAllStudent().then(currentStudents => {
+                var filteredStudents = currentStudents.filter(function(student){
+                    return student.name === name
+                })  
+                this.setState({students: filteredStudents})
+       
+            })
+        }else{
+            this.readAllStudent().then(newStudents => this.setState({students: newStudents}))
+        }
+    }
+
     render() {
         return (
             <Container>
@@ -150,7 +164,7 @@ export default class Students extends Component {
                         <Form inline>
                             <FormGroup>
                                 <Label>Search</Label>
-                                <Input type="text" id="search" />
+                                <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)}  />
                             </FormGroup>
                         </Form>
                     </Col>
@@ -192,7 +206,7 @@ export default class Students extends Component {
                                 <td>{x.name}</td>
                                 <td>{x.id}</td>
                                 <td>{x.GPA}</td>
-                                <td>ISE</td>
+                                <td>CSE</td>
                                 <td>7</td>
                                 <td>5</td>
                                 <td>2</td>

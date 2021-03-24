@@ -78,8 +78,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         
     });
     
-
-    
    
 }, function(err) { // failureCallback
     throw (err);
