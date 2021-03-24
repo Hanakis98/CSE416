@@ -100,3 +100,106 @@ export default class Students extends Component {
     }
 }
 
+function addStudent(params) {
+
+    const data = { username: 'example', id: "1" };
+
+    fetch('http://localhost:3001/students/addStudent', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+    });
+
+}
+
+function deleteStudent(params) {
+
+    const data = { username: 'example' , id: "1" };
+
+    fetch('http://localhost:3001/students/deleteStudent', {
+        method: 'DELETE', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+    });
+    
+}
+
+function readAllStudent(params){
+
+    var route = 'http://localhost:3001/students/allStudents/'
+   
+    fetch(route, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+    });
+}
+
+function readOneStudent(params){
+
+    var route = 'http://localhost:3001/students/student/'
+    const data = { username: 'example' , id: "2" };
+   
+    fetch(route, {
+        headers: {
+            'Content-Type': 'application/json',
+            'id': data.id
+        },
+        
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+    });
+}
+
+function updateStudent(params){
+
+    const data = { username: 'example', id: "2" };
+    var old_id = "1"
+   
+    fetch('http://localhost:3001/students/updateStudent', {
+        method: 'PUT', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+            'id': old_id
+        },
+        body: JSON.stringify(data),
+        
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+    });
+}
