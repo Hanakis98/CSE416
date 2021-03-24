@@ -32,9 +32,6 @@ class Nav2 extends Component{
                             <NavLink href="/">Home (navlink)</NavLink>
                         </NavItem> */}
                         <NavItem>
-                            <Link class="nav-link" to="/reactstrap">reactstrap demo</Link>
-                        </NavItem>
-                        <NavItem>
                             <Link class="nav-link" to="/students">Students</Link>
                         </NavItem>
                         <NavItem>
