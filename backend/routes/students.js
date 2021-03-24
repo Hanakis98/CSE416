@@ -40,6 +40,20 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
+
+    router.delete("/deleteAllStudent/", (request, response) => {
+      
+        console.log("Delete All Item");
+        dbCollection.deleteMany(function(error, result) {
+            if (error) throw error;
+            // send back entire updated list after successful request
+            dbCollection.find().toArray(function(_error, _result) {
+                if (_error) throw _error;
+                response.json(_result);
+            });
+        });
+    });
+
     router.get("/student", (request, response) => {
         const itemId = request.headers.id;
         dbCollection.findOne({ id: itemId }, (error, result) => {

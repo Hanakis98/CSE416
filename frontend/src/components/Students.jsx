@@ -4,31 +4,147 @@ import { Table, Container, Form, FormGroup, Label, Input, Row, Col, Button } fro
 export default class Students extends Component {
     constructor(props) {
         super(props);
-
-        this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false,
             students: []
         };
     }
-    toggle() {
-        this.setState({
-            isOpen: !this.state.isOpen
+
+    componentDidMount() {
+        this.readAllStudent().then(newStudents => this.setState({students: newStudents}))
+    }
+
+    deleteStudent = (studentID) =>  {
+
+        const data = {id: studentID }
+        
+        fetch('http://localhost:3001/students/deleteStudent', {
+            method: 'DELETE', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                this.setState({students: data})
+                console.log('Success:', data);
+                
+            })
+            .catch((error) => {
+                console.error('Error:', error);
         });
     }
+
+    deleteAllStudent = () => {
+
+        fetch('http://localhost:3001/students/deleteAllStudent', {
+            method: 'DELETE', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                this.setState({students: data})
+                console.log('Success:', data);
+                
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+        });
+    }
+
+
+    addStudent = (params) =>  {
+
+        const data = { username: 'example', id: "1" };
+    
+        fetch('http://localhost:3001/students/addStudent', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    
+    }
+    
+    
+    
+    readAllStudent = (params) =>  {
+        var route = 'http://localhost:3001/students/allStudents/'
+    
+        return fetch(route, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                return data
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                return null
+            });
+    }
+    
+    readOneStudent = (params) =>  {
+    
+        var route = 'http://localhost:3001/students/student/'
+        const data = { username: 'example', id: "2" };
+    
+        fetch(route, {
+            headers: {
+                'Content-Type': 'application/json',
+                'id': data.id
+            },
+    
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+    
+    updateStudent = (params) =>  {
+    
+        const data = { username: 'example', id: "2" };
+        var old_id = "1"
+    
+        fetch('http://localhost:3001/students/updateStudent', {
+            method: 'PUT', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+                'id': old_id
+            },
+            body: JSON.stringify(data),
+    
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
     render() {
         return (
             <Container>
-                <Row>
-                    <div className="container">
-                        <button onClick={addStudent}>Add</button>
-                        <button onClick={deleteStudent}>Delete</button>
-                        <button onClick={readAllStudent}>Read-All</button>
-                        <button onClick={updateStudent}>Update</button>
-                        <button onClick={readOneStudent}>Read-One</button>
-                    </div>
-                </Row>
-
                 <Row>
                     <Col xs="6">
                         <Form inline>
@@ -50,9 +166,10 @@ export default class Students extends Component {
                     <Col xs="2">
                         <Button>Import Student Data</Button>
                     </Col>
+                    <Col xs="2">
+                        <Button onClick={this.deleteAllStudent}>Delete All Student</Button>
+                    </Col>
                 </Row>
-
-
 
                 <Table striped>
                     <thead><tr>
@@ -68,33 +185,24 @@ export default class Students extends Component {
                         <th>Course Plan Validity</th>
                         <th>Course Plan Completeness</th>
                     </tr></thead>
+                    
                     <tbody>
-                        <tr>
-                            <td>Ahmad Esmaili</td>
-                            <td>110253286</td>
-                            <td>3.80</td>
-                            <td>ISE</td>
-                            <td>7</td>
-                            <td>5</td>
-                            <td>2</td>
-                            <td>Spring 2022</td>
-                            <td>6</td>
-                            <td>Valid</td>
-                            <td>Incomplete</td>
-                        </tr>
-                        <tr>
-                            <td>Kevin McDonnell</td>
-                            <td>111002348</td>
-                            <td>3.94</td>
-                            <td>CSE</td>
-                            <td>9</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>Fall 2021</td>
-                            <td>7</td>
-                            <td>Invalid</td>
-                            <td>Incomplete</td>
-                        </tr>
+                        {this.state.students.map(x => (
+                            <tr>
+                                <td>{x.name}</td>
+                                <td>{x.id}</td>
+                                <td>{x.GPA}</td>
+                                <td>ISE</td>
+                                <td>7</td>
+                                <td>5</td>
+                                <td>2</td>
+                                <td>Spring 2022</td>
+                                <td>6</td>
+                                <td>Valid</td>
+                                <td>Incomplete</td>
+                                <td> <button onClick={() => this.deleteStudent(x.id)}>Delete</button> </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </Table>
             </Container>
@@ -102,106 +210,3 @@ export default class Students extends Component {
     }
 }
 
-function addStudent(params) {
-
-    const data = { username: 'example', id: "1" };
-
-    fetch('http://localhost:3001/students/addStudent', {
-        method: 'POST', // or 'PUT'
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-    });
-
-}
-
-function deleteStudent(params) {
-
-    const data = { username: 'example' , id: "1" };
-
-    fetch('http://localhost:3001/students/deleteStudent', {
-        method: 'DELETE', // or 'PUT'
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-    });
-    
-}
-
-function readAllStudent(params){
-
-    var route = 'http://localhost:3001/students/allStudents/'
-   
-    fetch(route, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-    });
-}
-
-function readOneStudent(params){
-
-    var route = 'http://localhost:3001/students/student/'
-    const data = { username: 'example' , id: "2" };
-   
-    fetch(route, {
-        headers: {
-            'Content-Type': 'application/json',
-            'id': data.id
-        },
-        
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-    });
-}
-
-function updateStudent(params){
-
-    const data = { username: 'example', id: "2" };
-    var old_id = "1"
-   
-    fetch('http://localhost:3001/students/updateStudent', {
-        method: 'PUT', // or 'PUT'
-        headers: {
-            'Content-Type': 'application/json',
-            'id': old_id
-        },
-        body: JSON.stringify(data),
-        
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-    });
-}
