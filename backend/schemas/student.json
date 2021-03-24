@@ -1,49 +1,9 @@
 {
-    "_id": {
-        "$oid": "string"
-    },
+    
     "username": "string",
     "password": "string",
     "schoolID": "string",
     "name": "string",
-    "GPA": "stromg",
-    "DegreeRequirements": {
-        "department": "string",
-        "track": "string",
-        "Thesis": "bool",
-        "Project": "bool",
-        "version": "string",
-        "minGPA": "string",
-        "minNonElectiveGPA": "string",
-        "minCredits": "int",
-        "recommendation": "bool",
-        "timeLimit": "int",
-        "proficencyReqs": ["string"],
-        "courseReqs": ["string"],
-        "entrySemester": "string",
-        "expectedGradSemester": "string",
-        "hasGraduated": "bool",
-        "precentageComplete": {
-            "$numberLong": "long"
-        },
-        "comments": ["string"],
-        "coursePlan": {
-            "studentID": "int",
-            "courses": [{
-                "department": "string",
-                "name": "string",
-                "description": "string",
-                "section": "int",
-                "semester": "string",
-                "year": "int",
-                "days": "string",
-                "startTime": "string",
-                "endTime": "string",
-                "credits": {
-                    "$numberLong": "long"
-                },
-                "Prereqs": "string"
-            }]
-        }
-    }
+    "GPA": "string",
+    "DegreeRequirements": "Degree Requirements"
 }

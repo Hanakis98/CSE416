@@ -15,27 +15,8 @@
     "entrySemester": "string",
     "expectedGradSemester": "string",
     "hasGraduated": "bool",
-    "precentageComplete": {
-        "$numberLong": "long"
-    },
+    "precentageComplete": "long",
     "comments": ["string"],
-    "coursePlan": {
-        "studentID": "int",
-        "courses": [{
-            "department": "string",
-            "name": "string",
-            "description": "string",
-            "section": "int",
-            "semester": "string",
-            "year": "int",
-            "days": "string",
-            "startTime": "string",
-            "endTime": "string",
-            "credits": {
-                "$numberLong": "long"
-            },
-            "Prereqs": "string"
-        }]
-    }
+    "coursePlan": "courseplan"
  }
 }

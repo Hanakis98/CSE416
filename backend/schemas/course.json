@@ -1,4 +1,5 @@
 {
+    "oid" : "string",
     "department": "string",
     "name": "string",
     "description": "string",
