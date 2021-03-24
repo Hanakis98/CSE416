@@ -3,22 +3,23 @@ const { ObjectID } = require("mongodb");
 const router = express.Router();
 const db = require("../database.js");
 const dbName = "CSE416";
-const collectionName = "Courses";
+const collectionName = "Requirements";
 
 
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
 
-    router.get("/allCourses", (request, response) => {
+    router.get("/allRequirements", (request, response) => {
         // return updated list
         dbCollection.find().toArray((error, result) => {
             if (error) throw error;
             response.json(result);
         });
     });
-    router.post("/addCourse", (request, response) => {
-        const courseItem = request.body;
+
+    router.post("/addRequirement", (request, response) => {
+        const requirementItem = request.body;
         // return updated list
-        dbCollection.insertOne(courseItem, (error, result) => { // callback of insertOne
+        dbCollection.insertOne(requirementItem, (error, result) => { // callback of insertOne
             if (error) throw error;
             // return updated list
             dbCollection.find().toArray((_error, _result) => { // callback of find
@@ -27,10 +28,11 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             });
         });
     });
-    router.delete("/deleteCourse", (request, response) => {
-        const courseObjectID = request.body.id;
-        console.log("Delete item with id: ", courseObjectID);
-        dbCollection.deleteOne({ _id: ObjectID(courseObjectID) }, function(error, result) {
+
+    router.delete("/deleteRequirement", (request, response) => {
+        const requirementObjectID = request.body.id;
+        console.log("Delete item with id: ", requirementObjectID);
+        dbCollection.deleteOne({ _id: ObjectID(requirementObjectID) }, function(error, result) {
             if (error) throw error;
             // send back entire updated list after successful request
             dbCollection.find().toArray(function(_error, _result) {
@@ -40,9 +42,9 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
-    router.delete("/deleteAllCourses", (request, response) => {
+    router.delete("/deleteAllRequirements", (request, response) => {
       
-        console.log("Delete All Item");
+        console.log("Delete All Requirements");
         dbCollection.deleteMany(function(error, result) {
             if (error) throw error;
             // send back entire updated list after successful request

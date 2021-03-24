@@ -1,0 +1,1 @@
+curl -X POST -H "Content-Type: application/json" --data '{"department": "AMS", "name": "Graph Theory", "description":"graphTheory", "section":"1", "semester":"fall", "year":"2020","days":"TuTh","startTime":"240pm","endTime":"400pm","credits":"3"}' http://localhost:3001/courses/addCourse

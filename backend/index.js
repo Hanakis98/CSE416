@@ -9,6 +9,9 @@ const port = process.env.PORT || 3001;
 const studentRoutes = require("./routes/students");
 const advisorsRoutes = require("./routes/advisors");
 const coursesRoutes = require("./routes/courses");
+const requirementsRoutes = require("./routes/requirements.js");
+const coursePlanRoutes = require("./routes/course_plan.js");
+const degreeRequirements = require("./routes/degree_requirements.js");
 
 app.use(logger('dev'));
 app.use(cors());
@@ -19,6 +22,9 @@ app.use(bodyParser.json());
 app.use("/students", studentRoutes);
 app.use("/advisors", advisorsRoutes);
 app.use("/courses", coursesRoutes);
+app.use("/requirements", requirementsRoutes);
+app.use("/coursePlan", coursePlanRoutes);
+app.use("/degreeRequirements", degreeRequirements);
 
 
  
