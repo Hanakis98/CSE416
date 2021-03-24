@@ -1,5 +1,6 @@
 import { React, Component } from 'react';
-import { Table, Container, Form, FormGroup, Label, Input, Row, Col, Button } from 'reactstrap';
+import { Table, Container, Form, FormGroup, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
+import { Link, withRouter } from "react-router-dom";
 
 export default class Students extends Component {
     constructor(props) {
@@ -175,7 +176,8 @@ export default class Students extends Component {
                         <Button>Import Grades</Button>
                     </Col>
                     <Col xs="1">
-                        <Button>Add Student</Button>
+                        {/* <Link class="nav-link" to="/students"><Button>Add Student</Button></Link> */}
+                        <NavLink href="/edit"><Button>Add Student</Button></NavLink>
                     </Col>
                     <Col xs="2">
                         <Button>Import Student Data</Button>

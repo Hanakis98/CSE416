@@ -6,3 +6,4 @@ export { default as Students } from "./Students";
 export { default as Degrees } from "./Degrees";
 export { default as Courses } from "./Courses";
 export { default as Trends } from "./Trends";
+export { default as EditStudent } from "./EditStudent";

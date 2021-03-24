@@ -1,8 +1,6 @@
 {
     "_id": "string",
-
     "semester": "string",
     "semester_time": "int",
     "courses": ["course"]
-    
 }
