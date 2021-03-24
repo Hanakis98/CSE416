@@ -1,5 +1,5 @@
 import { React, Component } from 'react';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Container, Row, Col, Jumbotron, Button } from 'reactstrap';
+//import { Button } from 'reactstrap';
 
 export default class Trends extends Component{
     constructor(props) {

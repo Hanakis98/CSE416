@@ -1,7 +1,6 @@
-
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Navigation, Nav2, Footer, Home, About, Contact, Reactstrap, StudentHome, Students, Degrees, Courses, Trends } from "./components";
+import { Nav2, Footer, Home, StudentHome, Students, Degrees, Courses, Trends } from "./components";
 
 export default function App() {
   return (
@@ -10,7 +9,6 @@ export default function App() {
         <Nav2 />
         <Switch>
           <Route path="/" exact component={() => <Home />} />
-          <Route path="/reactstrap" exact component={() => <Reactstrap />} />
           <Route path="/studenthome" exact component={() => <StudentHome />} />
           <Route path="/students" exact component={() => <Students />} />
           <Route path="/degrees" exact component={() => <Degrees />} />
@@ -21,13 +19,4 @@ export default function App() {
       </Router>
     </div>
   );
-
-    fetch("http://localhost:3001/courses/allCourses").then(response =>
-    response.json().then(data => ({
-      data: data,
-      status: response.status
-    })
-    ).then(res => {
-      console.log(res.status, res.data)
-    }));
 }
