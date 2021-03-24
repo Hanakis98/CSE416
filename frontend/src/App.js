@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
 function sayHello(params) {
-  fetch("http://localhost:3001/students/items").then(response =>
+
+    fetch("http://localhost:3001/students/allStudents").then(response =>
     response.json().then(data => ({
       data: data,
       status: response.status
@@ -10,6 +11,23 @@ function sayHello(params) {
       console.log(res.status, res.data)
     }));
 
+    fetch("http://localhost:3001/advisors/allGPDs").then(response =>
+    response.json().then(data => ({
+      data: data,
+      status: response.status
+    })
+    ).then(res => {
+      console.log(res.status, res.data)
+    }));
+
+    fetch("http://localhost:3001/courses/allCourses").then(response =>
+    response.json().then(data => ({
+      data: data,
+      status: response.status
+    })
+    ).then(res => {
+      console.log(res.status, res.data)
+    }));
 }
 
 export default class App extends Component {
