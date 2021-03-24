@@ -1,0 +1,12 @@
+{
+    "department": "string",
+    "name": "string",
+    "description": "string",
+    "section": "int",
+    "semester": "string",
+    "year": "int",
+    "days": "string",
+    "startTime": "string",
+    "endTime": "string",
+    "credits":  "int"
+}
