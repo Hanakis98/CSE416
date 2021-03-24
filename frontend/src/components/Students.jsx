@@ -99,14 +99,6 @@ export default class Students extends Component{
 }
 
 function sayHello(params) {
-    fetch("https://mast-system.herokuapp.com/students/items").then(response =>
-    response.json().then(data => ({
-      data: data,
-      status: response.status
-    })
-    ).then(res => {
-      console.log(res.status, res.data)
-    }));
 
     fetch("http://localhost:3001/students/allStudents").then(response =>
     response.json().then(data => ({
