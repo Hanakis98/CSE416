@@ -12,9 +12,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use("/students", studentRoutes);
 
+app.get("/", (request, response) => {
+    console.log("HELLO FROM EXPRESS")
+});
+
+
 app.listen(port, function() {
     console.log("Runnning on " + port);
 });
+
+
 
 module.exports = app;
 
