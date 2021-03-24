@@ -15,7 +15,7 @@
     "entrySemester": "string",
     "expectedGradSemester": "string",
     "hasGraduated": "bool",
-    "precentageComplete": "long",
+    "percentageComplete": "long",
     "comments": ["string"],
     "coursePlan": "courseplan"
  }
