@@ -1,9 +1,6 @@
 {
-    "_id": "string",
-   
-    "coursePlan" : 
-   {    
+    "_id": "string",  
     "id" : "string",
     "courses": ["string"]
-    }
+    
 }

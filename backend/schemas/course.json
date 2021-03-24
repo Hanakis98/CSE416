@@ -1,7 +1,6 @@
 {
     "_id": "string",
-   "course" : 
-   {    
+  
     "department": "string",
     "courseNum": "int",
     "description" : "string",
@@ -12,5 +11,5 @@
     "startTime" : "string",
     "endTime" : "string",
     "credits":"int"
-    }
+    
 }

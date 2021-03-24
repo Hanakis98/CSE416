@@ -1,7 +1,5 @@
 {
-    "_id": "string",
-    "gpd" : 
-   {    
+    "_id": "string",   
     "name": "string"
-    }
+    
 }
