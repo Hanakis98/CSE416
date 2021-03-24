@@ -24,6 +24,8 @@ export default class Students extends Component {
                         <button onClick={addStudent}>Add</button>
                         <button onClick={deleteStudent}>Delete</button>
                         <button onClick={readAllStudent}>Read-All</button>
+                        <button onClick={updateStudent}>Update</button>
+                        <button onClick={readOneStudent}>Read-One</button>
                     </div>
                 </Row>
 
