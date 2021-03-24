@@ -1,0 +1,22 @@
+{
+    "DegreeRequirements": {
+    "department": "string",
+    "track": "string",
+    "Thesis": "bool",
+    "Project": "bool",
+    "version": "string",
+    "minGPA": "string",
+    "minNonElectiveGPA": "string",
+    "minCredits": "int",
+    "recommendation": "bool",
+    "timeLimit": "int",
+    "proficencyReqs": ["string"],
+    "courseReqs": ["string"],
+    "entrySemester": "string",
+    "expectedGradSemester": "string",
+    "hasGraduated": "bool",
+    "precentageComplete": "long",
+    "comments": ["string"],
+    "coursePlan": "courseplan"
+ }
+}

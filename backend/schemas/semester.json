@@ -1,0 +1,5 @@
+{
+    "sesmester": "string",
+    "semester_time": "int",
+    "courses": ["course"]
+}
