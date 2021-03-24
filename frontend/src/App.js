@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 function sayHello(params) {
-  fetch("https://mast-system.herokuapp.com/students/items").then(response =>
+  fetch("http://localhost:3001/students/allStudents").then(response =>
     response.json().then(data => ({
       data: data,
       status: response.status

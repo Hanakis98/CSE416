@@ -20,9 +20,6 @@ app.use("/students", studentRoutes);
 app.use("/advisors", advisorsRoutes);
 app.use("/courses", coursesRoutes);
 
-
- 
-
 app.get("/", (request, response) => {
     console.log("HELLO FROM EXPRESS")
 });
@@ -31,8 +28,6 @@ app.get("/", (request, response) => {
 app.listen(port, function() {
     console.log("Runnning on " + port);
 });
-
-
 
 module.exports = app;
 
