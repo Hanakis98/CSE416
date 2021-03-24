@@ -1,9 +1,13 @@
 {
-    
+    "_id": "string",
+    "student" : 
+   {    
     "username": "string",
     "password": "string",
     "schoolID": "string",
     "name": "string",
     "GPA": "string",
-    "DegreeRequirements": "Degree Requirements"
+    "degreeRequirements": "Degree Requirements",
+    "coursePlan": "string"
+    }
 }

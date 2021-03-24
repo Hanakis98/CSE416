@@ -1,9 +1,9 @@
 {
-    "coursePlan": 
-    {
-        "studentID": "123456789",
-        "courses": ["course"]
+    "_id": "string",
+   
+    "coursePlan" : 
+   {    
+    "id" : "string",
+    "courses": ["string"]
     }
 }
-
-

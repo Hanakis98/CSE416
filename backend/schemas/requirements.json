@@ -1,8 +1,11 @@
 {
+    "_id": "string",
+    "requirement" : 
+   {    
     "courses": ["course"],
     "min_credits": "int",
     "min_courses": "int",
     "max_credits": "int",
     "status": "string"
-
+    }
 }
