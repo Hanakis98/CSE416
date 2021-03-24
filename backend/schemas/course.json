@@ -1,13 +1,15 @@
 {
-    "oid" : "string",
+    "_id": "string",
+  
     "department": "string",
-    "name": "string",
-    "description": "string",
+    "courseNum": "int",
+    "description" : "string",
     "section": "int",
     "semester": "string",
     "year": "int",
     "days": "string",
-    "startTime": "string",
-    "endTime": "string",
-    "credits":  "int"
+    "startTime" : "string",
+    "endTime" : "string",
+    "credits":"int"
+    
 }

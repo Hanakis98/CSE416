@@ -1,9 +1,9 @@
 {
-    "DegreeRequirements": {
+    "_id": "string", 
     "department": "string",
-    "track": "string",
-    "Thesis": "bool",
-    "Project": "bool",
+    "track_topic": "string",
+    "thesis": "bool",
+    "project": "bool",
     "version": "string",
     "minGPA": "string",
     "minNonElectiveGPA": "string",
@@ -18,5 +18,7 @@
     "percentageComplete": "long",
     "comments": ["string"],
     "coursePlan": "courseplan"
- }
+    
 }
+
+
