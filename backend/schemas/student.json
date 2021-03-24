@@ -1,9 +1,8 @@
 {
     "_id": "string",
-
     "username": "string",
     "password": "string",
-    "schoolID": "string",
+    "id": "string",
     "name": "string",
     "GPA": "string",
     "degreeRequirements": "Degree Requirements",
