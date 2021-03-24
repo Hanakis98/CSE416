@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Navigation, Nav2, Footer, Home, About, Contact, StudentHome, Students, Degrees, Courses, Trends } from "./components";
+import { Nav2, Footer, Home, StudentHome, Students, Degrees, Courses, Trends } from "./components";
 
 export default function App() {
   return (
