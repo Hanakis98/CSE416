@@ -1,7 +1,7 @@
 import { React, Component } from 'react';
 import { Table, Container, Form, FormGroup, Label, Input, Row, Col, Button } from 'reactstrap';
 
-export default class Students extends Component{
+export default class Students extends Component {
     constructor(props) {
         super(props);
 
@@ -16,22 +16,26 @@ export default class Students extends Component{
             isOpen: !this.state.isOpen
         });
     }
-    render(){
+    render() {
         return (
             <Container>
                 <Row>
                     <div className="container">
-                    <button onClick={sayHello}>Default</button>
+                        <button onClick={addStudent}>Add</button>
+                        <button onClick={deleteStudent}>Delete</button>
+                        <button onClick={readAllStudent}>Read-All</button>
+                        <button onClick={readOneStudent}>Read-One</button>
+                        <button onClick={updateStudent}>Update</button>
                     </div>
                 </Row>
-                
+
                 <Row>
                     <Col xs="6">
                         <Form inline>
-                        <FormGroup>
-                            <Label>Search</Label>
-                            <Input type="text" id="search" />
-                        </FormGroup>
+                            <FormGroup>
+                                <Label>Search</Label>
+                                <Input type="text" id="search" />
+                            </FormGroup>
                         </Form>
                     </Col>
                     <Col xs="2">
@@ -48,8 +52,8 @@ export default class Students extends Component{
                     </Col>
                 </Row>
 
-                
-            
+
+
                 <Table striped>
                     <thead><tr>
                         <th>Student</th>
@@ -98,41 +102,106 @@ export default class Students extends Component{
     }
 }
 
-function sayHello(params) {
-    fetch("https://mast-system.herokuapp.com/students/items").then(response =>
-    response.json().then(data => ({
-      data: data,
-      status: response.status
-    })
-    ).then(res => {
-      console.log(res.status, res.data)
-    }));
+function addStudent(params) {
 
-    fetch("http://localhost:3001/students/allStudents").then(response =>
-    response.json().then(data => ({
-      data: data,
-      status: response.status
-    })
-    ).then(res => {
-      console.log(res.status, res.data)
-    }));
+    const data = { username: 'example', id: "1" };
 
-    fetch("http://localhost:3001/advisors/allGPDs").then(response =>
-    response.json().then(data => ({
-      data: data,
-      status: response.status
+    fetch('http://localhost:3001/students/addStudent', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
     })
-    ).then(res => {
-      console.log(res.status, res.data)
-    }));
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+    });
 
-    fetch("http://localhost:3001/courses/allCourses").then(response =>
-    response.json().then(data => ({
-      data: data,
-      status: response.status
+}
+
+function deleteStudent(params) {
+
+    const data = { username: 'example' , id: "1" };
+
+    fetch('http://localhost:3001/students/deleteStudent', {
+        method: 'DELETE', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
     })
-    ).then(res => {
-      console.log(res.status, res.data)
-    }));
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+    });
+    
+}
 
-  }
+function readAllStudent(params){
+
+    var route = 'http://localhost:3001/students/allStudents/'
+   
+    fetch(route, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+    });
+}
+
+function readOneStudent(params){
+
+    var route = 'http://localhost:3001/students/student/'
+    const data = { username: 'example' , id: "2" };
+   
+    fetch(route, {
+        headers: {
+            'Content-Type': 'application/json',
+            'id': data.id
+        },
+        
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+    });
+}
+
+function updateStudent(params){
+
+    const data = { username: 'example', id: "2" };
+    var old_id = "1"
+   
+    fetch('http://localhost:3001/students/updateStudent', {
+        method: 'PUT', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+            'id': old_id
+        },
+        body: JSON.stringify(data),
+        
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+    });
+}
