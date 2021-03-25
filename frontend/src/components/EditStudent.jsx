@@ -9,7 +9,7 @@ export default class EditStudent extends Component{
             firstName: "",
             lastName: "",
             email: "",
-            major: "",
+            major: "AMS",
             track: "",
             id: ""
         };

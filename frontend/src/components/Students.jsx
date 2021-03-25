@@ -104,7 +104,9 @@ export default class Students extends Component {
         });
     }
 
-    deleteAllStudent = () => {
+    deleteAllStudent = (id) => {
+
+        let data = {sbu_id: id}
 
         fetch('http://localhost:3001/students/deleteAllStudent', {
             method: 'DELETE', // or 'PUT'
@@ -213,7 +215,7 @@ export default class Students extends Component {
        if (name !== ""){
             this.readAllStudent().then(currentStudents => {
                 var filteredStudents = currentStudents.filter(function(student){
-                    return student.name === name
+                    return student.first_name + " " + student.last_name === name
                 })  
                 this.setState({students: filteredStudents})
        
@@ -246,7 +248,8 @@ export default class Students extends Component {
                         <NavLink href="/edit"><Button>Add Student</Button></NavLink>
                     </Col>
                     <Col xs="2">
-                        <Button>Import Student Data</Button>
+                        <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onStudentFileChange} />
+                        <Button onClick={(e) => this.uploadStudentData.click()}>Import Student Data</Button>
                     </Col>
                     <Col xs="2">
                         <Button onClick={this.deleteAllStudent}>Delete All Student</Button>
@@ -271,10 +274,10 @@ export default class Students extends Component {
                     <tbody>
                         {this.state.students.map(x => (
                             <tr>
-                                <td>{x.name}</td>
-                                <td>{x.id}</td>
-                                <td>{x.GPA}</td>
-                                <td>CSE</td>
+                                <td>{x.first_name + " " + x.last_name}</td>
+                                <td>{x.sbu_id}</td>
+                                <td>3.45</td>
+                                <td>{x.department}</td>
                                 <td>7</td>
                                 <td>5</td>
                                 <td>2</td>
@@ -282,7 +285,7 @@ export default class Students extends Component {
                                 <td>6</td>
                                 <td>Valid</td>
                                 <td>Incomplete</td>
-                                <td> <button onClick={() => this.deleteStudent(x.id)}>Delete</button> </td>
+                                <td> <button onClick={() => this.deleteStudent(x.sbu_id)}>Delete</button> </td>
                             </tr>
                         ))}
                     </tbody>
