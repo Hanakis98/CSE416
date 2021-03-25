@@ -232,7 +232,8 @@ export default class Students extends Component {
        if (name !== ""){
             this.readAllStudent().then(currentStudents => {
                 var filteredStudents = currentStudents.filter(function(student){
-                    return student.first_name + " " + student.last_name === name
+                    return student.first_name + " " + student.last_name === name 
+                    || student.sbu_id === name
                 })  
                 this.setState({students: filteredStudents})
        
