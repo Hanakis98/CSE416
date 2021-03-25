@@ -1,6 +1,12 @@
 {
     "_id": "string",  
-    "id" : "string",
-    "courses": ["string"]
+    "studentId" : "string",
+    "courses":[
+        {
+            "course":"string",
+            "grade":"string",
+            "hasTaken":"boolean"
+        }
+    ]
     
 }

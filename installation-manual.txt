@@ -1,9 +1,0 @@
-- In terminal, enter the Backend folder and enter "npm install" 
-
-- In terminal, enter the Backend folder and enter "npm install nodemon" 
-
-- In terminal, enter the Frontend folder and enter "npm install" 
-
-- In terminal, enter the Frontend and enter "npm start"
-
-- In  a seperate terminal window, enter the backend folder and enter nodemon index.js
