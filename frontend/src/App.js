@@ -16,7 +16,7 @@ export default function App() {
           <Route path="/trends" exact component={() => <Trends />} />
           <Route path="/edit" exact component={() => <EditStudent />} />
         </Switch>
-        <Footer />
+        {/* <Footer /> */}
       </Router>
     </div>
   );
