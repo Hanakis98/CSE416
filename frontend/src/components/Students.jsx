@@ -15,9 +15,76 @@ export default class Students extends Component {
         this.readAllStudent().then(newStudents => this.setState({students: newStudents}))
     }
 
-    deleteStudent = (studentID) =>  {
+    convertTextToCSV = (text) => {
+        let csvData = [];
+        let lbreak = text.split("\n");
+        lbreak.forEach(res => {
+            csvData.push(res.split(","));
+        });
+        return csvData
+    }
 
-        const data = {id: studentID }
+    verifyHeader = (header) => {
+        let validHeader = true
+        header.forEach(function (data, index) {
+            if (index === 0 && data !== 'sbu_id') {
+                validHeader = false
+            } else if (index === 1 && data !== 'first_name') {
+                validHeader = false
+            } else if (index === 2 && data !== 'last_name') {
+                validHeader = false
+            } else if (index === 3 && data !== 'email') {
+                validHeader = false
+            } else if (index === 4 && data !== 'department') {
+                validHeader = false
+            } else if (index === 5 && data !== 'track') {
+                validHeader = false
+            } else if (index === 6 && data !== 'entry_semester') {
+                validHeader = false
+            } else if (index === 7 && data !== 'entry_year') {
+                validHeader = false
+            } else if (index === 8 && data !== 'requirement_version_semester') {
+                validHeader = false
+            } else if (index === 9 && data !== 'requirement_version_year') {
+                validHeader = false
+            } else if (index === 10 && data !== 'graduation_semester') {
+                validHeader = false
+            } else if (index === 11 && data !== 'graduation_year') {
+                validHeader = false
+            } else if (index === 12 && data !== 'password') {
+                validHeader = false
+            }
+        })
+        return validHeader
+    }
+
+    buildJSONfromRow = (row) => {
+        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[9], graduation_year: row[10], password:row[11] }
+        return json
+    }
+
+    onStudentFileChange = async event => {
+        var file = event.target.files[0]
+        var extension = file.name.split('.').pop()
+        if (extension === 'csv') {
+            let text = await file.text();
+            let csvData = this.convertTextToCSV(text)
+
+            // Verfiy header of csv file
+
+            let header = csvData[0]
+            let data = csvData.slice(1)
+            if (this.verifyHeader(header)) {
+                let json_data = data.map(x => this.buildJSONfromRow(x))
+                json_data.map(x => this.addStudent(x))
+            }
+        }
+    };
+
+    deleteStudent = (studentID) => {
+
+        const data = { sbu_id: studentID }
+
         
         fetch('http://localhost:3001/students/deleteStudent', {
             method: 'DELETE', // or 'PUT'
@@ -57,20 +124,19 @@ export default class Students extends Component {
     }
 
 
-    addStudent = (params) =>  {
+    addStudent = (json_data) => {
 
-        const data = { username: 'example', id: "1" };
-    
         fetch('http://localhost:3001/students/addStudent', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(json_data),
         })
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
+                this.readAllStudent().then(newStudents => this.setState({ students: newStudents }))
             })
             .catch((error) => {
                 console.error('Error:', error);
