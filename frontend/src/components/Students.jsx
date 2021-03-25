@@ -84,7 +84,7 @@ export default class Students extends Component {
 
     deleteStudent = (studentID) => {
 
-        const data = { id: studentID }
+        const data = { sbu_id: studentID }
 
         fetch('http://localhost:3001/students/deleteStudent', {
             method: 'DELETE', // or 'PUT'
@@ -126,8 +126,6 @@ export default class Students extends Component {
 
     addStudent = (json_data) => {
 
-        
-
         fetch('http://localhost:3001/students/addStudent', {
             method: 'POST', // or 'PUT'
             headers: {
@@ -138,6 +136,7 @@ export default class Students extends Component {
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
+                this.readAllStudent().then(newStudents => this.setState({ students: newStudents }))
             })
             .catch((error) => {
                 console.error('Error:', error);
