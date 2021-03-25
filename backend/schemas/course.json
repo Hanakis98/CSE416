@@ -10,5 +10,4 @@
     "startTime" : "string",
     "endTime" : "string",
     "credits":"int"
-    
 }
