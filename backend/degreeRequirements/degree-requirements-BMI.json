@@ -5,83 +5,47 @@
     "date": "2021-03-17",
     "minGPA": 3.0,
     "minCredits": 33,
-
-    "trackRequirements":[
+    "degreeRequirements":[
         {
-            "track": "Thesis",
-            "requiredCourses":[
-                {
-                    "name":"Biomedical Engineering Research",
-                    "courseNumber": "BMI 599",
-					"credits": 6
-                },
-                {
-                    "name":"Engineering Principles in Cell Biology",
-                    "courseNumber": "BMI 501",
-					"credits": 3
-                },
-                {
-                    "name":"Advanced Numerical & Computation Analysis Applied to Biological Systems",
-                    "courseNumber": "BMI 502",
-					"credits": 3
-                },
-                {
-                    "name":" undamentals of the Bioscience Industry",
-                    "courseNumber": "BMI 509",
-                    "credits": 3,
-                    "substitute courses":["MBA 502","MBA 503","MBA 504","MBA 505","MBA 506","MBA 507","MBA 511","MBA 589"]
-                }
-                
-            
-            
-                
-            ]
+            "name":" Introduction to Biomedical Informatics",
+            "courseNumber": "BMI 501",
+            "credits": 3
         },
         {
-            "track": "Project",
-            "requiredCourses":[
-                {
-                    "name":"Approved Project",
-                    "courseNumber": "N/A",
-					"credits": null
-                },
-                {
-                    "name":"Engineering Principles in Cell Biology",
-                    "courseNumber": "BMI 501",
-					"credits": 3
-                },
-                {
-                    "name":"Advanced Numerical & Computation Analysis Applied to Biological Systems",
-                    "courseNumber": "BMI 502",
-					"credits": 3
-                }
-            ]
+            "name":" Introduction to Biomedical Informatics",
+            "courseNumber": "BMI 502",
+            "credits": 3,
+            "substitute": ["BMI 503"]
+        },
+        {
+            "name":" Translational Bioinformatics",
+            "courseNumber": "BMI 511",
+            "credits": 3,
+            "substitute": ["BMI 512, 513"]
+        },
+        {
+            "name":" Statistical Methods in Biomedical Informatics",
+            "courseNumber": "BMI 540",
+            "credits": 3,
+            "substitute": []
         }
+        
     ],
     "courseRequirements":[
         {
-            "area": "Biomedical Principles",
+            "area": "Imaging Informatics - With Capstone Project",
             "gradeRequirement": "C or Higher",
             "requiredCourses":[
                 {
-                    "name":"Principles and Practice of Biomedical Engineering",
-                    "courseNumber": "BMI 505",
-					"credits": 3
+                    "name":"Capstone Project in Biomedical Informatics",
+                    "courseNumber": "BMI 598",
+					"credits": 6
                 },
                 {
                     "name":"Lab Rotation I",
-                    "courseNumber": "BMI 520",
-					"credits": null
-                },
-                {
-                    "name":"Lab Rotation II",
-                    "courseNumber": "BMI 521",
-					"credits": null
-                },
-                {
-                    "name":" Practicum in Teaching",
-                    "courseNumber": "BMI 698",
-					"credits": 1
+                    "courseNumber": "BMI 502",
+					"credits": 3,
+                    "substitute":["BMI 503"]
                 }
         
             ],
@@ -96,7 +60,7 @@
         },
         
         {
-            "area": "Biomedical Design",
+            "area": "Clinical Informatics",
             "gradeRequirement": "C or Higher",
             "requiredCourses":[
                 {
@@ -126,7 +90,7 @@
             ]
         },
         {
-            "area": "Biomedical Entrepreneurship",
+            "area": "Translational BioInformatics",
             "gradeRequirement": "C or Higher",
             "requiredCourses":[
                 {
@@ -186,12 +150,6 @@
                         "courseNumber": "JRN 512",
                         "credits": 3
                     }
-                   
-                   
-                   
-
-
-
                 ]
             ],
             "type": "at least one of",
@@ -200,10 +158,7 @@
                     "BMIclasses": 3,
                     "electives":3
                 }
-
             ]
-            
-            
         }
     ]
     
