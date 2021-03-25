@@ -6,7 +6,12 @@ export default class EditStudent extends Component{
         super(props);
         this.state = {
             isOpen: false,
-            category: 'yo'
+            firstName: "",
+            lastName: "",
+            email: "",
+            major: "AMS",
+            track: "",
+            id: ""
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,41 +24,71 @@ export default class EditStudent extends Component{
         console.log(this.state);
         event.preventDefault();
     }
+    addStudent = ()=> {
+        let json_data = {
+            first_name: this.state.firstName,
+            last_name: this.state.lastName,
+            sbu_id: this.state.id,
+            email: this.state.email,
+            department:  this.state.major,
+            track: this.state.track
+
+        }
+        fetch('http://localhost:3001/students/addStudent', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(json_data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+    }
     render(){
         return (
             <Container>
                 <Row>
-                    Edit Student: Kevin McDonnell (or Add New Student)
+                    Add Student: Kevin McDonnell (or Add New Student)
                 </Row>
                 <Form>
                     <FormGroup row>
-                        <Label for="name" sm={1}>Name</Label>
-                        <Col sm={4}><Input type="text" id="name" /></Col>
+                        <Label for="name" sm={1}>First Name</Label>
+                        <Col sm={4}><Input type="text" id="name" onChange = {e=> this.setState( {firstName: e.target.value })} /></Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="name" sm={1}>Last Name</Label>
+                        <Col sm={4}><Input type="text" id="name" onChange = {e=> this.setState( {lastName: e.target.value })}/></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="id" sm={1}>ID</Label>
-                        <Col sm={4}><Input type="text" id="id" /></Col>
+                        <Col sm={4}><Input type="text" id="id" onChange = {e=> this.setState( {id: e.target.value })} /></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="email" sm={1}>Email</Label>
-                        <Col sm={4}><Input type="text" id="email" /></Col>
+                        <Col sm={4}><Input type="text" id="email" onChange = {e=> this.setState( {email: e.target.value })}/></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="major" sm={1}>Major</Label>
                         <Col sm={4}>
-                        <Input type="select" id="major" >
+                        <Input type="select" id="major" onChange = {e=> this.setState( {major: e.target.value })} >
                         
-                        <option value="ams">AMS</option>
-                        <option value="cse">CSE</option>
-                        <option value="ese">ESE</option>
-                        <option value="bmi">BMI</option>
+                        <option value="AMS">AMS</option>
+                        <option value="CSE">CSE</option>
+                        <option value="ESE">ESE</option>
+                        <option value="BMI">BMI</option>
                         </Input>
                         
                         </Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="track" sm={1}>Track</Label>
-                        <Col sm={4}><Input type="select" id="track">
+                        <Col sm={4}><Input type="select" id="track" onChange = {e=> this.setState( {track: e.target.value })}>
                             
                             <option value="iit">Imaging Informatics with thesis</option>
                             <option value="iip">Imaging Informatics with project</option>
@@ -69,7 +104,7 @@ export default class EditStudent extends Component{
                             
                         </Col>
                     </FormGroup>
-                    <Button>Save</Button>
+                    <Button onClick = {this.addStudent} >Save</Button>
                 </Form>
             </Container>
         );

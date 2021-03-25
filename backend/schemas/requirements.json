@@ -5,5 +5,4 @@
     "min_courses": "int",
     "max_credits": "int",
     "status": "string"
-    
 }

@@ -1,6 +1,5 @@
 {
     "_id": "string",
-  
     "department": "string",
     "courseNum": "int",
     "description" : "string",

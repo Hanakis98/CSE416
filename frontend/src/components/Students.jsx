@@ -1,7 +1,6 @@
 import { React, Component } from 'react';
 import { Table, Container, Form, FormGroup, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
 import { Link, withRouter } from "react-router-dom";
-import axios from 'axios';
 
 export default class Students extends Component {
     constructor(props) {
@@ -13,7 +12,7 @@ export default class Students extends Component {
     }
 
     componentDidMount() {
-        this.readAllStudent().then(newStudents => this.setState({ students: newStudents }))
+        this.readAllStudent().then(newStudents => this.setState({students: newStudents}))
     }
 
     convertTextToCSV = (text) => {
@@ -84,8 +83,9 @@ export default class Students extends Component {
 
     deleteStudent = (studentID) => {
 
-        const data = { id: studentID }
+        const data = { sbu_id: studentID }
 
+        
         fetch('http://localhost:3001/students/deleteStudent', {
             method: 'DELETE', // or 'PUT'
             headers: {
@@ -95,16 +95,18 @@ export default class Students extends Component {
         })
             .then(response => response.json())
             .then(data => {
-                this.setState({ students: data })
+                this.setState({students: data})
                 console.log('Success:', data);
-
+                
             })
             .catch((error) => {
                 console.error('Error:', error);
-            });
+        });
     }
 
-    deleteAllStudent = () => {
+    deleteAllStudent = (id) => {
+
+        let data = {sbu_id: id}
 
         fetch('http://localhost:3001/students/deleteAllStudent', {
             method: 'DELETE', // or 'PUT'
@@ -114,19 +116,17 @@ export default class Students extends Component {
         })
             .then(response => response.json())
             .then(data => {
-                this.setState({ students: data })
+                this.setState({students: data})
                 console.log('Success:', data);
-
+                
             })
             .catch((error) => {
                 console.error('Error:', error);
-            });
+        });
     }
 
 
     addStudent = (json_data) => {
-
-        
 
         fetch('http://localhost:3001/students/addStudent', {
             method: 'POST', // or 'PUT'
@@ -138,18 +138,19 @@ export default class Students extends Component {
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
+                this.readAllStudent().then(newStudents => this.setState({ students: newStudents }))
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
-
+    
     }
-
-
-
-    readAllStudent = (params) => {
+    
+    
+    
+    readAllStudent = (params) =>  {
         var route = 'http://localhost:3001/students/allStudents/'
-
+    
         return fetch(route, {
             headers: {
                 'Content-Type': 'application/json',
@@ -165,18 +166,18 @@ export default class Students extends Component {
                 return null
             });
     }
-
-    readOneStudent = (params) => {
-
+    
+    readOneStudent = (params) =>  {
+    
         var route = 'http://localhost:3001/students/student/'
         const data = { username: 'example', id: "2" };
-
+    
         fetch(route, {
             headers: {
                 'Content-Type': 'application/json',
                 'id': data.id
             },
-
+    
         })
             .then(response => response.json())
             .then(data => {
@@ -186,12 +187,12 @@ export default class Students extends Component {
                 console.error('Error:', error);
             });
     }
-
-    updateStudent = (params) => {
-
+    
+    updateStudent = (params) =>  {
+    
         const data = { username: 'example', id: "2" };
         var old_id = "1"
-
+    
         fetch('http://localhost:3001/students/updateStudent', {
             method: 'PUT', // or 'PUT'
             headers: {
@@ -199,7 +200,7 @@ export default class Students extends Component {
                 'id': old_id
             },
             body: JSON.stringify(data),
-
+    
         })
             .then(response => response.json())
             .then(data => {
@@ -211,19 +212,18 @@ export default class Students extends Component {
     }
 
     searchStudent = (name) => {
-        if (name !== "") {
+       if (name !== ""){
             this.readAllStudent().then(currentStudents => {
-                var filteredStudents = currentStudents.filter(function (student) {
+                var filteredStudents = currentStudents.filter(function(student){
                     return student.first_name + " " + student.last_name === name
-                })
-                this.setState({ students: filteredStudents })
-
+                })  
+                this.setState({students: filteredStudents})
+       
             })
-        } else {
-            this.readAllStudent().then(newStudents => this.setState({ students: newStudents }))
+        }else{
+            this.readAllStudent().then(newStudents => this.setState({students: newStudents}))
         }
     }
-
 
     render() {
         return (
@@ -233,7 +233,7 @@ export default class Students extends Component {
                         <Form inline>
                             <FormGroup>
                                 <Label>Search</Label>
-                                <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)} />
+                                <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)}  />
                             </FormGroup>
                         </Form>
                     </Col>
@@ -270,13 +270,13 @@ export default class Students extends Component {
                         <th>Course Plan Validity</th>
                         <th>Course Plan Completeness</th>
                     </tr></thead>
-
+                    
                     <tbody>
                         {this.state.students.map(x => (
                             <tr>
                                 <td>{x.first_name + " " + x.last_name}</td>
                                 <td>{x.sbu_id}</td>
-                                <td>{x.GPA}</td>
+                                <td>3.45</td>
                                 <td>{x.department}</td>
                                 <td>7</td>
                                 <td>5</td>
@@ -285,7 +285,7 @@ export default class Students extends Component {
                                 <td>6</td>
                                 <td>Valid</td>
                                 <td>Incomplete</td>
-                                <td> <button onClick={() => this.deleteStudent(x.id)}>Delete</button> </td>
+                                <td> <button onClick={() => this.deleteStudent(x.sbu_id)}>Delete</button> </td>
                             </tr>
                         ))}
                     </tbody>
