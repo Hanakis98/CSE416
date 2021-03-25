@@ -1,14 +1,15 @@
 {
     "_id": "string",
     "department": "string",
-    "courseNum": "int",
+    "name": "string",
     "description" : "string",
+    "courseNum": "int",
     "section": "int",
     "semester": "string",
     "year": "int",
     "days": "string",
     "startTime" : "string",
     "endTime" : "string",
-    "credits":"int"
-    
+    "credits":"int",
+    "prerequisites":["string"]
 }
