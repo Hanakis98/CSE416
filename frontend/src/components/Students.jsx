@@ -29,30 +29,43 @@ export default class Students extends Component {
         header.forEach(function (data, index) {
             if (index === 0 && data !== 'sbu_id') {
                 validHeader = false
+                console.log(index)
             } else if (index === 1 && data !== 'first_name') {
                 validHeader = false
+                console.log(index)
             } else if (index === 2 && data !== 'last_name') {
                 validHeader = false
+                console.log(index)
             } else if (index === 3 && data !== 'email') {
                 validHeader = false
+                console.log(index)
             } else if (index === 4 && data !== 'department') {
                 validHeader = false
+                console.log(index)
             } else if (index === 5 && data !== 'track') {
                 validHeader = false
+                console.log(index)
             } else if (index === 6 && data !== 'entry_semester') {
                 validHeader = false
+                console.log(index)
             } else if (index === 7 && data !== 'entry_year') {
                 validHeader = false
+                console.log(index)
             } else if (index === 8 && data !== 'requirement_version_semester') {
                 validHeader = false
+                console.log(index)
             } else if (index === 9 && data !== 'requirement_version_year') {
                 validHeader = false
+                console.log(index)
             } else if (index === 10 && data !== 'graduation_semester') {
                 validHeader = false
+                console.log(index)
             } else if (index === 11 && data !== 'graduation_year') {
                 validHeader = false
-            } else if (index === 12 && data !== 'password') {
+                console.log(index)
+            } else if (index === 12 && data.replace(/\W/g, '') !== 'passwords'){
                 validHeader = false
+                console.log(data)
             }
         })
         return validHeader
@@ -65,17 +78,21 @@ export default class Students extends Component {
 
     onStudentFileChange = async event => {
         var file = event.target.files[0]
+        console.log(file)
         var extension = file.name.split('.').pop()
         if (extension === 'csv') {
+            console.log(extension)
             let text = await file.text();
             let csvData = this.convertTextToCSV(text)
 
             // Verfiy header of csv file
-
+            console.log(csvData)
             let header = csvData[0]
             let data = csvData.slice(1)
+            console.log(header)
             if (this.verifyHeader(header)) {
                 let json_data = data.map(x => this.buildJSONfromRow(x))
+                console.log(json_data)
                 json_data.map(x => this.addStudent(x))
             }
         }
