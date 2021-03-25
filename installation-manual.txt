@@ -1,9 +1,17 @@
-- In terminal, enter the Backend folder and enter "npm install" 
+1. Download and extract the project source.
 
-- In terminal, enter the Backend folder and enter "npm install nodemon" 
+2. In a shell, enter the ./backend/ folder.
 
-- In terminal, enter the Frontend folder and enter "npm install" 
+3. Run "npm install".
 
-- In terminal, enter the Frontend and enter "npm start"
+4. Run "npm install nodemon".
 
-- In  a seperate terminal window, enter the backend folder and enter nodemon index.js
+5. Run "nodemon index.js". If on Windows, run "npx nodemon index.js".
+
+6. Open a new shell.
+
+7. Enter the ./frontend/ folder and run "npm install".
+
+8. Run "npm start".
+
+9. Open the localhost port in a browser. (Usually localhost:3000)
