@@ -1,6 +1,7 @@
 import { React, Component } from 'react';
 import { Table, Container, Form, FormGroup, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
 import { Link, withRouter } from "react-router-dom";
+import axios from 'axios';
 
 export default class Students extends Component {
     constructor(props) {
@@ -12,13 +13,79 @@ export default class Students extends Component {
     }
 
     componentDidMount() {
-        this.readAllStudent().then(newStudents => this.setState({students: newStudents}))
+        this.readAllStudent().then(newStudents => this.setState({ students: newStudents }))
     }
 
-    deleteStudent = (studentID) =>  {
+    convertTextToCSV = (text) => {
+        let csvData = [];
+        let lbreak = text.split("\n");
+        lbreak.forEach(res => {
+            csvData.push(res.split(","));
+        });
+        return csvData
+    }
 
-        const data = {id: studentID }
-        
+    verifyHeader = (header) => {
+        let validHeader = true
+        header.forEach(function (data, index) {
+            if (index === 0 && data !== 'sbu_id') {
+                validHeader = false
+            } else if (index === 1 && data !== 'first_name') {
+                validHeader = false
+            } else if (index === 2 && data !== 'last_name') {
+                validHeader = false
+            } else if (index === 3 && data !== 'email') {
+                validHeader = false
+            } else if (index === 4 && data !== 'department') {
+                validHeader = false
+            } else if (index === 5 && data !== 'track') {
+                validHeader = false
+            } else if (index === 6 && data !== 'entry_semester') {
+                validHeader = false
+            } else if (index === 7 && data !== 'entry_year') {
+                validHeader = false
+            } else if (index === 8 && data !== 'requirement_version_semester') {
+                validHeader = false
+            } else if (index === 9 && data !== 'requirement_version_year') {
+                validHeader = false
+            } else if (index === 10 && data !== 'graduation_semester') {
+                validHeader = false
+            } else if (index === 11 && data !== 'graduation_year') {
+                validHeader = false
+            } else if (index === 12 && data !== 'password') {
+                validHeader = false
+            }
+        })
+        return validHeader
+    }
+
+    buildJSONfromRow = (row) => {
+        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[9], graduation_year: row[10], password:row[11] }
+        return json
+    }
+
+    onStudentFileChange = async event => {
+        var file = event.target.files[0]
+        var extension = file.name.split('.').pop()
+        if (extension === 'csv') {
+            let text = await file.text();
+            let csvData = this.convertTextToCSV(text)
+
+            // Verfiy header of csv file
+
+            let header = csvData[0]
+            let data = csvData.slice(1)
+            if (this.verifyHeader(header)) {
+                let json_data = data.map(x => this.buildJSONfromRow(x))
+                json_data.map(x => this.addStudent(x))
+            }
+        }
+    };
+
+    deleteStudent = (studentID) => {
+
+        const data = { id: studentID }
+
         fetch('http://localhost:3001/students/deleteStudent', {
             method: 'DELETE', // or 'PUT'
             headers: {
@@ -28,13 +95,13 @@ export default class Students extends Component {
         })
             .then(response => response.json())
             .then(data => {
-                this.setState({students: data})
+                this.setState({ students: data })
                 console.log('Success:', data);
-                
+
             })
             .catch((error) => {
                 console.error('Error:', error);
-        });
+            });
     }
 
     deleteAllStudent = () => {
@@ -47,26 +114,26 @@ export default class Students extends Component {
         })
             .then(response => response.json())
             .then(data => {
-                this.setState({students: data})
+                this.setState({ students: data })
                 console.log('Success:', data);
-                
+
             })
             .catch((error) => {
                 console.error('Error:', error);
-        });
+            });
     }
 
 
-    addStudent = (params) =>  {
+    addStudent = (json_data) => {
 
-        const data = { username: 'example', id: "1" };
-    
+        
+
         fetch('http://localhost:3001/students/addStudent', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(json_data),
         })
             .then(response => response.json())
             .then(data => {
@@ -75,14 +142,14 @@ export default class Students extends Component {
             .catch((error) => {
                 console.error('Error:', error);
             });
-    
+
     }
-    
-    
-    
-    readAllStudent = (params) =>  {
+
+
+
+    readAllStudent = (params) => {
         var route = 'http://localhost:3001/students/allStudents/'
-    
+
         return fetch(route, {
             headers: {
                 'Content-Type': 'application/json',
@@ -98,18 +165,18 @@ export default class Students extends Component {
                 return null
             });
     }
-    
-    readOneStudent = (params) =>  {
-    
+
+    readOneStudent = (params) => {
+
         var route = 'http://localhost:3001/students/student/'
         const data = { username: 'example', id: "2" };
-    
+
         fetch(route, {
             headers: {
                 'Content-Type': 'application/json',
                 'id': data.id
             },
-    
+
         })
             .then(response => response.json())
             .then(data => {
@@ -119,12 +186,12 @@ export default class Students extends Component {
                 console.error('Error:', error);
             });
     }
-    
-    updateStudent = (params) =>  {
-    
+
+    updateStudent = (params) => {
+
         const data = { username: 'example', id: "2" };
         var old_id = "1"
-    
+
         fetch('http://localhost:3001/students/updateStudent', {
             method: 'PUT', // or 'PUT'
             headers: {
@@ -132,7 +199,7 @@ export default class Students extends Component {
                 'id': old_id
             },
             body: JSON.stringify(data),
-    
+
         })
             .then(response => response.json())
             .then(data => {
@@ -144,18 +211,19 @@ export default class Students extends Component {
     }
 
     searchStudent = (name) => {
-       if (name !== ""){
+        if (name !== "") {
             this.readAllStudent().then(currentStudents => {
-                var filteredStudents = currentStudents.filter(function(student){
-                    return student.name === name
-                })  
-                this.setState({students: filteredStudents})
-       
+                var filteredStudents = currentStudents.filter(function (student) {
+                    return student.first_name + " " + student.last_name === name
+                })
+                this.setState({ students: filteredStudents })
+
             })
-        }else{
-            this.readAllStudent().then(newStudents => this.setState({students: newStudents}))
+        } else {
+            this.readAllStudent().then(newStudents => this.setState({ students: newStudents }))
         }
     }
+
 
     render() {
         return (
@@ -165,7 +233,7 @@ export default class Students extends Component {
                         <Form inline>
                             <FormGroup>
                                 <Label>Search</Label>
-                                <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)}  />
+                                <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)} />
                             </FormGroup>
                         </Form>
                     </Col>
@@ -180,7 +248,8 @@ export default class Students extends Component {
                         <NavLink href="/edit"><Button>Add Student</Button></NavLink>
                     </Col>
                     <Col xs="2">
-                        <Button>Import Student Data</Button>
+                        <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onStudentFileChange} />
+                        <Button onClick={(e) => this.uploadStudentData.click()}>Import Student Data</Button>
                     </Col>
                     <Col xs="2">
                         <Button onClick={this.deleteAllStudent}>Delete All Student</Button>
@@ -201,14 +270,14 @@ export default class Students extends Component {
                         <th>Course Plan Validity</th>
                         <th>Course Plan Completeness</th>
                     </tr></thead>
-                    
+
                     <tbody>
                         {this.state.students.map(x => (
                             <tr>
-                                <td>{x.name}</td>
-                                <td>{x.id}</td>
+                                <td>{x.first_name + " " + x.last_name}</td>
+                                <td>{x.sbu_id}</td>
                                 <td>{x.GPA}</td>
-                                <td>CSE</td>
+                                <td>{x.department}</td>
                                 <td>7</td>
                                 <td>5</td>
                                 <td>2</td>
