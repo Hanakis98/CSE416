@@ -10,10 +10,6 @@
     "days": "string",
     "startTime" : "string",
     "endTime" : "string",
-<<<<<<< HEAD
-    "credits":"int"
-=======
     "credits":"int",
     "prerequisites":["string"]
->>>>>>> 88da81d516cf2b1e826c8fea1eeddfcc89351944
 }
