@@ -1,13 +1,14 @@
-import { React, Component } from 'react';
+import { Component } from 'react';
+import  React   from 'react';
+
 import { Table, Container, Form, FormGroup, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
-import { Link, withRouter } from "react-router-dom";
 
 export default class Students extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isOpen: false,
-            students: [],
+            students: []
         };
     }
 
@@ -99,10 +100,10 @@ export default class Students extends Component {
     };
 
     deleteStudent = (studentID) => {
-
+        console.log(studentID)
         const data = { sbu_id: studentID }
 
-        
+
         fetch('http://localhost:3001/students/deleteStudent', {
             method: 'DELETE', // or 'PUT'
             headers: {
@@ -114,11 +115,13 @@ export default class Students extends Component {
             .then(data => {
                 this.setState({students: data})
                 console.log('Success:', data);
+
                 
             })
             .catch((error) => {
                 console.error('Error:', error);
         });
+
     }
 
     deleteAllStudent = (id) => {
@@ -171,7 +174,10 @@ export default class Students extends Component {
         return fetch(route, {
             headers: {
                 'Content-Type': 'application/json',
-            },
+                'Accept': 'application/json'
+            }   
+            ,
+            credentials: 'include', 
         })
             .then(response => response.json())
             .then(data => {
@@ -180,7 +186,7 @@ export default class Students extends Component {
             })
             .catch((error) => {
                 console.error('Error:', error);
-                return null
+                return []
             });
     }
     
@@ -244,25 +250,24 @@ export default class Students extends Component {
     }
 
     render() {
+        if(this.state.students.length !=0){
+
         return (
             <Container>
                 <Row>
-                    <Col xs="6">
+                    <Col xs="0">
                         <Form inline>
-                            <FormGroup>
                                 <Label>Search</Label>
                                 <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)}  />
-                            </FormGroup>
                         </Form>
                     </Col>
-                    <Col xs="2">
+                    <Col xs="1">
                         <Button>Filter</Button>
                     </Col>
                     <Col xs="1">
                         <Button>Import Grades</Button>
                     </Col>
-                    <Col xs="1">
-                        {/* <Link class="nav-link" to="/students"><Button>Add Student</Button></Link> */}
+                    <Col xs="2">
                         <NavLink href="/edit"><Button>Add Student</Button></NavLink>
                     </Col>
                     <Col xs="2">
@@ -272,9 +277,12 @@ export default class Students extends Component {
                     <Col xs="2">
                         <Button onClick={this.deleteAllStudent}>Delete All Student</Button>
                     </Col>
-                </Row>
 
-                <Table striped>
+                </Row>
+ <br></br>
+ <br></br>
+
+                <Table  xs="3">
                     <thead><tr>
                         <th>Student</th>
                         <th>ID</th>
@@ -310,6 +318,10 @@ export default class Students extends Component {
                 </Table>
             </Container>
         );
+                        }
+                        else{
+                            return <div> No Data to show</div>
+                        }
     }
 }
 

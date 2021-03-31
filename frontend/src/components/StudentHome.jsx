@@ -1,5 +1,7 @@
-import { React, Component } from 'react';
+import {  Component } from 'react';
 //import { Button } from 'reactstrap';
+import  React  from 'react';
+
 
 export default class StudentHome extends Component{
     constructor(props) {

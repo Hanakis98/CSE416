@@ -1,4 +1,6 @@
-import { React, Component, Select } from 'react';
+import {  Component } from 'react';
+import  React  from 'react';
+
 import { Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
 
 export default class EditStudent extends Component{
@@ -9,10 +11,13 @@ export default class EditStudent extends Component{
             firstName: "",
             lastName: "",
             email: "",
-            major: "AMS",
+            username: "",
+            password: "",
+            department: "AMS",
             track: "",
-            id: ""
+            sbu_id: "",
         };
+        
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -28,10 +33,12 @@ export default class EditStudent extends Component{
         let json_data = {
             first_name: this.state.firstName,
             last_name: this.state.lastName,
-            sbu_id: this.state.id,
+            sbu_id: this.state.sbu_id,
             email: this.state.email,
             department:  this.state.major,
-            track: this.state.track
+            track: this.state.track,
+            username: this.state.username,
+            password: this.state.password
 
         }
         fetch('http://localhost:3001/students/addStudent', {
@@ -67,17 +74,26 @@ export default class EditStudent extends Component{
                     </FormGroup>
                     <FormGroup row>
                         <Label for="id" sm={1}>ID</Label>
-                        <Col sm={4}><Input type="text" id="id" onChange = {e=> this.setState( {id: e.target.value })} /></Col>
+                        <Col sm={4}><Input type="text" id="id" onChange = {e=> this.setState( {sbu_id: e.target.value })} /></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="email" sm={1}>Email</Label>
                         <Col sm={4}><Input type="text" id="email" onChange = {e=> this.setState( {email: e.target.value })}/></Col>
                     </FormGroup>
                     <FormGroup row>
+                        <Label for="username" sm={1}>username</Label>
+                        <Col sm={4}><Input type="text" id="username" onChange = {e=> this.setState( {username: e.target.value })}/></Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="password" sm={1}>password</Label>
+                        <Col sm={4}><Input type="text" id="password" onChange = {e=> this.setState( {password: e.target.value })}/></Col>
+                    </FormGroup>
+                    <FormGroup row>
                         <Label for="major" sm={1}>Major</Label>
                         <Col sm={4}>
                         <Input type="select" id="major" onChange = {e=> this.setState( {major: e.target.value })} >
-                        
+                        <option value="None Selected">None</option>
+
                         <option value="AMS">AMS</option>
                         <option value="CSE">CSE</option>
                         <option value="ESE">ESE</option>
@@ -88,8 +104,9 @@ export default class EditStudent extends Component{
                     </FormGroup>
                     <FormGroup row>
                         <Label for="track" sm={1}>Track</Label>
-                        <Col sm={4}><Input type="select" id="track" onChange = {e=> this.setState( {track: e.target.value })}>
-                            
+                        <Col sm={4}><Input type="select" id="track"  onChange = {e=> this.setState( {track: e.target.value })}>
+                        <option value="None Selected">None</option>
+
                             <option value="iit">Imaging Informatics with thesis</option>
                             <option value="iip">Imaging Informatics with project</option>
                             <option value="cit">Clinical Informatics with thesis</option>

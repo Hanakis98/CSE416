@@ -1,4 +1,6 @@
-import { React, Component } from 'react';
+import {  Component } from 'react';
+import  React  from 'react';
+
 //import { Button } from 'reactstrap';
 
 export default class Degrees extends Component{

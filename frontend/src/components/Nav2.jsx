@@ -1,4 +1,6 @@
-import { React, Component } from "react";
+import {  Component } from "react";
+import  React  from "react";
+
 import { Link, withRouter } from "react-router-dom";
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem } from 'reactstrap';
 

@@ -1,5 +1,6 @@
-import { React, Component } from 'react';
+import {  Component } from 'react';
 //import { Button } from 'reactstrap';
+import  React  from 'react';
 
 export default class Trends extends Component{
     constructor(props) {
@@ -10,7 +11,7 @@ export default class Trends extends Component{
     }
     render(){
         return (
-            <p>Template page</p>
+            <p>Trends</p>
         );
     }
 }
