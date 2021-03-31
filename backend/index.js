@@ -12,13 +12,13 @@ const coursesRoutes = require("./routes/courses");
 const requirementsRoutes = require("./routes/requirements.js");
 const coursePlanRoutes = require("./routes/course_plan.js");
 const degreeRequirements = require("./routes/degree_requirements.js");
+const cookieParser = require("cookie-parser");
 
 app.use(logger('dev'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-
+app.use(cookieParser())
 app.use("/students", studentRoutes);
 app.use("/advisors", advisorsRoutes);
 app.use("/courses", coursesRoutes);

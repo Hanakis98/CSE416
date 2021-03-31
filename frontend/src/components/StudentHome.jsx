@@ -56,7 +56,7 @@ export default class  StudentHome extends Component {
       <Form>
         <FormGroup>
           <Label for="login_id">ID</Label>
-          <Input type="text" name="id" id="login_id" placeholder="110047354" style={{width:200}}  onChange = {e=> this.setState( {username: e.target.value })} />
+          <Input type="text" name="id" id="login_id" placeholder="studentID" style={{width:200}}  onChange = {e=> this.setState( {username: e.target.value })} />
         </FormGroup>
         <FormGroup>
           <Label for="login_password">Password</Label>

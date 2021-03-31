@@ -5,14 +5,17 @@ mongoose.connect("mongodb+srv://ted:123@cse416.23kfi.mongodb.net/CSE416?retryWri
   useNewUrlParser: true
 });
 
-var studentSchema = new mongoose.Schema({ 
-  // username: String,
-  // password: String,
+const studentSchema = new mongoose.Schema({ 
   first_name: String,
-  sbu_id: String
-  // GPA: String,
-  // degreeRequirements:mongoose.Schema.Types.ObjectId ,
-  // coursePlan: mongoose.Schema.Types.ObjectId
+  last_name: String,
+  username: String,
+  password: String,
+  sbu_id: String,
+  GPA: String,
+  department: String,
+  track:String,
+  degreeRequirements:mongoose.Schema.Types.ObjectId ,
+  coursePlan: mongoose.Schema.Types.ObjectId
 });
 
-module.exports = mongoose.model('student', studentSchema,"Users");
+module.exports = mongoose.model('Student', studentSchema,"Students");
