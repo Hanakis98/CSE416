@@ -20,7 +20,7 @@ export default class  Home extends Component {
         password: this.state.password + "SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"
 
     }
-    fetch('http://localhost:3001/advisors/login', {
+    fetch('http://localhost:3001/advisors/login', { 
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
