@@ -250,7 +250,7 @@ export default class Students extends Component {
     }
 
     render() {
-        if(this.state.students.length !=0){
+        
 
         return (
             <Container>
@@ -268,7 +268,7 @@ export default class Students extends Component {
                         <Button>Import Grades</Button>
                     </Col>
                     <Col xs="2">
-                        <NavLink href="/edit"><Button>Add Student</Button></NavLink>
+                        <NavLink href="/add"><Button>Add Student</Button></NavLink>
                     </Col>
                     <Col xs="2">
                         <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onStudentFileChange} />
@@ -298,7 +298,7 @@ export default class Students extends Component {
                     </tr></thead>
                     
                     <tbody>
-                        {this.state.students.map(x => (
+                        {this.state.students.length !=0 && this.state.students.map(x => (
                             <tr>
                                 <td>{x.first_name + " " + x.last_name}</td>
                                 <td>{x.sbu_id}</td>
@@ -318,10 +318,8 @@ export default class Students extends Component {
                 </Table>
             </Container>
         );
-                        }
-                        else{
-                            return <div> No Data to show</div>
-                        }
+                        
+                       
     }
 }
 

@@ -2,8 +2,9 @@ import {  Component } from 'react';
 import  React  from 'react';
 
 import { Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
+var sha = require("sha1")
 
-export default class EditStudent extends Component{
+export default class AddStudent extends Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -86,7 +87,7 @@ export default class EditStudent extends Component{
                     </FormGroup>
                     <FormGroup row>
                         <Label for="password" sm={1}>password</Label>
-                        <Col sm={4}><Input type="text" id="password" onChange = {e=> this.setState( {password: e.target.value })}/></Col>
+                        <Col sm={4}><Input type="text" id="password" onChange = {e=> this.setState( {password:sha( e.target.value+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja") })}/></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="major" sm={1}>Major</Label>

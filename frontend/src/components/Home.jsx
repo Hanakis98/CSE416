@@ -1,12 +1,15 @@
 import {  Component, } from 'react';
 import  React  from 'react';
+import { Link } from "react-router-dom";
 
 import { Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import Cookies from 'js-cookie';
+
 export default class  Home extends Component {
   constructor(props){
     super(props);
     this.state = {
-
+      error:0,
       username: "",
       password: "",
 
@@ -29,13 +32,22 @@ export default class  Home extends Component {
                 body: JSON.stringify(json_data),
 
     })
-        .then(response => response.json())
+        .then(response =>{
+          response.json();
+          window.location.reload(true)
+
+          console.log('Success:');
+
+        })
         .then(data => {
-            console.log('Success:', data);
+
+          window.location.reload(true)
+
         })
         .catch((error) => {
-            console.error('Error:', error);
+            console.error('cant log in:');
         });
+
 
 }
 
@@ -50,8 +62,10 @@ export default class  Home extends Component {
         <FormGroup>
           <Label for="login_password">Password</Label>
           <Input type="password" name="password" id="login_password" placeholder="" style={{width:200}} onChange = {e=> this.setState( {password: e.target.value })} />
-      </FormGroup>
+      </FormGroup>                           
+      
         <Button onClick ={this.login}>Submit</Button>
+
       </Form>
     </Container>
   );
