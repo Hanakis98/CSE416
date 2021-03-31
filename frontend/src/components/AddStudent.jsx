@@ -2,6 +2,7 @@ import {  Component } from 'react';
 import  React  from 'react';
 
 import { Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
+
 var sha = require("sha1")
 
 export default class AddStudent extends Component{
@@ -14,10 +15,10 @@ export default class AddStudent extends Component{
             email: "",
             username: "",
             password: "",
-            department: "AMS",
+            department: "",
             track: "",
             sbu_id: "",
-        };
+            error: 10   };
         
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,6 +32,12 @@ export default class AddStudent extends Component{
         event.preventDefault();
     }
     addStudent = ()=> {
+        if(this.state.firstName == "" || this.state.lastName == ""|| this.state.sbu_id == ""|| this.state.email == ""|| this.state.major == ""|| this.state.track == "" || this.state.username == ""|| this.state.password == "")
+            {
+                this.setState({error:1})
+                return 
+            
+            }
         let json_data = {
             first_name: this.state.firstName,
             last_name: this.state.lastName,
@@ -40,7 +47,6 @@ export default class AddStudent extends Component{
             track: this.state.track,
             username: this.state.username,
             password: this.state.password
-
         }
         fetch('http://localhost:3001/students/addStudent', {
             method: 'POST', // or 'PUT'
@@ -52,9 +58,12 @@ export default class AddStudent extends Component{
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
+                window.location = '/students';
+
             })
             .catch((error) => {
                 console.error('Error:', error);
+
             });
 
     }
@@ -123,6 +132,11 @@ export default class AddStudent extends Component{
                         </Col>
                     </FormGroup>
                     <Button onClick = {this.addStudent} >Save</Button>
+                    <br></br>
+                    <br></br>
+     
+
+                    {this.state.error == 1 && <div style= {{color:'red', fontSize:18}} >Please Enter All forms</div>}
                 </Form>
             </Container>
         );

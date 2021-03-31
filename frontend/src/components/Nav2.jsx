@@ -23,6 +23,8 @@ class Nav2 extends Component{
     }
     render(){
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
+        const studentLoggedIn=Cookies.get("studentLoggedIn");
+
         // change nave bar if your logged in as gpd or not
         if(gpdLoggedIn==1)
         return (
@@ -70,8 +72,12 @@ class Nav2 extends Component{
                                 <Link class="nav-link" to="/">Home</Link>
                             </NavItem>
                         
-                            {gpdLoggedIn==true &&<NavItem >
+                            {gpdLoggedIn==1 &&<NavItem >
                                 < Link   class="nav-link" to="/students">Students</Link>
+                            </NavItem>
+                              }
+                                  {studentLoggedIn==true &&<NavItem >
+                                < Link   class="nav-link" to="/editStudent">Edit My info</Link>
                             </NavItem>
                               }
                             <NavItem>

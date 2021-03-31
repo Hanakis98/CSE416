@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import  React   from 'react';
+import { Link } from "react-router-dom";
 
 import { Table, Container, Form, FormGroup, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
 
@@ -166,7 +167,7 @@ export default class Students extends Component {
     
     }
     
-    
+
     
     readAllStudent = (params) =>  {
         var route = 'http://localhost:3001/students/allStudents/'
@@ -277,10 +278,11 @@ export default class Students extends Component {
                     <Col xs="2">
                         <Button onClick={this.deleteAllStudent}>Delete All Student</Button>
                     </Col>
+                    
 
                 </Row>
- <br></br>
- <br></br>
+                <br></br>
+                <br></br>
 
                 <Table  xs="3">
                     <thead><tr>
@@ -312,6 +314,9 @@ export default class Students extends Component {
                                 <td>Valid</td>
                                 <td>Incomplete</td>
                                 <td> <button onClick={() => this.deleteStudent(x.sbu_id)}>Delete</button> </td>
+                                < Link   class="nav-link" to={"/editStudent?user="+x.sbu_id}>
+
+                                <td> <button>Edit</button> </td></Link>
                             </tr>
                         ))}
                     </tbody>
