@@ -3,6 +3,7 @@ import  React  from 'react';
 import { Link } from "react-router-dom";
 
 import { Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+var sha = require("sha1")
 
 export default class  StudentHome extends Component {
   constructor(props){
@@ -18,8 +19,8 @@ export default class  StudentHome extends Component {
 
   login = ()=> {
     let json_data = {
-        username: this.state.username,
-        password: this.state.password + "SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"
+        sbu_id: this.state.username,
+        password: sha(this.state.password + "SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja")
 
     }
     fetch('http://localhost:3001/students/login', { 

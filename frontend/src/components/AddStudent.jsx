@@ -36,7 +36,6 @@ export default class AddStudent extends Component{
             {
                 this.setState({error:1})
                 return 
-            
             }
         let json_data = {
             first_name: this.state.firstName,
@@ -45,7 +44,6 @@ export default class AddStudent extends Component{
             email: this.state.email,
             department:  this.state.major,
             track: this.state.track,
-            username: this.state.username,
             password: this.state.password
         }
         fetch('http://localhost:3001/students/addStudent', {
@@ -90,10 +88,7 @@ export default class AddStudent extends Component{
                         <Label for="email" sm={1}>Email</Label>
                         <Col sm={4}><Input type="text" id="email" onChange = {e=> this.setState( {email: e.target.value })}/></Col>
                     </FormGroup>
-                    <FormGroup row>
-                        <Label for="username" sm={1}>username</Label>
-                        <Col sm={4}><Input type="text" id="username" onChange = {e=> this.setState( {username: e.target.value })}/></Col>
-                    </FormGroup>
+                    
                     <FormGroup row>
                         <Label for="password" sm={1}>password</Label>
                         <Col sm={4}><Input type="text" id="password" onChange = {e=> this.setState( {password:sha( e.target.value+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja") })}/></Col>

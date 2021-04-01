@@ -16,7 +16,6 @@ export default class editStudent extends Component{
             firstName: "",
             lastName: "",
             email: "",
-            username: "", 
             password: "",
             department: "",
             track: "",
@@ -28,7 +27,7 @@ export default class editStudent extends Component{
         var urlToGetStudent="http://localhost:3001/students/getOneStudent"
         const query = new URLSearchParams(window.location.search);
 
-         u = query.get('user')
+        u = query.get('user')
         console.log("USER " +u)//123
         if(u != null  ){
             urlToGetStudent = "http://localhost:3001/students/getOneStudent?user="+u
@@ -48,12 +47,11 @@ export default class editStudent extends Component{
                     firstName: data.first_name,
                     lastName: data.last_name,
                     email: data.email,
-                    username: data.username,
                     password: "",
                     department: data.department,
                     track: data.track,
                     sbu_id: data.sbu_id,
-                     studentUserName:u  });
+                    studentUserName:u  });
 
             })
             .catch((error) => {
@@ -64,7 +62,7 @@ export default class editStudent extends Component{
 
     }
     updateStudent=() =>{
-        if(this.state.firstName == "" || this.state.lastName == ""|| this.state.sbu_id == ""|| this.state.email == ""|| this.state.major == ""|| this.state.track == "" || this.state.username == ""|| this.state.password == "")
+        if(this.state.firstName == "" || this.state.lastName == ""|| this.state.sbu_id == ""|| this.state.email == ""|| this.state.major == ""|| this.state.track == "" || this.state.password == "")
         {
             this.setState({error:1})
             return 
@@ -77,7 +75,6 @@ export default class editStudent extends Component{
         email: this.state.email,
         department:  this.state.department,
         track: this.state.track,
-        username: this.state.username,
         password: this.state.password
     }
     var URLtoUpdateStudent="http://localhost:3001/students/updateStudent";
@@ -135,10 +132,7 @@ export default class editStudent extends Component{
                         <Label for="email" sm={1}>Email</Label>
                         <Col sm={4}><Input type="text" id="email" placeholder={this.state.email}  onChange = {e=> this.setState( {email: e.target.value })}/></Col>
                     </FormGroup>
-                    <FormGroup row>
-                        <Label for="username" sm={1}>username</Label>
-                        <Col sm={4}><Input type="text" id="username" placeholder={this.state.username}  onChange = {e=> this.setState( {username: e.target.value })}/></Col>
-                    </FormGroup>
+                 
                     <FormGroup row>
                         <Label for="password" sm={1}>password</Label>
                         <Col sm={4}><Input type="text" id="password"placeholder={this.state.password}   onChange = {e=> this.setState( {password:sha( e.target.value+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja") })}/></Col>

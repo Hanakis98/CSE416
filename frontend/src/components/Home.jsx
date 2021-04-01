@@ -10,16 +10,15 @@ export default class  Home extends Component {
     super(props);
     this.state = {
       error:0,
-      username: "",
+      id: "",
       password: "",
 
   };
-  
   }
 
   login = ()=> {
     let json_data = {
-        username: this.state.username,
+        sbu_id: this.state.id,
         password: this.state.password + "SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"
 
     }
@@ -30,25 +29,19 @@ export default class  Home extends Component {
         },    
         credentials: 'same-origin',
                 body: JSON.stringify(json_data),
-
     })
         .then(response =>{
           response.json();
           window.location.reload(true)
-
           console.log('Success:');
 
         })
         .then(data => {
-
           window.location.reload(true)
-
         })
         .catch((error) => {
             console.error('cant log in:');
         });
-
-
 }
 
   render(){
@@ -57,7 +50,7 @@ export default class  Home extends Component {
       <Form>
         <FormGroup>
           <Label for="login_id">ID</Label>
-          <Input type="text" name="id" id="login_id" placeholder="adminID" style={{width:200}}  onChange = {e=> this.setState( {username: e.target.value })} />
+          <Input type="text" name="id" id="login_id" placeholder="adminID" style={{width:200}}  onChange = {e=> this.setState( {id: e.target.value })} />
         </FormGroup>
         <FormGroup>
           <Label for="login_password">Password</Label>

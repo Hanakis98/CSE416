@@ -3,7 +3,8 @@ import  React   from 'react';
 import { Link } from "react-router-dom";
 
 import { Table, Container, Form, FormGroup, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
-
+var sha = require("sha1")
+ 
 export default class Students extends Component {
     constructor(props) {
         super(props);
@@ -11,7 +12,7 @@ export default class Students extends Component {
             isOpen: false,
             students: []
         };
-    }
+    } 
 
     componentDidMount() {
         this.readAllStudent().then(newStudents => this.setState({students: newStudents}))
@@ -74,7 +75,7 @@ export default class Students extends Component {
     }
 
     buildJSONfromRow = (row) => {
-        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[9], graduation_year: row[10], password:row[11] }
+        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[9], graduation_year: row[10], password:sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"),  }
         return json
     }
 
@@ -191,26 +192,25 @@ export default class Students extends Component {
             });
     }
     
-    readOneStudent = (params) =>  {
+    // readOneStudent = (params) =>  {
     
-        var route = 'http://localhost:3001/students/student/'
-        const data = { username: 'example', id: "2" };
+    //     var route = 'http://localhost:3001/students/student/'
     
-        fetch(route, {
-            headers: {
-                'Content-Type': 'application/json',
-                'id': data.id
-            },
+    //     fetch(route, {
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'id': data.sbu_id
+    //         },
     
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             console.log('Success:', data);
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error:', error);
+    //         });
+    // }
     
     updateStudent = (params) =>  {
     
@@ -297,6 +297,10 @@ export default class Students extends Component {
                         <th># Semesters Enrolled</th>
                         <th>Course Plan Validity</th>
                         <th>Course Plan Completeness</th>
+                        <th></th>
+                        <th></th>
+
+
                     </tr></thead>
                     
                     <tbody>
@@ -313,11 +317,16 @@ export default class Students extends Component {
                                 <td>6</td>
                                 <td>Valid</td>
                                 <td>Incomplete</td>
-                                <td> <button onClick={() => this.deleteStudent(x.sbu_id)}>Delete</button> </td>
-                                < Link   class="nav-link" to={"/editStudent?user="+x.sbu_id}>
-
-                                <td> <button>Edit</button> </td></Link>
+                                <td> 
+                                <button onClick={() => this.deleteStudent(x.sbu_id)}>Delete</button> 
+                                </td>
+                                <td>
+                                 <Link   class="nav-link" to={"/editStudent?user="+x.sbu_id}>
+                                 <button>View/Edit</button> </Link>
+                                 </td>
+                                 
                             </tr>
+                            
                         ))}
                     </tbody>
                 </Table>
