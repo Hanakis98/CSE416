@@ -75,7 +75,7 @@ export default class Students extends Component {
     }
 
     buildJSONfromRow = (row) => {
-        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[9], graduation_year: row[10], password:sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"),  }
+        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[9], graduation_year: row[10], password:sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"), coursePlan : {course:""} }
         return json
     }
 
@@ -100,6 +100,58 @@ export default class Students extends Component {
             }
         }
     };
+
+    buildJSONfromRow2 = (row) => {
+        let json = { sbu_id: row[0], department: row[1], course_num: row[2], section: row[3], semester: row[4], year: row[5], grade: row[5]}
+        return json
+    }
+    addCourse = (json_data) => {
+
+        fetch('http://localhost:3001/courses/addCourse', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(json_data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                this.readAllStudent().then(newStudents => this.setState({ students: newStudents }))
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    
+    }
+    courseFileChange = async event => {
+
+        var file = event.target.files[0]
+        console.log(file)
+        var extension = file.name.split('.').pop()
+        if (extension === 'csv') {
+            console.log(extension)
+            let text = await file.text();
+            let csvData = this.convertTextToCSV(text)
+
+            // Verfiy header of csv file
+            console.log(csvData)
+            let header = csvData[0]
+            let data = csvData.slice(1)
+            console.log(header)
+            if (this.verifyHeader(header)) {
+                let json_data = data.map(x => this.buildJSONfromRow2(x))
+                
+                json_data.map(x => this.addCourse(x))
+
+            }
+        }
+    };
+
+    uploadCoursePlanData = () => {
+
+
+    }
 
     deleteStudent = (studentID) => {
         console.log(studentID)
@@ -274,6 +326,10 @@ export default class Students extends Component {
                     <Col xs="2">
                         <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onStudentFileChange} />
                         <Button onClick={(e) => this.uploadStudentData.click()}>Import Student Data</Button>
+                    </Col>
+                    <Col xs="2">
+                        <input id="myInput" type="file" ref={(ref) => this.uploadCoursePlanData = ref} style={{ display: 'none' }} onChange={this.courseFileChange} />
+                        <Button onClick={(e) => this.uploadCoursePlanData.click()}>Import Student Course Plans</Button>
                     </Col>
                     <Col xs="2">
                         <Button onClick={this.deleteAllStudent}>Delete All Student</Button>

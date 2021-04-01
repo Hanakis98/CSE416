@@ -18,7 +18,9 @@ export default class AddStudent extends Component{
             department: "",
             track: "",
             sbu_id: "",
-            error: 10   };
+            error: 10  ,
+            coursePlan: []
+        };
         
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,7 +34,7 @@ export default class AddStudent extends Component{
         event.preventDefault();
     }
     addStudent = ()=> {
-        if(this.state.firstName == "" || this.state.lastName == ""|| this.state.sbu_id == ""|| this.state.email == ""|| this.state.major == ""|| this.state.track == "" || this.state.username == ""|| this.state.password == "")
+        if(this.state.firstName == "" || this.state.lastName == ""|| this.state.sbu_id == ""|| this.state.email == ""|| this.state.major == ""|| this.state.track == "" || this.state.password == "")
             {
                 this.setState({error:1})
                 return 
@@ -44,7 +46,8 @@ export default class AddStudent extends Component{
             email: this.state.email,
             department:  this.state.major,
             track: this.state.track,
-            password: this.state.password
+            password: this.state.password,
+            coursePlan: []
         }
         fetch('http://localhost:3001/students/addStudent', {
             method: 'POST', // or 'PUT'
