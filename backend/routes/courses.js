@@ -28,9 +28,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
     router.delete("/deleteCourse", (request, response) => {
-        const courseObjectID = request.body.id;
-        console.log("Delete item with id: ", courseObjectID);
-        dbCollection.deleteOne({ _id: ObjectID(courseObjectID) }, function(error, result) {
+        const courseObjectID = request.body;
+
+        console.log("Delete item: ", courseObjectID);
+        dbCollection.deleteOne({ department: request.body.department ,   courseNum: request.body.course_num,  semester: request.body.semester, year: request.body.year}, function(error, result) {
             if (error) throw error;
             // send back entire updated list after successful request
             dbCollection.find().toArray(function(_error, _result) {

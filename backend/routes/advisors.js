@@ -7,31 +7,34 @@ const GPDModel = require("../models/advisorModel.js");
 const jwt = require("jsonwebtoken");
 const keys = require("../keys.js");
 const axios = require("axios")
-const bcrypt = require("bcryptjs")
 var sha = require("sha1")
+const cookieParser = require("cookie-parser");
+
 mongoose = require("mongoose")
 axios.defaults.withCredentials = true;
+router.use(cookieParser())
 
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
 
     router.post("/login", (req, res) => {
-        const username1 = req.body.username;
+      
+        const idField = req.body.sbu_id;
         const providedPassword1 = sha(req.body.password );
 
-        if(  dbCollection.findOne({ username:username1,password:providedPassword1}) == null){
-          res.cookie("token",  false ,{ maxage:300, httpOnly: true , withCredentials: true,path:"/" });
-          res.cookie("gpdLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
+        if(  dbCollection.findOne({ sbu_id:idField,password:providedPassword1}) == null){
+          res.cookie("token",  false ,{ maxage:3000, httpOnly: true , withCredentials: true,path:"/" });
+          res.cookie("gpdLoggedIn",0,{ maxage:3000, httpOnly: false ,path:"/" });
           res.send();
           return
         }
  
           // Check if user exists
           // Check password    
-          dbCollection.findOne({ username:username1,password:providedPassword1}).then(user => {
+          dbCollection.findOne({ sbu_id:idField,password:providedPassword1}).then(user => {
           if(user == null){
             res.statusCode=400
-            res.cookie("token",  false ,{ maxage:300, httpOnly: true , withCredentials: true,path:"/" });
-            res.cookie("gpdLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
+            res.cookie("token",  false ,{ maxage:3000, httpOnly: true , withCredentials: true,path:"/" });
+            res.cookie("gpdLoggedIn",0,{ maxage:3000, httpOnly: false ,path:"/" });
             res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
 
             res.send();
@@ -40,7 +43,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
               // User matched
               // Create JWT Payload
               const payload = {
-                username: username1,
+                sbu_id: idField,
                 typeOf: "advisor"
               };// Sign token
 
@@ -48,7 +51,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 payload,
                 keys.secretOrKeyAdvisors,
                 {
-                  expiresIn: 300 // 5 min in seconds
+                  expiresIn: 3000 // 50 min in seconds
                 },
                 (err, token) => {
                     if(!err)
@@ -65,9 +68,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 }
               );
            });
-
-
-
       });
 
     router.get("/allGPDs", (request, response) => {

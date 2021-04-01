@@ -2,10 +2,10 @@ var mongoose = require('mongoose');
 
 var coursePlanSchema = new mongoose.Schema({
     
-    studentId : String,
-    courses:[mongoose.Schema.Types.ObjectId]
+    sbu_id : String,
+    courses:[Object]
     
     
 });
 
-module.exports = mongoose.model('coursePlan', coursePlanSchema);
+module.exports = mongoose.model('CoursePlans', coursePlanSchema,'CoursePlans');

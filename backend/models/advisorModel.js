@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var advisorSchema = new mongoose.Schema({
-    _id: String,   
+    id: String,   
     name: String
 });
 

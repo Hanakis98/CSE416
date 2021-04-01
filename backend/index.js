@@ -23,7 +23,7 @@ app.use("/students", studentRoutes);
 app.use("/advisors", advisorsRoutes);
 app.use("/courses", coursesRoutes);
 app.use("/requirements", requirementsRoutes);
-app.use("/coursePlan", coursePlanRoutes);
+app.use("/coursePlans", coursePlanRoutes);
 app.use("/degreeRequirements", degreeRequirements);
 
 
