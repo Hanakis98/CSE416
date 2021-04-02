@@ -60,7 +60,7 @@ class Nav2 extends Component{
         </div>
         );
 
-        else
+        else if(studentLoggedIn == 1)
         return (
             <div className="navigation">
                 <Navbar color="inverse" light expand="md">
@@ -96,7 +96,20 @@ class Nav2 extends Component{
                     </Collapse>
                 </Navbar>
             </div>
-            )
+            );
+        
+        else
+        return (
+            <div className="navigation">
+                <Navbar color="inverse" light expand="md">
+                    <NavbarBrand><Link class="nav-link" to="/">MAST</Link></NavbarBrand>
+                    <NavbarToggler onClick={this.toggle} />
+                    <Collapse isOpen={this.state.isOpen} navbar>
+                        
+                    </Collapse>
+                </Navbar>
+            </div>
+        );
 
     }
 }
