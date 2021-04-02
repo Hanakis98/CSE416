@@ -73,7 +73,7 @@ export default class Courses extends Component {
     }
 
     buildJSONfromRow = (row) => {
-        let json = { department: row[0], course_num: row[1], section: row[2], semester: row[3], year: row[4], timeslot: row[5], description:"" ,credits:"",prerequisites:[] }
+        let json = { sbu_id: "OFFERING",department: row[0], course_num: row[1], section: row[2], semester: row[3], year: row[4], timeslot: row[5], description:"" ,credits:"",prerequisites:[] }
         return json
     }
 
@@ -210,8 +210,12 @@ export default class Courses extends Component {
                     </tr></thead>
                     
                     <tbody>
-                        {this.state.courses.length !=0 && this.state.courses.map(x => (
-                            <tr>
+                        {this.state.courses.length !=0 && this.state.courses.map(x => 
+                            
+                   {  
+                       if(x.sbu_id == "OFFERING")    
+                     return(     
+                      <tr>
                                 <td>{x.department }</td>
                                 <td>{x.course_num}</td>
                                 <td>{x.section}</td>
@@ -225,8 +229,10 @@ export default class Courses extends Component {
                              
                                  
                             </tr>
+                            )}
                             
-                        ))}
+                        
+                        )}
                     </tbody>
                 </Table>
             </Container>
