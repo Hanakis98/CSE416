@@ -6,9 +6,9 @@ const logger = require("morgan");
 const port = process.env.PORT || 3001;
 
 
-const studentRoutes = require("./routes/students.js");
-const advisorsRoutes = require("./routes/advisors.js");
-const coursesRoutes = require("./routes/courses.js");
+const studentRoutes = require("./routes/students");
+const advisorsRoutes = require("./routes/advisors");
+const coursesRoutes = require("./routes/courses");
 const requirementsRoutes = require("./routes/requirements.js");
 const coursePlanRoutes = require("./routes/course_plan.js");
 const degreeRequirements = require("./routes/degree_requirements.js");

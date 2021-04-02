@@ -9,17 +9,18 @@ const keys = require("../keys.js");
 const axios = require("axios")
 const bcrypt = require("bcryptjs")
 mongoose = require("mongoose")
+const { ObjectID } = require("mongodb");
 
+var sha = require("sha1")
 const cookieParser = require("cookie-parser");
 router.use(cookieParser())
-
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
 
     router.post("/login", (req, res) => {
         const idField = req.body.sbu_id;
         const providedPassword1 = (req.body.password );
-       
-        //if user doesnt exist, set cookies to false and 0
+
+        //if user doesnt exist
         if(  dbCollection.findOne({ sbu_id:idField,password:providedPassword1}) == null){
           res.cookie("token",  false ,{ maxage:300, httpOnly: true , withCredentials: true,path:"/" });
           res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
@@ -32,24 +33,22 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
           // Check if user exists
           // Check password    
           dbCollection.findOne({ sbu_id:idField,password:providedPassword1}).then(user => {
-          //in case it now doesnt exist. redundant but just to be safe ag
-            if(user == null){
+          if(user == null){
             res.statusCode=400
             res.cookie("token",  false ,{ maxage:300, httpOnly: true , withCredentials: true,path:"/" });
             res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
             res.cookie("gpdLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
+
             res.send();
           }
          
-          //User Exists, lets give them a jwt
-              
-          // Create JWT Payload
+              // User matched
+              // Create JWT Payload
               const payload = {
                 sbu_id: idField,
                 typeOf: "student"
               };// Sign token
 
-            //Sign the token and send it back as a cookie that cant be accessible through JS as a secuirty measure
               jwt.sign(
                 payload,
                 keys.secretOrKeyStudents,
@@ -59,32 +58,42 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 (err, token) => {
                     if(!err)
                     {
+
                         res.cookie("token",  token ,{ maxage:1000*1000, httpOnly: true , withCredentials: true,path:"/" });
                         res.cookie("studentLoggedIn",1,{ maxage:1000*1000, httpOnly: false ,path:"/" });
                         res.cookie("gpdLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
-                        console.log(token)
                         res.send();
+                      
                     }
+                    
                 }
               );
            });
+
+
+
+
+ 
       });
       
-      //Get list of all studetns. Verify the jwt to make sure its an advisor
+
     router.get("/allStudents", (request, response) => { // get ALL
         var token  = (request.cookies.token)
-        jwt.verify(token,keys.secretOrKeyAdvisors)
+        console.log(token)
+
+        console.log( jwt.verify(token,keys.secretOrKeyAdvisors))
+
         dbCollection.find().toArray((error, result) => {
             if (error) throw error;
             response.json(result);
         });
     });
 
-   // Verify the jwt to make sure its an advisor and then add a student
     router.post("/addStudent", (request, response) => {
         var token  = (request.cookies["token"])
-        jwt.verify(token,keys.secretOrKeyAdvisors)
 
+        console.log( jwt.verify(token,keys.secretOrKeyAdvisors))
+     
         var newStudent = new studentModel({
             first_name : request.body.first_name,
             last_name : request.body.last_name,
@@ -103,12 +112,15 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 if (_error) throw _error;
                 response.json(_result);
             });    });
+
+     
     });
 
-    // Delete student but first Verify the jwt to make sure its an advisor
     router.delete("/deleteStudent", (request, response) => {
+
         var token  = (request.cookies.token)
-        jwt.verify(token,keys.secretOrKeyAdvisors)
+
+        console.log( jwt.verify(token,keys.secretOrKeyAdvisors))
 
         const itemId = request.body.sbu_id;
         dbCollection.deleteOne({ sbu_id: itemId }, function(error, result) {
@@ -121,11 +133,11 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
-    //Verify the jwt to make sure its an advisor and delete all
+
     router.delete("/deleteAllStudent/", (request, response) => {
         var token  = (request.cookies.token)
 
-         jwt.verify(token,keys.secretOrKeyAdvisors)
+        console.log( jwt.verify(token,keys.secretOrKeyAdvisors))
 
         dbCollection.deleteMany(function(error, result) {
             if (error) throw error;
@@ -137,11 +149,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
-    //get one student. Used to view the student so verify its either the student making the request or the advisor
     router.get("/getOneStudent", (request, response) => {
         var token  = (request.cookies.token)
         var itemID = request.query.user
-        
+
         try {
             var decoded =  jwt.verify(token,keys.secretOrKeyStudents)
              itemId = decoded.sbu_id;
@@ -154,16 +165,15 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 response.json({notAllowed:"notAllowed"});
                 response.send()
             }
-        }          
+        }            console.log(itemId)
 
 
         dbCollection.findOne({ sbu_id: itemId}, (error, result) => {
             if (error) throw error;
+            // return item
             response.json(result);
         });
     });
-
-    //Update a studetns course plan. This request comes from the backend  when we create a new course plan for a student
     router.post("/updateStudentCoursePlan", (request, response) => {
         dbCollection.updateOne({ sbu_id: request.body.sbu_id}, { $set : {coursePlan: request.body.coursePlan }  }, (error, result) => {
             if (error) throw error;
@@ -174,8 +184,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             });
         });
     });
-    
-    //update students
     router.put("/updateStudent", (request, response) => {
         var token  = (request.cookies.token)
         try {
@@ -194,8 +202,11 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 response.send()
             } 
         }
+
+
         const item = request.body;
 
+        console.log("Editing item: ", itemId, " to be ", item);
         dbCollection.updateOne({ sbu_id: itemId }, { $set: item }, (error, result) => {
             if (error) throw error;
             // send back entire updated list, to make sure frontend data is up-to-date
