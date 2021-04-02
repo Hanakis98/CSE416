@@ -25,7 +25,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
           res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
           res.cookie("gpdLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
 
-          res.send();
+          res.send(); 
           return
         }
  
@@ -62,6 +62,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                         res.cookie("token",  token ,{ maxage:1000*1000, httpOnly: true , withCredentials: true,path:"/" });
                         res.cookie("studentLoggedIn",1,{ maxage:1000*1000, httpOnly: false ,path:"/" });
                         res.cookie("gpdLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
+                        console.log(token)
                         res.send();
                     }
                 }
