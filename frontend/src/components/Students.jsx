@@ -75,7 +75,7 @@ export default class Students extends Component {
     }
 
     buildJSONfromRow = (row) => {
-        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[9], graduation_year: row[10], password:sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"), coursePlan :null }
+        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[9], graduation_year: row[10], password:sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"), coursePlan : {course:""} }
         return json
     }
 
@@ -101,111 +101,53 @@ export default class Students extends Component {
         }
     };
 
-
-    // Importing student courseplan data
-    verifyHeader2 = (header) => {
-        let validHeader = true
-        header.forEach(function (data, index) {
-            if (index === 0 && data !== 'sbu_id') {
-                validHeader = false
-                console.log(index)
-            } else if (index === 1 && data !== 'department') {
-                validHeader = false
-                console.log(index)
-            } else if (index === 2 && data !== 'course_num') {
-                validHeader = false
-                console.log(index)
-            } else if (index === 3 && data !== 'section') {
-                validHeader = false
-                console.log(index)
-            } else if (index === 4 && data !== 'semester') {
-                validHeader = false
-                console.log(index)
-            } else if (index === 5 && data !== 'year') {
-                validHeader = false
-                console.log(index)
-            } else if (index === 6 && data !== 'grade') {
-                validHeader = false
-                console.log(index)}
-        })
-        return validHeader
-    }
     buildJSONfromRow2 = (row) => {
-        let json = { sbu_id: row[0], department: row[1], course_num: row[2], section: row[3], semester: row[4], year: row[5], grade: row[6]}
+        let json = { sbu_id: row[0], department: row[1], course_num: row[2], section: row[3], semester: row[4], year: row[5], grade: row[5]}
         return json
     }
-    
- 
+    addCourse = (json_data) => {
 
+        fetch('http://localhost:3001/courses/addCourse', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(json_data),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                this.readAllStudent().then(newStudents => this.setState({ students: newStudents }))
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    
+    }
     courseFileChange = async event => {
 
         var file = event.target.files[0]
         console.log(file)
         var extension = file.name.split('.').pop()
         if (extension === 'csv') {
+            console.log(extension)
             let text = await file.text();
             let csvData = this.convertTextToCSV(text)
 
             // Verfiy header of csv file
+            console.log(csvData)
             let header = csvData[0]
             let data = csvData.slice(1)
-            if (this.verifyHeader2(header)) {
+            console.log(header)
+            if (this.verifyHeader(header)) {
                 let json_data = data.map(x => this.buildJSONfromRow2(x))
-                var sbIDs =[]
-                for(var i = 0; i < json_data.length; i++) {
-                    var id = json_data[i].sbu_id;
-                    if(!sbIDs.includes(id)){
-                        sbIDs.push(id)
-                    }
-                }
-
-                console.log("IDS" ,sbIDs)
-                for(var i = 0; i < sbIDs.length; i++) {
-                    var id = sbIDs[i];
-                    this.createNewCoursePlanForStudent(id);
-                }
-
-                for(var i = 0; i < json_data.length; i++) {
-                    var idToAddPlan = json_data[i].sbu_id;
-                    fetch('http://localhost:3001/coursePlans/addCourseToPlan', {
-                        method: 'POST', // or 'PUT'
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(json_data[i]),
-                    });                 
-                   
-                }
-
-                console.log("courseplan")
-               // json_data.map(x => this.addCourseToPlan(x))
+                
+                json_data.map(x => this.addCourse(x))
 
             }
         }
     };
 
-    createNewCoursePlanForStudent=(id)=>{
-        fetch('http://localhost:3001/coursePlans/addCoursePlanToStudent', {
-            method: 'POST', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({sbu_id:id,courses:[]}),
-        });
-
-    }
-
-    addCourseToPlan = (json_data) => {
-
-        fetch('http://localhost:3001/coursePlans/addCourseToPlan', {
-            method: 'POST', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(json_data),
-        });
-        
-    }
     uploadCoursePlanData = () => {
 
 
