@@ -10,6 +10,7 @@ const courseModel = require("../models/courseModel.js")
 const axios = require('axios')
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
 
+    // Get all the courseplans
     router.get("/allPlans", (request, response) => { // get ALL
         // return updated list
         dbCollection.find().toArray((error, result) => {
@@ -18,18 +19,18 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
-    router.post("/addCoursePlanToStudent", (request, response) => {
+    // add a course to a specified students course plan 
+    router.post("/createCoursePlanForStudent", (request, response) => {
+        //Update the courseplan
         const newPlan = new coursePlanModel({
            sbu_id:request.body.sbu_id,
            courses:[]
         });
-        console.log(newPlan)
-
         newPlan.save(function(err, doc) {
             if (err) return console.error(err);
            });
-     
-           //Update studnt courseplan
+
+           //Update students courseplan since we just created a new course plan for them
            axios
            .post('http://localhost:3001/students/updateStudentCoursePlan', {
             sbu_id:request.body.sbu_id,
@@ -45,6 +46,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
     });
 
+    //Adds a course to a specified Students course plan
     router.post("/addCourseToPlan", (request, response) => {
         var newCourse = new courseModel({
             sbu_id:request.body.sbu_id,
@@ -71,9 +73,9 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 response.json(_result);
             });
         });
-
-     
     });
+
+    //Delete one plan with id
     router.delete("/deletePlan/", (request, response) => {
         const planID = request.body.id;
         console.log("Delete item with id: ", planID);
@@ -87,22 +89,19 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
+    //check and return if there is a course plan for a spcified student
     router.post("/checkPlanForStudent/", (request, response) => {
         const id = request.body.sbu_id;
-        var found = dbCollection.findone({ sbu_id: id }, function(error, result) {
+        var found = dbCollection.findOne({ sbu_id: id }, function(error, result) {
             if (error) throw error;
+            response.json(result);
+            response.send()
 
         });
-        if(found){
-            response.send();}
-        else{
-            response.statusCode=400;
-            response.send()
-            }
     });
 
+    //Self explanatory
     router.delete("/deleteAllPlans", (request, response) => {
-      
         console.log("Delete All Item");
         dbCollection.deleteMany(function(error, result) {
             if (error) throw error;

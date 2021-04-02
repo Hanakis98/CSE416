@@ -19,7 +19,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     router.post("/login", (req, res) => {
       
         const idField = req.body.sbu_id;
-        const providedPassword1 = sha(req.body.password );
+        const providedPassword1 = req.body.password ;
 
         if(  dbCollection.findOne({ sbu_id:idField,password:providedPassword1}) == null){
           res.cookie("token",  false ,{ maxage:3000, httpOnly: true , withCredentials: true,path:"/" });
@@ -27,7 +27,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
           res.send();
           return
         }
- 
+
           // Check if user exists
           // Check password    
           dbCollection.findOne({ sbu_id:idField,password:providedPassword1}).then(user => {
@@ -40,8 +40,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             res.send();
           }
          
-              // User matched
-              // Create JWT Payload
+            // User matched
+              // Create JWT Payload for the advisor
               const payload = {
                 sbu_id: idField,
                 typeOf: "advisor"
@@ -55,12 +55,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 },
                 (err, token) => {
                     if(!err)
-                    {
-
+                    { //store jwt as a cookie
                         res.cookie("token",  token ,{ maxage:1000*1000, httpOnly: true , withCredentials: true,path:"/" });
                         res.cookie("gpdLoggedIn",1,{ maxage:1000*1000, httpOnly: false ,path:"/" });
                         res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
-
                         res.send();
                       
                     }
