@@ -189,7 +189,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         try {
             var decoded =  jwt.verify(token,keys.secretOrKeyStudents)
              var itemId = decoded.sbu_id;
-             console.log(itemId)
 
         } 
         catch (error) {

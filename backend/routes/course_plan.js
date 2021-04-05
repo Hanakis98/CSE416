@@ -50,7 +50,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             sbu_id:request.body.sbu_id,
             department: request.body.department,
             description : "",
-            courseNum: request.body.courseNum,
+            course_num: request.body.course_num,
             section: request.body.section,
             semester: request.body.semester,
             year: request.body.year,

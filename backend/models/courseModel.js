@@ -5,7 +5,7 @@ var courseSchema = new mongoose.Schema({
     department: String,
     name: String,
     description : String,
-    courseNum: String,
+    course_num: String,
     section: String,
     semester: String,
     year: String,

@@ -39,10 +39,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         const courseObjectID = request.body;
 
         console.log("Delete item: ", courseObjectID);
-        dbCollection.deleteOne({ department: request.body.department ,   courseNum: request.body.course_num,  semester: request.body.semester, year: request.body.year}, function(error, result) {
+        dbCollection.deleteOne({ sbu_id: request.body.sbu_id, department: request.body.department ,   course_num: request.body.course_num,  semester: request.body.semester, year: request.body.year}, function(error, result) {
             if (error) throw error;
             // send back entire updated list after successful request
-            dbCollection.find().toArray(function(_error, _result) {
+            dbCollection.find({sbu_id:"OFFERING"} ).toArray(function(_error, _result) {
                 if (_error) throw _error;
                 response.json(_result);
             });
@@ -52,7 +52,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     router.delete("/deleteAllCourses", (request, response) => {
       
         console.log("Delete All Item");
-        dbCollection.deleteMany(function(error, result) {
+        dbCollection.deleteMany(
+            function(error, result) {
             if (error) throw error;
             // send back entire updated list after successful request
             dbCollection.find().toArray(function(_error, _result) {
@@ -68,7 +69,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         dbCollection.deleteMany({sbu_id: "OFFERING"},function(error, result) {
             if (error) throw error;
             // send back entire updated list after successful request
-            dbCollection.find().toArray(function(_error, _result) {
+            dbCollection.find({sbu_id:"OFFERING"}).toArray(function(_error, _result) {
                 if (_error) throw _error;
                 response.json(_result);
             });
