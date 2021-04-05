@@ -15,6 +15,14 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             response.json(result);
         });
     });
+
+    router.get("/allOfferedCourses", (request, response) => {
+        // return updated list
+        dbCollection.find( {sbu_id:"OFFERING"}  ).toArray((error, result) => {
+            if (error) throw error;
+            response.json(result);
+        });
+    });
     router.post("/addCourse", (request, response) => {
         const courseItem = request.body;
         // return updated list
@@ -45,6 +53,19 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
       
         console.log("Delete All Item");
         dbCollection.deleteMany(function(error, result) {
+            if (error) throw error;
+            // send back entire updated list after successful request
+            dbCollection.find().toArray(function(_error, _result) {
+                if (_error) throw _error;
+                response.json(_result);
+            });
+        });
+    });
+
+    router.delete("/deleteAllOfferedCourses", (request, response) => {
+      
+        console.log("Delete All Item");
+        dbCollection.deleteMany({sbu_id: "OFFERING"},function(error, result) {
             if (error) throw error;
             // send back entire updated list after successful request
             dbCollection.find().toArray(function(_error, _result) {
