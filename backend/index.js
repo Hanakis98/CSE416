@@ -15,7 +15,7 @@ const degreeRequirements = require("./routes/degree_requirements.js");
 const cookieParser = require("cookie-parser");
 
 app.use(logger('dev'));
-app.use(cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser())
@@ -25,9 +25,22 @@ app.use("/courses", coursesRoutes);
 app.use("/requirements", requirementsRoutes);
 app.use("/coursePlans", coursePlanRoutes);
 app.use("/degreeRequirements", degreeRequirements);
-
-
- 
+var session = require('express-session');
+// app.use(session({
+//     secret: 'yoursecret',
+//     cookie: { 
+//         path: '/',
+//         domain: 'localhost:3001',
+//         maxAge: 1000 * 60 * 24 / / 24 hours
+//     }
+// }));
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', "http://localhost:3000");
+  res.header('Access-Control-Allow-Methods', 'application/json');
+  res.header('Access-Control-Allow-Headers', '*');
+  next();
+});
 
 app.get("/", (request, response) => {
     console.log("HELLO FROM EXPRESS")

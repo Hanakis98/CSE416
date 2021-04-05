@@ -19,10 +19,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     router.post("/login", (req, res) => {
       
         const idField = req.body.sbu_id;
-        const providedPassword1 = sha(req.body.password );
+        const providedPassword1 = (req.body.password );
 
         if(  dbCollection.findOne({ sbu_id:idField,password:providedPassword1}) == null){
-          res.cookie("token",  false ,{ maxage:3000, httpOnly: true , withCredentials: true,path:"/" });
+          res.cookie("token",  false ,{ domain: localhost,maxage:3000, httpOnly: true , withCredentials: true,path:"/" });
           res.cookie("gpdLoggedIn",0,{ maxage:3000, httpOnly: false ,path:"/" });
           res.send();
           return
@@ -33,7 +33,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
           dbCollection.findOne({ sbu_id:idField,password:providedPassword1}).then(user => {
           if(user == null){
             res.statusCode=400
-            res.cookie("token",  false ,{ maxage:3000, httpOnly: true , withCredentials: true,path:"/" });
+            res.cookie("token",  false ,{ maxage:3000, httpOnly: true , path:"/" });
             res.cookie("gpdLoggedIn",0,{ maxage:3000, httpOnly: false ,path:"/" });
             res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
 
@@ -57,7 +57,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                     if(!err)
                     {
 
-                        res.cookie("token",  token ,{ maxage:1000*1000, httpOnly: true , withCredentials: true,path:"/" });
+                        res.cookie("token",  token ,{ maxage:1000*1000, httpOnly: true ,path:"/" });
                         res.cookie("gpdLoggedIn",1,{ maxage:1000*1000, httpOnly: false ,path:"/" });
                         res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
 

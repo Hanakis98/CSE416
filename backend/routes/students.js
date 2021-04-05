@@ -21,7 +21,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
         //if user doesnt exist
         if(  dbCollection.findOne({ sbu_id:idField,password:providedPassword1}) == null){
-          res.cookie("token",  false ,{ maxage:300, httpOnly: true , withCredentials: true,path:"/" });
+          res.cookie("token", false ,{ maxage:300, httpOnly: true , withCredentials: true,path:"/" });
           res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
           res.cookie("gpdLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
 
@@ -135,6 +135,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
     router.delete("/deleteAllStudent/", (request, response) => {
         var token  = (request.cookies.token)
+        console.log( token)
 
         console.log( jwt.verify(token,keys.secretOrKeyAdvisors))
 
