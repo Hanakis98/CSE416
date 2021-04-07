@@ -1,8 +1,7 @@
 import {Component}  from 'react';
 import  React  from 'react';
 
-import { Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
-import queryString from 'query-string';
+import { Table,Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
 
 var sha = require("sha1")
 var u=0;
@@ -12,7 +11,6 @@ export default class editStudent extends Component{
 
         super(props);
         this.state={
-
             firstName: "",
             lastName: "",
             email: "",
@@ -20,15 +18,17 @@ export default class editStudent extends Component{
             department: "",
             track: "",
             sbu_id: "",
-            error:0
+            courses:[]
                }; 
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        var urlToGetStudent="http://localhost:3001/students/getOneStudent"
-        const query = new URLSearchParams(window.location.search);
 
+        // Get the query paramter and then get the students info and update the state of the page
+        const query = new URLSearchParams(window.location.search);
         u = query.get('user')
-        console.log("USER " +u)//123
+        
+        var urlToGetStudent="http://localhost:3001/students/getOneStudent"
         if(u != null  ){
             urlToGetStudent = "http://localhost:3001/students/getOneStudent?user="+u
         }
@@ -36,14 +36,11 @@ export default class editStudent extends Component{
             method: 'GET', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
-            }
+            } ,credentials: 'include', 
                 })
             .then(response => response.json())
             .then(data => {
-                console.log('name:', data.first_name);
-
                 this.setState ( {
-
                     firstName: data.first_name,
                     lastName: data.last_name,
                     email: data.email,
@@ -62,42 +59,45 @@ export default class editStudent extends Component{
 
     }
     updateStudent=() =>{
-        if(this.state.firstName == "" || this.state.lastName == ""|| this.state.sbu_id == ""|| this.state.email == ""|| this.state.major == ""|| this.state.track == "" || this.state.password == "")
+        //When update student is pressed, make sure forms filled out and then submit
+        if(this.state.firstName === "" || this.state.lastName === ""|| this.state.sbu_id === ""|| this.state.email === ""|| this.state.major === ""|| this.state.track === "" || this.state.password === "")
         {
             this.setState({error:1})
             return 
-        
         }
-    let json_data = {
-        first_name: this.state.firstName,
-        last_name: this.state.lastName,
-        sbu_id: this.state.sbu_id,
-        email: this.state.email,
-        department:  this.state.department,
-        track: this.state.track,
-        password: this.state.password
-    }
-    var URLtoUpdateStudent="http://localhost:3001/students/updateStudent";
-        if(u != null  ){
-            URLtoUpdateStudent = "http://localhost:3001/students/updateStudent?user="+u
+        let json_data = {
+            first_name: this.state.firstName,
+            last_name: this.state.lastName,
+            sbu_id: this.state.sbu_id,
+            email: this.state.email,
+            department:  this.state.department,
+            track: this.state.track,
+            password: this.state.password
         }
-    fetch(URLtoUpdateStudent, {
-        method: 'PUT', // or 'PUT'
-        headers: { 
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(json_data),
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-
+        //The gpd can be updating the student or the student can update themselves.
+        //Change the URL depending on this and then send a PUT to update
+        var URLtoUpdateStudent="http://localhost:3001/students/updateStudent";
+            if(u != null  ){
+                URLtoUpdateStudent = "http://localhost:3001/students/updateStudent?user="+u
+            }
+        fetch(URLtoUpdateStudent, {
+            method: 'PUT', // or 'PUT'
+            headers: { 
+                'Content-Type': 'application/json',
+            }, credentials: 'include', 
+            body: JSON.stringify(json_data),
         })
-        .catch((error) => {
-            console.error('Error:', error);
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
 
-        });
-    }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+
+            });
+        }
+
     handleChange(event){
         this.setState({category: event.target.value});
         console.log(event.target.value)
@@ -112,7 +112,6 @@ export default class editStudent extends Component{
             <Container>
                 <Row>
                     Edit Student:
-
                     <br></br>
                 </Row>
                 <Form>
@@ -175,8 +174,41 @@ export default class editStudent extends Component{
                     <br></br>
      
 
-                    {this.state.error == 1 && <div style= {{color:'red', fontSize:18}} >Please Enter All forms</div>}
+                    {this.state.error === 1 && <div style= {{color:'red', fontSize:18}} >Please Enter All forms</div>}
                 </Form>
+
+                 <Table  xs="3">
+                    <thead><tr>
+                        <th>Depatment</th>
+                        <th>Course Number</th>
+                        <th>Section</th>
+                        <th>Semester</th>
+                        <th>Year</th>
+                        <th>Timeslot</th>
+                        <th></th>
+                        <th></th>
+                    </tr></thead>
+                    <tbody>
+                        {this.state.courses.length !==0 && this.state.courses.map(x =>     
+                      <tr>
+                                <td>{x.department }</td>
+                                <td>{x.course_num}</td>
+                                <td>{x.section}</td>
+                                <td>{x.semester}</td>
+                                <td>{x.year}</td>
+                                <td>{x.timeslot}  </td>
+                                <td> 
+                                {/* <button onClick={() => this.deleteCourse(x.department,x.courseNum,x.semester,x.year)}>Delete</button>  */}
+                                </td>
+                             
+                                 
+                            </tr>
+                            
+                            
+                        
+                        )}
+                    </tbody>
+                </Table>
             </Container>
         );
     }

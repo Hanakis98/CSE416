@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import { Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 var sha = require("sha1")
+var axios = require("axios")
 
 export default class  StudentHome extends Component {
   constructor(props){
@@ -23,30 +24,32 @@ export default class  StudentHome extends Component {
         password: sha(this.state.password + "SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja")
 
     }
-    fetch('http://localhost:3001/students/login', { 
-        method: 'POST', // or 'PUT'
-        headers: {
-            'Content-Type': 'application/json',
-        },    
-        credentials: 'same-origin',
-            body: JSON.stringify(json_data),
 
-    })
-        .then(response =>{
-          response.json();
-          window.location.reload(true)
+    axios.withCredentials=true
+    axios({
+      method: 'POST',
+      url: `http://localhost:3001/students/login`,
+      data:  json_data,
+      // responseType: 'json',
+      headers: {
+        Accept: 'application/json',
 
-          console.log('Success:');
+        'Content-Type': 'application/json'
+      },          credentials: 'same-origin',
 
-        })
-        .then(data => {
-        
-            window.location.reload(true)
+      withCredentials: true
 
-        })
-        .catch((error) => {
-            console.error('cant log in:');
-        });
+    }).then((response) => {
+      response.json()
+      window.location.reload(true)
+
+
+    }).catch((response) => {
+      // dispatch(pushState(null, '/error'));
+      window.location.reload(true)
+    }) 
+
+
 
 
 }

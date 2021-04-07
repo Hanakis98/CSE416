@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 
 import { Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import Cookies from 'js-cookie';
-
+var sha = require("sha1")
+var axios = require("axios")
 export default class  Home extends Component {
   constructor(props){
     super(props);
@@ -19,29 +20,34 @@ export default class  Home extends Component {
   login = ()=> {
     let json_data = {
         sbu_id: this.state.id,
-        password: this.state.password + "SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"
+        password: sha(this.state.password + "SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja")
 
     }
-    fetch('http://localhost:3001/advisors/login', { 
-        method: 'POST', // or 'PUT'
-        headers: {
-            'Content-Type': 'application/json',
-        },    
-        credentials: 'same-origin',
-                body: JSON.stringify(json_data),
-    })
-        .then(response =>{
-          response.json();
-          window.location.reload(true)
-          console.log('Success:');
+    axios.withCredentials=true
+    axios({
+      method: 'POST',
+      url: `http://localhost:3001/advisors/login`,
+      data:  json_data,
+      // responseType: 'json',
+      headers: {
+        Accept: 'application/json',
 
-        })
-        .then(data => {
-          window.location.reload(true)
-        })
-        .catch((error) => {
-            console.error('cant log in:');
-        });
+        'Content-Type': 'application/json'
+      },          credentials: 'same-origin',
+
+      withCredentials: true
+
+    }).then((response) => {
+      window.location.reload(true)
+
+
+    }).catch((response) => {
+      // dispatch(pushState(null, '/error'));
+      window.location.reload(true)
+    })
+  
+  
+        
 }
 
   render(){
