@@ -1,11 +1,12 @@
 import {  Component, } from 'react';
 import  React  from 'react';
-import { Link } from "react-router-dom";
-
+//import { Link } from "react-router-dom";
 import { Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import Cookies from 'js-cookie';
+//import Cookies from 'js-cookie';
+
 var sha = require("sha1")
 var axios = require("axios")
+
 export default class  Home extends Component {
   constructor(props){
     super(props);

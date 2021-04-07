@@ -34,7 +34,7 @@ export default class AddStudent extends Component{
         event.preventDefault();
     }
     addStudent = ()=> {
-        if(this.state.firstName == "" || this.state.lastName == ""|| this.state.sbu_id == ""|| this.state.email == ""|| this.state.major == ""|| this.state.track == "" || this.state.password == "")
+        if(this.state.firstName === "" || this.state.lastName === ""|| this.state.sbu_id === ""|| this.state.email === ""|| this.state.major === ""|| this.state.track === "" || this.state.password === "")
             {
                 this.setState({error:1})
                 return 
@@ -134,7 +134,7 @@ export default class AddStudent extends Component{
                     <br></br>
      
 
-                    {this.state.error == 1 && <div style= {{color:'red', fontSize:18}} >Please Enter All forms</div>}
+                    {this.state.error === 1 && <div style= {{color:'red', fontSize:18}} >Please Enter All forms</div>}
                 </Form>
             </Container>
         );

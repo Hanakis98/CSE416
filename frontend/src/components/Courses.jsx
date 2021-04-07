@@ -1,8 +1,6 @@
 import { Component } from 'react';
 import  React   from 'react';
-import { Link } from "react-router-dom";
-
-import { Table, Container, Form, FormGroup, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
+import { Table, Container, Row, Col, Button } from 'reactstrap';
 
 export default class Courses extends Component {
     constructor(props) {
@@ -136,8 +134,6 @@ export default class Courses extends Component {
             .then(data => {
                 console.log('Success:', data);  
                 this.setState({courses: data})
-
-                
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -146,7 +142,7 @@ export default class Courses extends Component {
     }
 
     deleteAllCourses = (id) => {
-        let data = {sbu_id: id}
+        //let data = {sbu_id: id}
         fetch('http://localhost:3001/courses/deleteAllOfferedCourses', {
             method: 'DELETE', // or 'PUT'
             headers: {
@@ -157,23 +153,13 @@ export default class Courses extends Component {
             .then(data => {
                 this.setState({courses: data})
                 console.log('Success:', data);
-                
             })
             .catch((error) => {
                 console.error('Error:', error);
         });
     }
 
-
-    
-  
-
-  
-
-
     render() {
-        
-
         return (
             <Container>
                 <Row>              
@@ -210,7 +196,7 @@ export default class Courses extends Component {
                     </tr></thead>
                     
                     <tbody>
-                        {this.state.courses.length !=0 && this.state.courses.map(x => (
+                        {this.state.courses.length !== 0 && this.state.courses.map(x => (
                             <tr>
                                 <td>{x.department }</td>
                                 <td>{x.course_num}</td>
@@ -231,8 +217,5 @@ export default class Courses extends Component {
                 </Table>
             </Container>
         );
-                        
-                       
     }
 }
-

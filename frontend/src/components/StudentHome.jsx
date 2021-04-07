@@ -1,6 +1,6 @@
 import {  Component, } from 'react';
 import  React  from 'react';
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 
 import { Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 var sha = require("sha1")

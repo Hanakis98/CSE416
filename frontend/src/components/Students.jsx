@@ -2,7 +2,7 @@ import { Component } from 'react';
 import  React   from 'react';
 import { Link } from "react-router-dom";
 
-import { Table, Container, Form, FormGroup, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
+import { Table, Container, Form, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
 var sha = require("sha1")
  
 export default class Students extends Component {
@@ -101,7 +101,6 @@ export default class Students extends Component {
         }
     };
 
-
     // Importing student courseplan data
     verifyHeader2 = (header) => {
         let validHeader = true
@@ -130,12 +129,11 @@ export default class Students extends Component {
         })
         return validHeader
     }
+    
     buildJSONfromRow2 = (row) => {
         let json = { sbu_id: row[0], department: row[1], course_num: row[2], section: row[3], semester: row[4], year: row[5], grade: row[6]}
         return json
     }
-    
- 
 
     courseFileChange = async event => {
         
@@ -157,20 +155,20 @@ export default class Students extends Component {
             if (this.verifyHeader2(header)) {
                 let json_data = data.map(x => this.buildJSONfromRow2(x))
                 var sbIDs =[]
-                for(var i = 0; i < json_data.length; i++) {
+                for(let i = 0; i < json_data.length; i++) {
                     var id = json_data[i].sbu_id;
                     if(!sbIDs.includes(id)){
                         sbIDs.push(id)
                     }
                 }
 
-                for(var i = 0; i < sbIDs.length; i++) {
-                    var id = sbIDs[i];
+                for(let i = 0; i < sbIDs.length; i++) {
+                    let id = sbIDs[i];
                     this.createNewCoursePlanForStudent(id);
                 }
 
-                for(var i = 0; i < json_data.length; i++) {
-                    var idToAddPlan = json_data[i].sbu_id;
+                for(let i = 0; i < json_data.length; i++) {
+                    //var idToAddPlan = json_data[i].sbu_id;
 
                     fetch('http://localhost:3001/coursePlans/addCourseToPlan', {
                         method: 'POST', // or 'PUT'
@@ -211,15 +209,14 @@ export default class Students extends Component {
         });
         
     }
-    uploadCoursePlanData = () => {
 
+    uploadCoursePlanData = () => {
 
     }
 
     deleteStudent = (studentID) => {
         console.log(studentID)
         const data = { sbu_id: studentID }
-
 
         fetch('http://localhost:3001/students/deleteStudent', {
             method: 'DELETE', // or 'PUT'
@@ -232,16 +229,12 @@ export default class Students extends Component {
             .then(data => {
                 this.setState({students: data})
                 console.log('Success:', data);
-
-                
             })
             .catch((error) => {
                 console.error('Error:', error);
         });
 
     }
-
-
 
     addStudent = (json_data) => {
 
@@ -262,9 +255,7 @@ export default class Students extends Component {
             });
     
     }
-    
 
-    
     readAllStudent = (params) =>  {
         var route = 'http://localhost:3001/students/allStudents/'
     
@@ -272,9 +263,8 @@ export default class Students extends Component {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            }   
-            ,
-            credentials: 'include', 
+            },
+            credentials: 'include'
         })
             .then(response => response.json())
             .then(data => {
@@ -286,9 +276,9 @@ export default class Students extends Component {
                 return []
             });
     }
-    deleteAllStudent = (id) => {
 
-        let data = {sbu_id: id}
+    deleteAllStudent = (id) => {
+        //let data = {sbu_id: id}
 
         fetch('http://localhost:3001/students/deleteAllStudent', {
             method: 'DELETE', // or 'PUT'
@@ -369,8 +359,6 @@ export default class Students extends Component {
     }
 
     render() {
-        
-
         return (
             <Container>
                 <Row>
@@ -426,7 +414,7 @@ export default class Students extends Component {
                     </tr></thead>
                     
                     <tbody>
-                        {this.state.students.length !=0 && this.state.students.map(x => (
+                        {this.state.students.length !== 0 && this.state.students.map(x => (
                             <tr>
                                 <td>{x.first_name + " " + x.last_name}</td>
                                 <td>{x.sbu_id}</td>

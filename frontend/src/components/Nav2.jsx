@@ -1,6 +1,5 @@
 import {  Component } from "react";
 import  React  from "react";
-
 import { Link, withRouter } from "react-router-dom";
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem } from 'reactstrap';
 import Cookies from 'js-cookie';
@@ -25,8 +24,8 @@ class Nav2 extends Component{
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
         const studentLoggedIn=Cookies.get("studentLoggedIn");
 
-        // change nave bar if your logged in as gpd or not
-        if(gpdLoggedIn==1)
+        //change navbar if you're logged in as gpd or not
+        if(gpdLoggedIn === 1)
         return (
         <div className="navigation">
             <Navbar color="inverse" light expand="md">
@@ -38,7 +37,7 @@ class Nav2 extends Component{
                             <Link class="nav-link" to="/">Home</Link>
                         </NavItem>
                     
-                        {gpdLoggedIn==true &&<NavItem >
+                        {gpdLoggedIn === true &&<NavItem >
                             < Link   class="nav-link" to="/students">Students</Link>
                         </NavItem>
                           }
@@ -60,7 +59,7 @@ class Nav2 extends Component{
         </div>
         );
 
-        else if(studentLoggedIn == 1)
+        else if(studentLoggedIn === 1)
         return (
             <div className="navigation">
                 <Navbar color="inverse" light expand="md">
@@ -72,11 +71,11 @@ class Nav2 extends Component{
                                 <Link class="nav-link" to="/">Home</Link>
                             </NavItem>
                         
-                            {gpdLoggedIn==1 &&<NavItem >
+                            {gpdLoggedIn === 1 &&<NavItem >
                                 < Link   class="nav-link" to="/students">Students</Link>
                             </NavItem>
                               }
-                                  {studentLoggedIn==true &&<NavItem >
+                                  {studentLoggedIn === true &&<NavItem >
                                 < Link   class="nav-link" to="/editStudent">Edit My info</Link>
                             </NavItem>
                               }
