@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const port = process.env.PORT || 3001;
 
-
 const studentRoutes = require("./routes/students");
 const advisorsRoutes = require("./routes/advisors");
 const coursesRoutes = require("./routes/courses");
@@ -26,6 +25,7 @@ app.use("/requirements", requirementsRoutes);
 app.use("/coursePlans", coursePlanRoutes);
 app.use("/degreeRequirements", degreeRequirements);
 var session = require('express-session');
+
 // app.use(session({
 //     secret: 'yoursecret',
 //     cookie: { 
@@ -34,6 +34,7 @@ var session = require('express-session');
 //         maxAge: 1000 * 60 * 24 / / 24 hours
 //     }
 // }));
+
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Origin', "http://localhost:3000");
@@ -46,12 +47,8 @@ app.get("/", (request, response) => {
     console.log("HELLO FROM EXPRESS")
 });
 
-
 app.listen(port, function() {
-    console.log("Runnning on " + port);
+    console.log("Running on " + port);
 });
 
-
-
 module.exports = app;
-

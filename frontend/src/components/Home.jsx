@@ -13,16 +13,14 @@ export default class  Home extends Component {
     this.state = {
       error:0,
       id: "",
-      password: "",
-
-  };
+      password: ""
+    };
   }
 
   login = ()=> {
     let json_data = {
         sbu_id: this.state.id,
         password: sha(this.state.password + "SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja")
-
     }
     axios.withCredentials=true
     axios({
@@ -46,28 +44,25 @@ export default class  Home extends Component {
       // dispatch(pushState(null, '/error'));
       window.location.reload(true)
     })
-  
-  
-        
-}
+  }
 
   render(){
-  return (
-    <Container style={{display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-      <Form>
-        <FormGroup>
-          <Label for="login_id">ID</Label>
-          <Input type="text" name="id" id="login_id" placeholder="adminID" style={{width:200}}  onChange = {e=> this.setState( {id: e.target.value })} />
-        </FormGroup>
-        <FormGroup>
-          <Label for="login_password">Password</Label>
-          <Input type="password" name="password" id="login_password" placeholder="" style={{width:200}} onChange = {e=> this.setState( {password: e.target.value })} />
-      </FormGroup>                           
-      
-        <Button onClick ={this.login}>Submit</Button>
+    return (
+      <Container style={{display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
+        <Form>
+          <FormGroup>
+            <Label for="login_id">ID</Label>
+            <Input type="text" name="id" id="login_id" placeholder="adminID" style={{width:200}}  onChange = {e=> this.setState( {id: e.target.value })} />
+          </FormGroup>
+          <FormGroup>
+            <Label for="login_password">Password</Label>
+            <Input type="password" name="password" id="login_password" placeholder="" style={{width:200}} onChange = {e=> this.setState( {password: e.target.value })} />
+        </FormGroup>                           
+        
+          <Button onClick ={this.login}>Submit</Button>
 
-      </Form>
-    </Container>
-  );
-}
+        </Form>
+      </Container>
+    );
+  }
 }

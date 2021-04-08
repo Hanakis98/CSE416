@@ -156,7 +156,7 @@ export default class Students extends Component {
                 let json_data = data.map(x => this.buildJSONfromRow2(x))
                 var sbIDs =[]
                 for(let i = 0; i < json_data.length; i++) {
-                    var id = json_data[i].sbu_id;
+                    let id = json_data[i].sbu_id;
                     if(!sbIDs.includes(id)){
                         sbIDs.push(id)
                     }
