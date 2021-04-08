@@ -23,24 +23,21 @@ class Nav2 extends Component{
     render(){
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
         const studentLoggedIn=Cookies.get("studentLoggedIn");
-
-        //change navbar if you're logged in as gpd or not
-        if(gpdLoggedIn === 1)
+        
+        //navbar buttons change depending on which type of user is logged in
         return (
         <div className="navigation">
             <Navbar color="inverse" light expand="md">
                 <NavbarBrand><Link class="nav-link" to="/">MAST</Link></NavbarBrand>
                 <NavbarToggler onClick={this.toggle} />
                 <Collapse isOpen={this.state.isOpen} navbar>
-                    <Nav className="ml-auto" navbar>
-                        <NavItem>
-                            <Link class="nav-link" to="/">Home</Link>
+
+                        {gpdLoggedIn === '1' ? 
+                        <Nav className="ml-auto" navbar>
+
+                        <NavItem >
+                            <Link class="nav-link" to="/students">Students</Link>
                         </NavItem>
-                    
-                        {gpdLoggedIn === true &&<NavItem >
-                            < Link   class="nav-link" to="/students">Students</Link>
-                        </NavItem>
-                          }
                         <NavItem>
                             <Link class="nav-link" to="/degrees">Degrees</Link>
                         </NavItem>
@@ -50,66 +47,23 @@ class Nav2 extends Component{
                         <NavItem>
                             <Link class="nav-link" to="/trends">Trends</Link>
                         </NavItem>
+
+                        </Nav>:<div />}
+
+                        {studentLoggedIn === '1' ? 
+                        <Nav className="ml-auto" navbar>
                         <NavItem>
                             <Link class="nav-link" to="/studenthome">Student Home</Link>
                         </NavItem>
-                    </Nav>
+                        <NavItem >
+                            <Link class="nav-link" to="/editStudent">Edit My Info</Link>
+                        </NavItem>
+                        </Nav>:<div />}
+
                 </Collapse>
             </Navbar>
         </div>
         );
-
-        else if(studentLoggedIn === 1)
-        return (
-            <div className="navigation">
-                <Navbar color="inverse" light expand="md">
-                    <NavbarBrand><Link class="nav-link" to="/">MAST</Link></NavbarBrand>
-                    <NavbarToggler onClick={this.toggle} />
-                    <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <Link class="nav-link" to="/">Home</Link>
-                            </NavItem>
-                        
-                            {gpdLoggedIn === 1 &&<NavItem >
-                                < Link   class="nav-link" to="/students">Students</Link>
-                            </NavItem>
-                              }
-                                  {studentLoggedIn === true &&<NavItem >
-                                < Link   class="nav-link" to="/editStudent">Edit My info</Link>
-                            </NavItem>
-                              }
-                            <NavItem>
-                                <Link class="nav-link" to="/degrees">Degrees</Link>
-                            </NavItem>
-                            <NavItem>
-                                <Link class="nav-link" to="/courses">Courses</Link>
-                            </NavItem>
-                            <NavItem>
-                                <Link class="nav-link" to="/trends">Trends</Link>
-                            </NavItem>
-                            <NavItem>
-                                <Link class="nav-link" to="/studenthome">Student Home</Link>
-                            </NavItem>
-                        </Nav>
-                    </Collapse>
-                </Navbar>
-            </div>
-            );
-        
-        else
-        return (
-            <div className="navigation">
-                <Navbar color="inverse" light expand="md">
-                    <NavbarBrand><Link class="nav-link" to="/">MAST</Link></NavbarBrand>
-                    <NavbarToggler onClick={this.toggle} />
-                    <Collapse isOpen={this.state.isOpen} navbar>
-                        
-                    </Collapse>
-                </Navbar>
-            </div>
-        );
-
     }
 }
 
