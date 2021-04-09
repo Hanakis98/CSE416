@@ -13,7 +13,8 @@ export default class  Home extends Component {
     this.state = {
       error:0,
       id: "",
-      password: ""
+      password: "",
+      loginError: false
     };
   }
 
@@ -37,32 +38,37 @@ export default class  Home extends Component {
       withCredentials: true
 
     }).then((response) => {
-      window.location.reload(true)
-
-
+      window.location.reload(true);
     }).catch((response) => {
       // dispatch(pushState(null, '/error'));
-      window.location.reload(true)
-    })
+      this.setState({loginError: true})
+      //window.location.reload(true);
+    });
   }
 
   render(){
     return (
+      <div>
       <Container style={{display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
         <Form>
           <FormGroup>
-            <Label for="login_id">ID</Label>
+            <Label for="login_id" style={{display: 'flex',  justifyContent: 'center'}}>ID</Label>
             <Input type="text" name="id" id="login_id" placeholder="adminID" style={{width:200}}  onChange = {e=> this.setState( {id: e.target.value })} />
           </FormGroup>
           <FormGroup>
-            <Label for="login_password">Password</Label>
-            <Input type="password" name="password" id="login_password" placeholder="" style={{width:200}} onChange = {e=> this.setState( {password: e.target.value })} />
-        </FormGroup>                           
+            <Label for="login_password" style={{display: 'flex',  justifyContent: 'center'}}>Password</Label>
+            <Input type="password" name="password" id="login_password" placeholder="" style={{width:200}} onChange = {e=> this.setState( {password: e.target.value })} onKeyPress={ e => e.key === 'Enter' ? this.login() : 1}/>
+        </FormGroup>
         
-          <Button onClick ={this.login}>Submit</Button>
-
+          <Button onClick={this.login}>Submit</Button>
+          
         </Form>
       </Container>
+
+      {this.state.loginError === true ? 
+          <p style={{color: "red", textAlign: "center", padding: "10px"}}>ID and Password combination not found.</p>
+        :<div />}
+      </div>
     );
   }
 }
