@@ -56,7 +56,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 (err, token) => {
                     if(!err)
                     {
-
+                      res.cookie("firstName",  user.first_name)
+                      res.cookie("lastName" , user.last_name)
                         res.cookie("token",  token ,{ maxage:1000*1000, httpOnly: true ,path:"/" });
                         res.cookie("gpdLoggedIn",1,{ maxage:1000*1000, httpOnly: false ,path:"/" });
                         res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });

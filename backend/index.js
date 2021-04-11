@@ -24,16 +24,6 @@ app.use("/courses", coursesRoutes);
 app.use("/requirements", requirementsRoutes);
 app.use("/coursePlans", coursePlanRoutes);
 app.use("/degreeRequirements", degreeRequirements);
-var session = require('express-session');
-
-// app.use(session({
-//     secret: 'yoursecret',
-//     cookie: { 
-//         path: '/',
-//         domain: 'localhost:3001',
-//         maxAge: 1000 * 60 * 24 / / 24 hours
-//     }
-// }));
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Credentials', true);
@@ -45,6 +35,16 @@ app.use(function(req, res, next) {
 
 app.get("/", (request, response) => {
     console.log("HELLO FROM EXPRESS")
+});
+app.post("/logout", (req, res) => { 
+    // Check if user exists
+    // Check password    
+      res.cookie("token",  false ,{ maxage:3000, httpOnly: true , path:"/" });
+      res.cookie("gpdLoggedIn",0,{ maxage:3000, httpOnly: false ,path:"/" });
+      res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
+
+      res.send();
+ 
 });
 
 app.listen(port, function() {

@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require("../database.js");
 const dbName = "CSE416";
 const collectionName = "Students";
-const studentModel = require("../models/studentModel.js");
+const studentModel = require("../models/studentModel.js"); 
 const jwt = require("jsonwebtoken");
 const keys = require("../keys.js");
 const axios = require("axios")
@@ -40,12 +40,13 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
             res.send();
           }
-         
+
               // User matched
               // Create JWT Payload
               const payload = {
                 sbu_id: idField,
                 typeOf: "student"
+
               };// Sign token
 
               jwt.sign(
@@ -57,7 +58,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 (err, token) => {
                     if(!err)
                     {
-
+                        res.cookie("firstName",  user.first_name)
+                        res.cookie("lastName" , user.last_name)
                         res.cookie("token",  token ,{ maxage:1000*1000, httpOnly: true , withCredentials: true,path:"/" });
                         res.cookie("studentLoggedIn",1,{ maxage:1000*1000, httpOnly: false ,path:"/" });
                         res.cookie("gpdLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
