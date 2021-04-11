@@ -41,44 +41,41 @@ class Nav2 extends Component{
                 <NavbarToggler onClick={this.toggle} />
                 <Collapse isOpen={this.state.isOpen} navbar>
                         
-                        {gpdLoggedIn === '1' ? 
-                        
-                        <Nav className="mr-auto" navbar>
+                    {gpdLoggedIn === '1' && 
+                    <Nav className="mr-auto" navbar>
+                    <NavItem >
+                        <Link class="nav-link" to="/students">Students</Link>
+                    </NavItem>
+                    <NavItem>
+                        <Link class="nav-link" to="/degrees">Degrees</Link>
+                    </NavItem>
+                    <NavItem>
+                        <Link class="nav-link" to="/courses">Courses</Link>
+                    </NavItem>
+                    <NavItem>
+                        <Link class="nav-link" to="/trends">Trends</Link>
+                    </NavItem>
+                    </Nav>
+                    }
 
-                        <NavItem >
-                            <Link class="nav-link" to="/students">Students</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link class="nav-link" to="/degrees">Degrees</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link class="nav-link" to="/courses">Courses</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link class="nav-link" to="/trends">Trends</Link>
-                        </NavItem>
+                    {studentLoggedIn === '1' && 
+                    <Nav className="mr-auto" navbar>
+                    <NavItem>
+                        <Link class="nav-link" to="/studenthome">Student Home</Link>
+                    </NavItem>
+                    <NavItem >
+                        <Link class="nav-link" to="/editStudent">Edit My Info</Link>
+                    </NavItem>
+                    </Nav>}
 
-                        </Nav>
-                        :<div />}
-
-                        {studentLoggedIn === '1' ? 
-                        <Nav className="mr-auto" navbar>
-                        <NavItem>
-                            <Link class="nav-link" to="/studenthome">Student Home</Link>
-                        </NavItem>
-                        <NavItem >
-                            <Link class="nav-link" to="/editStudent">Edit My Info</Link>
-                        </NavItem>
-                        </Nav>:<div />}
-
-                        {(studentLoggedIn === '1' || gpdLoggedIn === '1') ?
-                        <Nav className="ml-auto" navbar>
-                            <NavbarText style={{padding: "10px"}}>{this.state.username}</NavbarText>
-                            <Button onClick={this.logout} color="primary" >
-                            Log Out
-                            </Button>
-                        </Nav>
-                        :<div />}
+                    {(studentLoggedIn === '1' || gpdLoggedIn === '1') &&
+                    <Nav className="ml-auto" navbar>
+                        <NavbarText style={{marginRight: "8px"}}>{this.state.username}</NavbarText>
+                        <Button onClick={this.logout} color="primary">
+                        Log Out
+                        </Button>
+                    </Nav>
+                    }
 
                 </Collapse>
             </Navbar>

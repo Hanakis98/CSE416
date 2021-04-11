@@ -1,8 +1,10 @@
 import { Component } from 'react';
 import  React   from 'react';
 import { Link } from "react-router-dom";
+import { Table, Container, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
+import FilterModal from './FilterModal.jsx';
+import DeleteAllModal from './DeleteAllModal.jsx';
 
-import { Table, Container, Form, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
 var sha = require("sha1")
  
 export default class Students extends Component {
@@ -361,40 +363,41 @@ export default class Students extends Component {
     render() {
         return (
             <Container>
-                <Row>
-                    <Col xs="0">
-                        <Form inline>
-                                <Label>Search</Label>
-                                <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)}  />
-                        </Form>
-                    </Col>
-                    <Col xs="1">
-                        <Button>Filter</Button>
-                    </Col>
-                    <Col xs="1">
-                        <Button>Import Grades</Button>
-                    </Col>
-                    <Col xs="2">
-                        <NavLink href="/add"><Button>Add Student</Button></NavLink>
-                    </Col>
-                    <Col xs="2">
-                        <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onStudentFileChange} />
-                        <Button onClick={(e) => this.uploadStudentData.click()}>Import Student Data</Button>
-                    </Col>
-                    <Col xs="2">
-                        <input id="myInput" type="file" ref={(ref) => this.uploadCoursePlanData = ref} style={{ display: 'none' }} onChange={this.courseFileChange} />
-                        <Button onClick={(e) => this.uploadCoursePlanData.click()}>Import Student Course Plans</Button>
-                    </Col>
-                    <Col xs="2">
-                        <Button onClick={this.deleteAllStudent}>Delete All Student</Button>
-                    </Col>
+                <Row style={{alignItems: 'center', justifyContent: 'space-between'}}>
+                    
+                        <Col sm={3} style={{padding:"0px", margin:"5px"}}>
+                            <Label>Search</Label>
+                            <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)}  />
+                        </Col>
+
+                        <Col sm={0.1} style={{padding:"0px", margin:"5px"}}>
+                        <FilterModal buttonLabel="Filter"></FilterModal>
+                        </Col>
+                   
+                        <NavLink href="/add" style={{padding:"0px", margin:"5px"}}><Button style={{ width:"80px"}} color="success">Add Student</Button></NavLink>
+
+                    {/* <Col xs={1}></Col> */}
+                    <Col xs={4.5}>
                     
 
+                        <Button style={{ margin:"5px", width:"80px"}}>Import Grades</Button>
+                    
+                        <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onStudentFileChange} />
+                        <Button style={{ margin:"5px", width:"120px"}} onClick={(e) => this.uploadStudentData.click()}>Import Student Data</Button>
+                    
+                        <input id="myInput" type="file" ref={(ref) => this.uploadCoursePlanData = ref} style={{ display: 'none' }} onChange={this.courseFileChange} />
+                        <Button style={{ margin:"5px", width:"140px"}} onClick={(e) => this.uploadCoursePlanData.click()}>Import Student Course Plans</Button>
+                    
+                        {/* <Button style={{ margin:"5px", width:"100px"}} onClick={this.deleteAllStudent} color="danger">Delete All Students</Button> */}
+                        
+                    </Col>
+                    <Col xs={2}>
+                    <DeleteAllModal buttonLabel="Delete All Students" style={{ margin:"5px", width:"100px"}}></DeleteAllModal>
+                    </Col>
+                    
                 </Row>
-                <br></br>
-                <br></br>
 
-                <Table  xs="3">
+                <Table xs="3" style={{marginTop:"5px"}}>
                     <thead><tr>
                         <th>Student</th>
                         <th>ID</th>
@@ -404,13 +407,10 @@ export default class Students extends Component {
                         <th>Pending Reqs</th>
                         <th>Unsatisfied Reqs</th>
                         <th>Graduation Semester</th>
-                        <th># Semesters Enrolled</th>
+                        <th>Semesters Enrolled</th>
                         <th>Course Plan Validity</th>
                         <th>Course Plan Completeness</th>
                         <th></th>
-                        <th></th>
-
-
                     </tr></thead>
                     
                     <tbody>
@@ -428,13 +428,11 @@ export default class Students extends Component {
                                 <td>Valid</td>
                                 <td>Incomplete</td>
                                 <td> 
-                                <button onClick={() => this.deleteStudent(x.sbu_id)}>Delete</button> 
+                                    <button onClick={() => this.deleteStudent(x.sbu_id)}>Delete</button>
+                                    <Link style={{padding:"0px"}} class="nav-link" to={"/editStudent?user="+x.sbu_id}>
+                                        <button>View/Edit</button>
+                                    </Link>
                                 </td>
-                                <td>
-                                 <Link   class="nav-link" to={"/editStudent?user="+x.sbu_id}>
-                                 <button>View/Edit</button> </Link>
-                                 </td>
-                                 
                             </tr>
                             
                         ))}
