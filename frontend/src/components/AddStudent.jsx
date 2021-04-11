@@ -1,7 +1,7 @@
 import {  Component } from 'react';
 import  React  from 'react';
 
-import { Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
+import { Alert, Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
 
 var sha = require("sha1")
 
@@ -71,34 +71,35 @@ export default class AddStudent extends Component{
     render(){
         return (
             <Container>
-                <Row>
-                    Add Student: Kevin McDonnell (or Add New Student)
+                <Row style={{alignItems: 'center', justifyContent: 'center'}}>
+                    <p style={{fontSize: "22px", fontWeight: "bold"}}>New Student</p>
                 </Row>
-                <Form>
+                <Row style={{alignItems: 'center', justifyContent: 'center'}}>
+                <Form >
                     <FormGroup row>
-                        <Label for="name" sm={1}>First Name</Label>
-                        <Col sm={4}><Input type="text" id="name" onChange = {e=> this.setState( {firstName: e.target.value })} /></Col>
+                        <Label for="name" sm={3}>First Name</Label>
+                        <Col sm={8}><Input type="text" id="name" onChange = {e=> this.setState( {firstName: e.target.value })} /></Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="name" sm={1}>Last Name</Label>
-                        <Col sm={4}><Input type="text" id="name" onChange = {e=> this.setState( {lastName: e.target.value })}/></Col>
+                        <Label for="name" sm={3}>Last Name</Label>
+                        <Col sm={8}><Input type="text" id="name" onChange = {e=> this.setState( {lastName: e.target.value })}/></Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="id" sm={1}>ID</Label>
-                        <Col sm={4}><Input type="text" id="id" onChange = {e=> this.setState( {sbu_id: e.target.value })} /></Col>
+                        <Label for="id" sm={3}>ID</Label>
+                        <Col sm={8}><Input type="text" id="id" onChange = {e=> this.setState( {sbu_id: e.target.value })} /></Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="email" sm={1}>Email</Label>
-                        <Col sm={4}><Input type="text" id="email" onChange = {e=> this.setState( {email: e.target.value })}/></Col>
+                        <Label for="email" sm={3}>Email</Label>
+                        <Col sm={8}><Input type="text" id="email" onChange = {e=> this.setState( {email: e.target.value })}/></Col>
                     </FormGroup>
                     
                     <FormGroup row>
-                        <Label for="password" sm={1}>password</Label>
-                        <Col sm={4}><Input type="text" id="password" onChange = {e=> this.setState( {password:sha( e.target.value+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja") })}/></Col>
+                        <Label for="password" sm={3}>Password</Label>
+                        <Col sm={8}><Input type="text" id="password" onChange = {e=> this.setState( {password:sha( e.target.value+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja") })}/></Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="major" sm={1}>Major</Label>
-                        <Col sm={4}>
+                        <Label for="major" sm={3}>Major</Label>
+                        <Col sm={8}>
                         <Input type="select" id="major" onChange = {e=> this.setState( {major: e.target.value })} >
                         <option value="None Selected">None</option>
 
@@ -111,8 +112,8 @@ export default class AddStudent extends Component{
                         </Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="track" sm={1}>Track</Label>
-                        <Col sm={4}><Input type="select" id="track"  onChange = {e=> this.setState( {track: e.target.value })}>
+                        <Label for="track" sm={3}>Track</Label>
+                        <Col sm={8}><Input type="select" id="track"  onChange = {e=> this.setState( {track: e.target.value })}>
                         <option value="None Selected">None</option>
 
                             <option value="iit">Imaging Informatics with thesis</option>
@@ -129,13 +130,16 @@ export default class AddStudent extends Component{
                             
                         </Col>
                     </FormGroup>
-                    <Button onClick = {this.addStudent} >Save</Button>
-                    <br></br>
-                    <br></br>
-     
+                    <FormGroup row style={{justifyContent: 'center'}}>
+                        <Button color="primary" onClick = {this.addStudent} >Save</Button>
+                    </FormGroup>
 
-                    {this.state.error === 1 && <div style= {{color:'red', fontSize:18}} >Please Enter All forms</div>}
-                </Form>
+                    {this.state.error === 1 && 
+                        <Alert color="danger" style={{textAlign: "center"}}>
+                            Please complete all fields.
+                        </Alert>
+                    }
+                </Form></Row>
             </Container>
         );
     }

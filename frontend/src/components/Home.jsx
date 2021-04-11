@@ -1,7 +1,7 @@
 import {  Component, } from 'react';
 import  React  from 'react';
 //import { Link } from "react-router-dom";
-import { Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Row, Alert, Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 //import Cookies from 'js-cookie';
 
 var sha = require("sha1")
@@ -31,10 +31,9 @@ export default class  Home extends Component {
       // responseType: 'json',
       headers: {
         Accept: 'application/json',
-
         'Content-Type': 'application/json'
-      },          credentials: 'same-origin',
-
+      },
+      credentials: 'same-origin',
       withCredentials: true
 
     }).then((response) => {
@@ -49,25 +48,33 @@ export default class  Home extends Component {
   render(){
     return (
       <div>
-      <Container style={{display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
+      <Container>
+        <Row style={{ alignItems: 'center', justifyContent: 'center'}}>
         <Form>
           <FormGroup>
-            <Label for="login_id" style={{display: 'flex',  justifyContent: 'center'}}>ID</Label>
-            <Input type="text" name="id" id="login_id" placeholder="adminID" style={{width:200}}  onChange = {e=> this.setState( {id: e.target.value })} />
+            <Label for="login_id" style={{ display: 'flex',  justifyContent: 'center'}}>ID</Label>
+            <Input type="text" name="id" id="login_id" style={{  width:200, display: 'flex'}}  onChange = {e=> this.setState( {id: e.target.value })} />
           </FormGroup>
           <FormGroup>
             <Label for="login_password" style={{display: 'flex',  justifyContent: 'center'}}>Password</Label>
             <Input type="password" name="password" id="login_password" placeholder="" style={{width:200}} onChange = {e=> this.setState( {password: e.target.value })} onKeyPress={ e => e.key === 'Enter' ? this.login() : 1}/>
         </FormGroup>
-        
-          <Button onClick={this.login}>Submit</Button>
+        <FormGroup row style={{justifyContent: 'center'}}>
+          <Button color="primary" onClick={this.login}>Submit</Button>
+        </FormGroup>
+        <FormGroup row >
+          {this.state.loginError === true && 
+          <Alert color="danger" style={{textAlign: "center"}}>
+              ID and Password combination not found.
+          </Alert>
+          }
+        </FormGroup>
           
         </Form>
+        </Row>
       </Container>
 
-      {this.state.loginError === true ? 
-          <p style={{color: "red", textAlign: "center", padding: "10px"}}>ID and Password combination not found.</p>
-        :<div />}
+      
       </div>
     );
   }

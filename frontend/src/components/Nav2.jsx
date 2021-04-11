@@ -1,7 +1,7 @@
 import {  Component } from "react";
 import  React  from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem } from 'reactstrap';
+import { Button, Collapse, Navbar, NavbarToggler, NavbarText, NavbarBrand, Nav, NavItem } from 'reactstrap';
 import Cookies from 'js-cookie';
 
 class Nav2 extends Component{
@@ -12,13 +12,22 @@ class Nav2 extends Component{
         this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false,
-        
+            username: "FirstName LastName"
         };
     }
     toggle() {
         this.setState({
             isOpen: !this.state.isOpen
         });
+    }
+    logout = () => {
+        Cookies.remove('gpdLoggedIn');
+        Cookies.remove('studentLoggedIn');
+
+        //TODO this doesn't remove the token. the user is not technically logged out, they can still manually go to a route with a url and it will load the data
+        Cookies.remove('token');
+        
+        window.location.reload();
     }
     render(){
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
@@ -31,9 +40,10 @@ class Nav2 extends Component{
                 <NavbarBrand><Link class="nav-link" to="/">MAST</Link></NavbarBrand>
                 <NavbarToggler onClick={this.toggle} />
                 <Collapse isOpen={this.state.isOpen} navbar>
-
+                        
                         {gpdLoggedIn === '1' ? 
-                        <Nav className="ml-auto" navbar>
+                        
+                        <Nav className="mr-auto" navbar>
 
                         <NavItem >
                             <Link class="nav-link" to="/students">Students</Link>
@@ -48,10 +58,11 @@ class Nav2 extends Component{
                             <Link class="nav-link" to="/trends">Trends</Link>
                         </NavItem>
 
-                        </Nav>:<div />}
+                        </Nav>
+                        :<div />}
 
                         {studentLoggedIn === '1' ? 
-                        <Nav className="ml-auto" navbar>
+                        <Nav className="mr-auto" navbar>
                         <NavItem>
                             <Link class="nav-link" to="/studenthome">Student Home</Link>
                         </NavItem>
@@ -59,6 +70,15 @@ class Nav2 extends Component{
                             <Link class="nav-link" to="/editStudent">Edit My Info</Link>
                         </NavItem>
                         </Nav>:<div />}
+
+                        {(studentLoggedIn === '1' || gpdLoggedIn === '1') ?
+                        <Nav className="ml-auto" navbar>
+                            <NavbarText style={{padding: "10px"}}>{this.state.username}</NavbarText>
+                            <Button onClick={this.logout} color="primary" >
+                            Log Out
+                            </Button>
+                        </Nav>
+                        :<div />}
 
                 </Collapse>
             </Navbar>
