@@ -18,7 +18,7 @@ export default class  Home extends Component {
     };
   }
 
-  login = ()=> {
+  loginAsAdvisor = ()=> {
     let json_data = {
         sbu_id: this.state.id,
         password: sha(this.state.password + "SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja")
@@ -45,6 +45,41 @@ export default class  Home extends Component {
     });
   }
 
+  loginAsStudent = ()=> {
+    let json_data = {
+      sbu_id: this.state.id,
+      password: sha(this.state.password + "SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja")
+  }
+
+    axios.withCredentials=true
+    axios({
+      method: 'POST',
+      url: `http://localhost:3001/students/login`,
+      data:  json_data,
+      // responseType: 'json',
+      headers: {
+        Accept: 'application/json',
+
+        'Content-Type': 'application/json'
+      },          credentials: 'same-origin',
+
+      withCredentials: true
+
+    }).then((response) => {
+      response.json()
+      window.location.reload(true)
+
+ 
+    }).catch((response) => {
+      // dispatch(pushState(null, '/error'));
+      window.location.reload(true)
+    }) 
+
+
+
+
+}
+
   render(){
     return (
       <div>
@@ -60,7 +95,12 @@ export default class  Home extends Component {
             <Input type="password" name="password" id="login_password" placeholder="" style={{width:200}} onChange = {e=> this.setState( {password: e.target.value })} onKeyPress={ e => e.key === 'Enter' ? this.login() : 1}/>
         </FormGroup>
         <FormGroup row style={{justifyContent: 'center'}}>
-          <Button color="primary" onClick={this.login}>Submit</Button>
+          <Button color="primary" onClick={this.loginAsAdvisor}>Login As Advisor</Button><br></br>
+
+        </FormGroup>
+        <FormGroup row style={{justifyContent: 'center'}}>
+          <Button color="primary" onClick={this.loginAsStudent}>Login As Student</Button>
+
         </FormGroup>
         <FormGroup row >
           {this.state.loginError === true && 

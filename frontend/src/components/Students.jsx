@@ -137,8 +137,8 @@ export default class Students extends Component {
         return json
     }
 
-    courseFileChange = async event => {
-        
+    coursePlanFileChange = async event => {
+        //Delete all current plans
         fetch('http://localhost:3001/coursePlans/deleteAllPlans', {
             method: 'DELETE', // or 'PUT'
             headers: {
@@ -155,22 +155,35 @@ export default class Students extends Component {
             let header = csvData[0]
             let data = csvData.slice(1)
             if (this.verifyHeader2(header)) {
+
                 let json_data = data.map(x => this.buildJSONfromRow2(x))
                 var sbIDs =[]
+
+                //Gather all the students ids that will have a course plan updated
                 for(let i = 0; i < json_data.length; i++) {
                     let id = json_data[i].sbu_id;
                     if(!sbIDs.includes(id)){
                         sbIDs.push(id)
                     }
                 }
-
+                //Make a new course plan object for each student, but dont add it to the student onbejct yet
                 for(let i = 0; i < sbIDs.length; i++) {
-                    let id = sbIDs[i];
-                    this.createNewCoursePlanForStudent(id);
+                    console.log(sbIDs[i]);
+                    var data2 = { sbu_id: sbIDs[i] }
+
+                    fetch('http://localhost:3001/coursePlans/newCoursePlan', {
+                        method: 'POST', // or 'PUT'
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }, 
+                        credentials: 'include', 
+                        body: JSON.stringify(data2)
+                    })
+                       
                 }
 
+                //AddCourses To there course plan
                 for(let i = 0; i < json_data.length; i++) {
-                    //var idToAddPlan = json_data[i].sbu_id;
 
                     fetch('http://localhost:3001/coursePlans/addCourseToPlan', {
                         method: 'POST', // or 'PUT'
@@ -178,43 +191,28 @@ export default class Students extends Component {
                             'Content-Type': 'application/json',
                         }, credentials: 'include', 
                         body: JSON.stringify(json_data[i]),
-                    });                 
-                   
-                }
+                    }); 
 
-                console.log("courseplan")
+                }
+                //Now the course plans have been made. tell all course plans to add themselves to the respective student
+                fetch('http://localhost:3001/coursePlans/addAllPlansToTheirStudent', {
+                    method: 'POST', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }, credentials: 'include', 
+                }); 
+          
+
+                console.log(json_data)
                // json_data.map(x => this.addCourseToPlan(x))
 
             }
         }
     };
 
-    createNewCoursePlanForStudent=(id)=>{
-        fetch('http://localhost:3001/coursePlans/addCoursePlanToStudent', {
-            method: 'POST', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/json',
-            }, credentials: 'include', 
-            body: JSON.stringify({sbu_id:id,courses:[]}),
-        });
 
-    }
 
-    addCourseToPlan = (json_data) => {
 
-        fetch('http://localhost:3001/coursePlans/addCourseToPlan', {
-            method: 'POST', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/json',
-            }, credentials: 'include', 
-            body: JSON.stringify(json_data),
-        });
-        
-    }
-
-    uploadCoursePlanData = () => {
-
-    }
 
     deleteStudent = (studentID) => {
         console.log(studentID)
@@ -302,25 +300,6 @@ export default class Students extends Component {
         });
     }
 
-    // readOneStudent = (params) =>  {
-    
-    //     var route = 'http://localhost:3001/students/student/'
-    
-    //     fetch(route, {
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'id': data.sbu_id
-    //         },
-    
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log('Success:', data);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error:', error);
-    //         });
-    // }
     
     updateStudent = (params) =>  {
     
@@ -385,7 +364,7 @@ export default class Students extends Component {
                         <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onStudentFileChange} />
                         <Button style={{ margin:"5px", width:"120px"}} onClick={(e) => this.uploadStudentData.click()}>Import Student Data</Button>
                     
-                        <input id="myInput" type="file" ref={(ref) => this.uploadCoursePlanData = ref} style={{ display: 'none' }} onChange={this.courseFileChange} />
+                        <input id="myInput" type="file" ref={(ref) => this.uploadCoursePlanData = ref} style={{ display: 'none' }} onChange={this.coursePlanFileChange} />
                         <Button style={{ margin:"5px", width:"140px"}} onClick={(e) => this.uploadCoursePlanData.click()}>Import Student Course Plans</Button>
                     
                         {/* <Button style={{ margin:"5px", width:"100px"}} onClick={this.deleteAllStudent} color="danger">Delete All Students</Button> */}

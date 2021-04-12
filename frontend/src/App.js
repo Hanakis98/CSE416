@@ -9,7 +9,6 @@ export default function App() {
         <Nav2 />
         <Switch>
           <Route path="/" exact component={() => <Home />} />
-          <Route path="/studenthome" exact component={() => <StudentHome />} />
           <Route path="/students" exact component={() => <Students />} />
           <Route path="/degrees" exact component={() => <Degrees />} />
           <Route path="/courses" exact component={() => <Courses />} />

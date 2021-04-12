@@ -2,6 +2,7 @@ import { React, useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form } from 'reactstrap';
 
 const DeleteAllModal = (props) => {
+  
     const {
         buttonLabel,
         className,
@@ -9,8 +10,39 @@ const DeleteAllModal = (props) => {
     } = props;
 
     const [modal, setModal] = useState(false);
-    const toggle = () => setModal(!modal);
+      //let data = {sbu_id: id}
+
+   
+  
+
+    const toggleAndDelete = (id) =>{
+      setModal(!modal)
+
+      fetch('http://localhost:3001/students/deleteAllStudent', {
+        method: 'DELETE', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },           
+         credentials: 'include', 
+
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            window.location.reload()
+
+            
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+    });
     
+    };
+    const toggle = () =>{
+      setModal(!modal)
+
+    }
         return (
             <div>
       <Button color="danger" onClick={toggle} style={style}>{buttonLabel}</Button>
@@ -22,7 +54,7 @@ const DeleteAllModal = (props) => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="danger" onClick={toggle}>Delete All</Button>{' '}
+          <Button color="danger" onClick={toggleAndDelete}>Delete All</Button>{' '}
           <Button outline color="secondary" onClick={toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
