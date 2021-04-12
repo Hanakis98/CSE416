@@ -47,6 +47,7 @@ export default class Courses extends Component {
     verifyHeader = (header) => {
         let validHeader = true
         header.forEach(function (data, index) {
+            console.log(data)
             if (index === 0 && data !== 'department') {
                 validHeader = false
                 console.log(index)
@@ -62,7 +63,7 @@ export default class Courses extends Component {
             } else if (index === 4 && data !== 'year') {
                 validHeader = false
                 console.log(index)
-            } else if (index === 5 && data !== 'timeslot') {
+            } else if (index === 5 && data !== 'timeslot\r') {
                 validHeader = false
                 console.log(index)
             }

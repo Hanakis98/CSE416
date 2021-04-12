@@ -126,8 +126,10 @@ export default class Students extends Component {
                 validHeader = false
                 console.log(index)
             }
-            // else if (index === 6 && data !== 'grade') {
+            // else if (index === 6 && data.split(" ").join("") !== 'grade') {
             //     validHeader = false
+            //     console.log(data)
+
             //     console.log(index)}
         })
         return validHeader
