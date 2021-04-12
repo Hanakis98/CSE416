@@ -260,19 +260,22 @@ export default class Students extends Component {
         var route = 'http://localhost:3001/students/allStudents/'
     
         return fetch(route, {
+            redirect: 'follow',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             credentials: 'include'
-        })
+        })  
             .then(response => response.json())
+          
             .then(data => {
                 console.log('Success:', data);
                 return data
             })
             .catch((error) => {
                 console.error('Error:', error);
+                window.location.replace("/")
                 return []
             });
     }

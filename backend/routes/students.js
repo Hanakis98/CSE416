@@ -81,13 +81,18 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     router.get("/allStudents", (request, response) => { // get ALL
         var token  = (request.cookies.token)
         console.log(token)
+        try {
+            console.log( jwt.verify(token,keys.secretOrKeyAdvisors))
+            dbCollection.find().toArray((error, result) => {
+                if (error) throw error;
+                response.json(result);
+            });
+        } catch (error) {
+            response.statusCode=400;
+            response.end()
+        }
 
-        console.log( jwt.verify(token,keys.secretOrKeyAdvisors))
-
-        dbCollection.find().toArray((error, result) => {
-            if (error) throw error;
-            response.json(result);
-        });
+      
     });
 
     router.post("/addStudent", (request, response) => {
