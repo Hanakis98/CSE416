@@ -16,7 +16,11 @@ const studentSchema = new mongoose.Schema({
   department: String,
   track:String,
   degreeRequirements:Object,
-  coursePlan: Object
+  coursePlan: Object,
+  entrySemester: String,
+  entryYear: String,
+  graduationSemester: String,
+  graduationYear: String
 });
 
 module.exports = mongoose.model('Student', studentSchema,"Students");
