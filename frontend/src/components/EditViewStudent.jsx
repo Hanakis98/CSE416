@@ -18,7 +18,13 @@ export default class editStudent extends Component{
             department: "",
             track: "",
             sbu_id: "",
-            courses:[]
+            courses:[],
+            studentUserName:u,
+
+            entrySemester: "",
+            entryYear : "",
+            graduationSemester: "",
+            graduationYear: ""
                }; 
 
         this.handleChange = this.handleChange.bind(this);
@@ -48,7 +54,11 @@ export default class editStudent extends Component{
                     department: data.department,
                     track: data.track,
                     sbu_id: data.sbu_id,
-                    studentUserName:u
+                    studentUserName:u,
+                    entrySemester: data.entrySemester,
+                    entryYear : data.entryYear,
+                    graduationSemester: data.graduationSemester,
+                    graduationYear: data.graduationYear
                  });       
                  if(data.coursePlan != null)
                     this.setState ( {
@@ -66,11 +76,11 @@ export default class editStudent extends Component{
     }
     updateStudent=() =>{
         //When update student is pressed, make sure forms filled out and then submit
-        if(this.state.firstName === "" || this.state.lastName === ""|| this.state.sbu_id === ""|| this.state.email === ""|| this.state.major === ""|| this.state.track === "" || this.state.password === "")
-        {
-            this.setState({error:1})
-            return 
-        }
+        // if(this.state.firstName === "" || this.state.lastName === ""|| this.state.sbu_id === ""|| this.state.email === ""|| this.state.major === ""|| this.state.track === "" || this.state.password === "")
+        // {
+        //     this.setState({error:1})
+        //     return 
+        // }
         let json_data = {
             first_name: this.state.firstName,
             last_name: this.state.lastName,
@@ -78,7 +88,11 @@ export default class editStudent extends Component{
             email: this.state.email,
             department:  this.state.department,
             track: this.state.track,
-            password: this.state.password
+            password: this.state.password,
+            entrySemester: this.state.entrySemester,
+            entryYear : this.state.entryYear,
+            graduationSemester: this.state.graduationSemester,
+            graduationYear: this.state.graduationYear
         }
         //The gpd can be updating the student or the student can update themselves.
         //Change the URL depending on this and then send a PUT to update
@@ -143,6 +157,22 @@ export default class editStudent extends Component{
                         <Col sm={4}><Input type="text" id="password"placeholder={this.state.password}   onChange = {e=> this.setState( {password:sha( e.target.value+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja") })}/></Col>
                     </FormGroup>
                     <FormGroup row>
+                        <Label for="entry_semester" sm={1}>Entry Semester</Label>
+                        <Col sm={4}><Input type="text" id="entry_semester"placeholder={this.state.entrySemester}   onChange = {e=> this.setState( { entrySemester : e.target.value})}/></Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="entry_year" sm={1}>Entry Year</Label>
+                        <Col sm={4}><Input type="text" id="entry_year"placeholder={this.state.entryYear}   onChange = {e=> this.setState( { entryYear : e.target.value })}/></Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="graduation_semester" sm={1}>Graduation Semester</Label>
+                        <Col sm={4}><Input type="text" id="graduation_semester"placeholder={this.state.graduationSemester}   onChange = {e=> this.setState( {  graduationSemester: e.target.value })}/></Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="graduation_year" sm={1}>Graduation Year</Label>
+                        <Col sm={4}><Input type="text" id="graduation_year" placeholder={this.state.graduationYear}   onChange = {e=> this.setState( { graduationYear: e.target.value})}/></Col>
+                    </FormGroup>
+                    <FormGroup row>
                         <Label for="major" sm={1}>Major</Label>
                         <Col sm={4}>
                         <Input type="select" id="major" value={this.state.department} onChange = {e=> this.setState( {department: e.target.value })} >
@@ -182,7 +212,10 @@ export default class editStudent extends Component{
 
                     {this.state.error === 1 && <div style= {{color:'red', fontSize:18}} >Please Enter All forms</div>}
                 </Form>
-
+                 
+                Course Plan: 
+                <br>
+                 </br>
                  <Table  xs="3">
                     <thead><tr>
                         <th>Depatment</th>
@@ -191,6 +224,8 @@ export default class editStudent extends Component{
                         <th>Semester</th>
                         <th>Year</th>
                         <th>Timeslot</th>
+                        <th>Grade</th>
+
                         <th></th>
                         <th></th>
                     </tr></thead>
@@ -203,6 +238,8 @@ export default class editStudent extends Component{
                                 <td>{x.semester}</td>
                                 <td>{x.year}</td>
                                 <td>{x.timeslot}  </td>
+                                <td>{x.grade}  </td>
+
                                 <td> 
                                 {/* <button onClick={() => this.deleteCourse(x.department,x.courseNum,x.semester,x.year)}>Delete</button>  */}
                                 </td>

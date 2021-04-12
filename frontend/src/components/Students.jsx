@@ -125,15 +125,17 @@ export default class Students extends Component {
             } else if (index === 5 && data !== 'year') {
                 validHeader = false
                 console.log(index)
-            } else if (index === 6 && data !== 'grade') {
-                validHeader = false
-                console.log(index)}
+            }
+            // else if (index === 6 && data !== 'grade') {
+            //     validHeader = false
+            //     console.log(index)}
         })
         return validHeader
     }
     
     buildJSONfromRow2 = (row) => {
         let json = { sbu_id: row[0], department: row[1], course_num: row[2], section: row[3], semester: row[4], year: row[5], grade: row[6]}
+        console.log(json)
         return json
     }
 
@@ -155,6 +157,7 @@ export default class Students extends Component {
             let header = csvData[0]
             let data = csvData.slice(1)
             if (this.verifyHeader2(header)) {
+                console.log("fF")
 
                 let json_data = data.map(x => this.buildJSONfromRow2(x))
                 var sbIDs =[]
@@ -206,8 +209,10 @@ export default class Students extends Component {
                 console.log(json_data)
                // json_data.map(x => this.addCourseToPlan(x))
 
-            }
+            }  else
+            console.log("F")
         }
+      
     };
 
 

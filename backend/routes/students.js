@@ -104,6 +104,11 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             email: request.body.email,
             department:  request.body.department,
             track: request.body.track,
+            entrySemester: request.body.entrySemester,
+            entryYear: request.body.entryYear,
+            graduationSemester: request.body.graduationSemester,
+            graduationYear: request.body.graduationYear,
+
             coursePlan: null
         })
 
