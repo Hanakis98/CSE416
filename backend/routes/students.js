@@ -176,16 +176,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             response.json(result);
         });
     });
-    router.post("/updateStudentCoursePlan", (request, response) => {
-        dbCollection.updateOne({ sbu_id: request.body.sbu_id}, { $set : {coursePlan: request.body.coursePlan }  }, (error, result) => {
-            if (error) throw error;
-            // send back entire updated list, to make sure frontend data is up-to-date
-            dbCollection.find().toArray(function(_error, _result) {
-                if (_error) throw _error;
-                response.json(_result);
-            });
-        });
-    });
+
     router.put("/updateStudent", (request, response) => {
         var token  = (request.cookies.token)
         try {
@@ -215,6 +206,18 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 if (_error) throw _error;
                 response.json(_result);
             });
+        });
+        
+    });
+
+    router.put("/updateStudentCoursePlan", (request, response) => {
+  
+
+
+        const newPlan = request.body.coursePlan
+
+        dbCollection.updateOne({ sbu_id: newPlan.sbu_id }, { $set: {coursePlan: newPlan} }, (error, result) => {
+       
         });
         
     });

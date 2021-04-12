@@ -1,13 +1,13 @@
 const { response } = require("express");
 const express = require("express");
-const { ObjectID } = require("mongodb");
 const router = express.Router();
 const db = require("../database.js");
 const dbName = "CSE416";
 const collectionName = "CoursePlans";
 const coursePlanModel = require("../models/coursePlanModel.js")
 const courseModel = require("../models/courseModel.js")
-const axios = require('axios')
+const axios = require('axios');
+
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
 
     router.get("/allPlans", (request, response) => { // get ALL
@@ -18,34 +18,18 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
-    router.post("/addCoursePlanToStudent", (request, response) => {
-        const newPlan = new coursePlanModel({
-           sbu_id:request.body.sbu_id,
-           courses:[]
-        });
-        console.log(newPlan)
-
-        newPlan.save(function(err, doc) {
-            if (err) return console.error(err);
-           });
-     
-           //Update studnt courseplan
-           axios
-           .post('http://localhost:3001/students/updateStudentCoursePlan', {
-            sbu_id:request.body.sbu_id,
-            coursePlan: newPlan
-                })
-           .then(res => {
-             console.log(`statusCode: ${res.statusCode}`)
-             console.log(res)
-           })
-           .catch(error => {
-             console.error(error)
-           })
-
+    router.post("/newCoursePlan", (request, response) => { // get ALL
+        // return updated list
+        console.log("newCOursePlane" + request.body.sbu_id)
+        const newCoursePlan =  new coursePlanModel({
+            sbu_id: request.body.sbu_id,
+            courses:[]
+        })
+        newCoursePlan.save();
+        
     });
+    router.post("/addCourseToPlan", (request, response) => { // get ALL
 
-    router.post("/addCourseToPlan", (request, response) => {
         var newCourse = new courseModel({
             sbu_id:request.body.sbu_id,
             department: request.body.department,
@@ -71,36 +55,27 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 response.json(_result);
             });
         });
-
-     
+        
     });
-    router.delete("/deletePlan/", (request, response) => {
-        const planID = request.body.id;
-        console.log("Delete item with id: ", planID);
-        dbCollection.deleteOne({ _id: ObjectID(planID) }, function(error, result) {
-            if (error) throw error;
-            // send back entire updated list after successful request
-            dbCollection.find().toArray(function(_error, _result) {
-                if (_error) throw _error;
-                response.json(_result);
-            });
-        });
+    router.post("/addAllPlansToTheirStudent", (request, response) => {
+        var arr=[]
+        dbCollection.find().toArray(function(error, res) {
+            arr=res        
+            console.log(arr)
+            for (var i =0; i < res.length; i++)
+            axios
+            .put('http://localhost:3001/students/updateStudentCoursePlan', {
+             coursePlan: res[i]
+                 })
+            .then(res => {
+            })
+            .catch(error => {
+            })
+        
+           
+        }); 
+
     });
-
-    router.post("/checkPlanForStudent/", (request, response) => {
-        const id = request.body.sbu_id;
-        var found = dbCollection.findone({ sbu_id: id }, function(error, result) {
-            if (error) throw error;
-
-        });
-        if(found){
-            response.send();}
-        else{
-            response.statusCode=400;
-            response.send()
-            }
-    });
-
     router.delete("/deleteAllPlans", (request, response) => {
       
         console.log("Delete All Item");
