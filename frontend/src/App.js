@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Nav2, Home, StudentHome, Students, Degrees, Courses, Trends, AddStudent,EditStudent } from "./components";
+import { Nav2, Home, Students, Degrees, Courses, Trends, AddStudent,EditStudent } from "./components";
 
 export default function App() {
   return (
@@ -8,7 +8,7 @@ export default function App() {
       <Router>
         <Nav2 />
         <Switch>
-          <Route path="/" exact component={() => <Home />} />
+          <Route path="/" exact component={(props) => <Home {...props}/>} />
           <Route path="/students" exact component={() => <Students />} />
           <Route path="/degrees" exact component={() => <Degrees />} />
           <Route path="/courses" exact component={() => <Courses />} />
@@ -17,9 +17,7 @@ export default function App() {
           <Route path="/editStudent" exact component={() => <EditStudent />} />
 
         </Switch> 
-        {/* <Footer /> */}
       </Router>
-      
     </div>
   );
 }

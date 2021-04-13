@@ -1,9 +1,10 @@
 import { Component } from 'react';
 import  React   from 'react';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Table, Container, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
 import FilterModal from './FilterModal.jsx';
 import DeleteAllModal from './DeleteAllModal.jsx';
+//import Cookies from 'js-cookie';
 
 var sha = require("sha1")
  
@@ -17,7 +18,7 @@ export default class Students extends Component {
     } 
 
     componentDidMount() {
-        this.readAllStudent().then(newStudents => this.setState({students: newStudents}))
+        this.readAllStudent().then(newStudents => this.setState({students: newStudents}));
     }
 
     convertTextToCSV = (text) => {
@@ -282,8 +283,7 @@ export default class Students extends Component {
             })
             .catch((error) => {
                 console.error('Error:', error);
-                window.location.replace("/")
-                return []
+                return null;
             });
     }
 
@@ -350,6 +350,16 @@ export default class Students extends Component {
     }
 
     render() {
+        // redirect by checking cookies instead of auth response
+        // const gpdLoggedIn=Cookies.get("gpdLoggedIn");
+        // if(gpdLoggedIn !== "1")
+        //TODO: use a separate token auth API request to do this instead of the response from GET /allStudents
+        if(this.state.students == null){
+            return <Redirect to={{
+                pathname:'/', 
+                state: { notauth: true}
+            }} />
+        }
         return (
             <Container>
                 <Row style={{alignItems: 'center', justifyContent: 'space-between'}}>
