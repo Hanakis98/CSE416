@@ -1,8 +1,5 @@
-import { React, useState } from 'react';
-import { Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup } from 'reactstrap';
-
-
-
+import { React } from 'react';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 const FilterWarningModal = (props) => {
     const {
