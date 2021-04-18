@@ -28,6 +28,14 @@
             "courseNumber": "BMI 540",
             "credits": 3,
             "substitute": []
+        },       
+         {
+            "name":" Statistical Methods in Biomedical Informatics",
+            "courseNumber": "BMI 592",
+            "credits": 3,
+            "substitute": [],
+            "typeOf": "FullTime"
+
         }
         
     ],
@@ -38,14 +46,13 @@
             "requiredCourses":[
                 {
                     "name":"Capstone Project in Biomedical Informatics",
-                    "courseNumber": "BMI 598",
-					"credits": 6
+                    "courseNumber": "BMI 513",
+					"credits": 3
                 },
                 {
-                    "name":"Lab Rotation I",
-                    "courseNumber": "BMI 502",
-					"credits": 3,
-                    "substitute":["BMI 503"]
+                    "name":"Capstone Project in Biomedical Informatics",
+                    "courseNumber": "BMI 514",
+					"credits": 3
                 }
         
             ],
@@ -60,12 +67,12 @@
         },
         
         {
-            "area": "Clinical Informatics",
+            "area": "Clinical Informatics With Thesis",
             "gradeRequirement": "C or Higher",
             "requiredCourses":[
                 {
-                    "name":"Principles and Practice of Biomedical Engineering",
-                    "courseNumber": "BMI 505",
+                    "name":"Clinical Informatics",
+                    "courseNumber": "BMI 511",
 					"credits": 3
                 },
                 {

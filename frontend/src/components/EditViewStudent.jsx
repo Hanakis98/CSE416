@@ -20,7 +20,6 @@ export default class editStudent extends Component{
             sbu_id: "",
             courses:[],
             studentUserName:u,
-
             entrySemester: "",
             entryYear : "",
             graduationSemester: "",
