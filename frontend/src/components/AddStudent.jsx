@@ -19,6 +19,10 @@ export default class AddStudent extends Component{
             track: "",
             sbu_id: "",
             error: 10  ,
+            entryYear:"",
+            entrySemester:"",
+            graduationYear:"",
+            graduationSemester:"",
             coursePlan: []
         };
         
@@ -34,7 +38,7 @@ export default class AddStudent extends Component{
         event.preventDefault();
     }
     addStudent = ()=> {
-        if(this.state.firstName === "" || this.state.lastName === ""|| this.state.sbu_id === ""|| this.state.email === ""|| this.state.major === ""|| this.state.track === "" || this.state.password === "")
+        if(this.state.firstName === "" || this.state.lastName === ""|| this.state.sbu_id === ""|| this.state.email === ""|| this.state.major === ""|| this.state.track === "" || this.state.password === "" ||this.state.entrySemester === "" || this.state.entryYear === "")
             {
                 this.setState({error:1})
                 return 
@@ -47,6 +51,12 @@ export default class AddStudent extends Component{
             department:  this.state.major,
             track: this.state.track,
             password: this.state.password,
+            entryYear: this.state.entryYear,
+            entrySemester: this.state.entrySemester,
+            graduationSemester: this.state.graduationSemester,
+            graduationYear: this.state.graduationYear,
+
+
             coursePlan: []
         }
         fetch('http://localhost:3001/students/addStudent', {
@@ -55,6 +65,7 @@ export default class AddStudent extends Component{
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(json_data),
+            credentials:"include"
         })
             .then(response => response.json())
             .then(data => {
@@ -88,6 +99,25 @@ export default class AddStudent extends Component{
                         <Label for="id" sm={3}>ID</Label>
                         <Col sm={8}><Input type="text" id="id" onChange = {e=> this.setState( {sbu_id: e.target.value })} /></Col>
                     </FormGroup>
+
+                    <FormGroup row>
+                        <Label for="id" sm={3}>EntryYear</Label>
+                        <Col sm={8}><Input type="text" id="entryYear" onChange = {e=> this.setState( {entryYear: e.target.value })} /></Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="id" sm={3}>Entry Semester</Label>
+                        <Col sm={8}><Input type="text" id="entrySemester" onChange = {e=> this.setState( {entrySemester: e.target.value })} /></Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="id" sm={3}>Graduation Year</Label>
+                        <Col sm={8}><Input type="text" id="gradYear" onChange = {e=> this.setState( {graduationYear: e.target.value })} /></Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="id" sm={3}>Graduation Semester</Label>
+                        <Col sm={8}><Input type="text" id="gradSemester" onChange = {e=> this.setState( {graduationSemester: e.target.value })} /></Col>
+                    </FormGroup>
+
+
                     <FormGroup row>
                         <Label for="email" sm={3}>Email</Label>
                         <Col sm={8}><Input type="text" id="email" onChange = {e=> this.setState( {email: e.target.value })}/></Col>
