@@ -220,10 +220,6 @@ export default class Students extends Component {
       
     };
 
-
-
-
-
     deleteStudent = (studentID) => {
         console.log(studentID)
         const data = { sbu_id: studentID }
@@ -312,7 +308,6 @@ export default class Students extends Component {
         });
     }
 
-    
     updateStudent = (params) =>  {
     
         const data = { username: 'example', id: "2" };
@@ -416,21 +411,22 @@ export default class Students extends Component {
             <Container>
                 <Row style={{alignItems: 'center', justifyContent: 'space-between'}}>
                     
-                        <Col sm={3} style={{padding:"0px", margin:"5px"}}>
-                            <Label>Search</Label>
-                            <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)}  />
-                        </Col>
+                    <Col sm={3} style={{padding:"0px", margin:"5px"}}>
+                        <Label>Search</Label>
+                        <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)}  />
+                    </Col>
 
-                        <Col sm={0.1} style={{padding:"0px", margin:"5px"}}>
+                    <Col sm={0.1} style={{padding:"0px", margin:"5px"}}>
                         <FilterModal buttonLabel="Filter" filterStudents={this.searchStudentByCriteria} reloadStudent={this.reloadStudent}></FilterModal>
                         <FilterWarningModal toggle={this.toggleFilterWarningModal} modal={this.state.showFilterWarningModal}></FilterWarningModal>
-                        </Col>
+                    </Col>
                    
-                        <NavLink href="/add" style={{padding:"0px", margin:"5px"}}><Button style={{ width:"80px"}} color="success">Add Student</Button></NavLink>
+                    <NavLink href="/add" style={{padding:"0px", margin:"5px"}}>
+                        <Button style={{ width:"80px"}} color="success">Add Student</Button>
+                    </NavLink>
 
                     {/* <Col xs={1}></Col> */}
                     <Col xs={4.5}>
-                    
 
                         <Button style={{ margin:"5px", width:"80px"}}>Import Grades</Button>
                     
@@ -492,7 +488,5 @@ export default class Students extends Component {
                 </Table>
             </Container>
         );
-                        
-                       
     }
 }
