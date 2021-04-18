@@ -99,7 +99,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         var token  = (request.cookies["token"])
 
         console.log( jwt.verify(token,keys.secretOrKeyAdvisors))
-     
+        console.log(request.body)
         var newStudent = new studentModel({
             first_name : request.body.first_name,
             last_name : request.body.last_name,
@@ -111,8 +111,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             track: request.body.track,
             entrySemester: request.body.entrySemester,
             entryYear: request.body.entryYear,
-            graduationSemester: request.body.graduationSemester,
-            graduationYear: request.body.graduationYear,
+            graduation_semester: request.body.graduation_semester,
+            graduation_year: request.body.graduation_year,
 
             coursePlan: null
         })

@@ -80,7 +80,7 @@ export default class Students extends Component {
     }
 
     buildJSONfromRow = (row) => {
-        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[9], graduation_year: row[10], password: sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"), coursePlan: null }
+        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[10], graduation_year: row[11], password:sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"), coursePlan :null }
         return json
     }
 
@@ -220,10 +220,6 @@ export default class Students extends Component {
 
     };
 
-
-
-
-
     deleteStudent = (studentID) => {
         console.log(studentID)
         const data = { sbu_id: studentID }
@@ -247,7 +243,7 @@ export default class Students extends Component {
     }
 
     addStudent = (json_data) => {
-
+        console.log(json_data)
         fetch('http://localhost:3001/students/addStudent', {
             method: 'POST', // or 'PUT'
             headers: {
@@ -312,9 +308,8 @@ export default class Students extends Component {
             });
     }
 
-
-    updateStudent = (params) => {
-
+    updateStudent = (params) =>  {
+    
         const data = { username: 'example', id: "2" };
         var old_id = "1"
 
@@ -358,30 +353,31 @@ export default class Students extends Component {
     searchStudentByCriteria = (name, semester, valid, complete) => {
         console.log(name, semester, valid, complete)
         this.readAllStudent().then(currentStudents => {
-            var filteredStudents = currentStudents.filter(function (student) {
+            var filteredStudents = currentStudents.filter(function(student){
+                
                 let validName = true
                 if (name !== null) {
                     validName = (student.first_name + " " + student.last_name).toLowerCase().startsWith(name)
                 }
                 let validSemester = true
-                if (semester !== null) {
-                    validSemester = student.entrySemester === semester
+                if (semester !== null){
+                    validSemester = (student.graduation_semester +" " + student.graduation_year).startsWith(semester)
                 }
 
                 let validCoursePlan = true
-                if (valid !== null) {
+                if (valid !== null&& valid==true){
                     validCoursePlan = student.validCoursePlan === valid
                 }
 
                 let validComplete = true
-                if (complete !== null) {
-                    validComplete = student.completeCoursePlan === complete
+                if (complete !== null && complete==true){
+                    validComplete = student.completeCoursePlan === complete 
                 }
 
-
+                console.log(validName , validSemester , validCoursePlan , validComplete)
                 return validName && validSemester && validCoursePlan && validComplete
-            })
-
+            })  
+            console.log(filteredStudents)
             if (filteredStudents.length > 0) {
                 this.setState({ students: filteredStudents })
             } else {
@@ -413,19 +409,21 @@ export default class Students extends Component {
         }
         return (
             <Container>
-                <Row style={{ alignItems: 'center', justifyContent: 'space-between' }}>
-
-                    <Col sm={3} style={{ padding: "0px", margin: "5px" }}>
+                <Row style={{alignItems: 'center', justifyContent: 'space-between'}}>
+                    
+                    <Col sm={3} style={{padding:"0px", margin:"5px"}}>
                         <Label>Search</Label>
-                        <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)} />
+                        <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)}  />
                     </Col>
 
-                    <Col sm={0.1} style={{ padding: "0px", margin: "5px" }}>
+                    <Col sm={0.1} style={{padding:"0px", margin:"5px"}}>
                         <FilterModal buttonLabel="Filter" filterStudents={this.searchStudentByCriteria} reloadStudent={this.reloadStudent}></FilterModal>
                         <FilterWarningModal toggle={this.toggleFilterWarningModal} modal={this.state.showFilterWarningModal}></FilterWarningModal>
                     </Col>
-
-                    <NavLink href="/add" style={{ padding: "0px", margin: "5px" }}><Button style={{ width: "80px" }} color="success">Add Student</Button></NavLink>
+                   
+                    <NavLink href="/add" style={{padding:"0px", margin:"5px"}}>
+                        <Button style={{ width:"80px"}} color="success">Add Student</Button>
+                    </NavLink>
 
                     {/* <Col xs={1}></Col> */}
                     <Col xs={4.5}>
@@ -474,7 +472,7 @@ export default class Students extends Component {
                                 <td>7</td>
                                 <td>5</td>
                                 <td>2</td>
-                                <td>{x.entrySemester}</td>
+                                <td>{x.graduation_semester +" " + x.graduation_year}</td>
                                 <td>6</td>
                                 <td>{x.validCoursePlan ? "Valid" : "Invalid"}</td>
                                 <td>{x.completeCoursePlan ? "Complete" : "Incomplete"}</td>
@@ -491,7 +489,5 @@ export default class Students extends Component {
                 </Table>
             </Container>
         );
-
-
     }
 }

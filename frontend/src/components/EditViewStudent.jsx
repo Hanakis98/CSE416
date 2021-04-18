@@ -22,7 +22,7 @@ export default class editStudent extends Component{
             studentUserName:u,
             entrySemester: "",
             entryYear : "",
-            graduationSemester: "",
+            graduation_semester: "",
             graduationYear: ""
                }; 
 
@@ -56,7 +56,7 @@ export default class editStudent extends Component{
                     studentUserName:u,
                     entrySemester: data.entrySemester,
                     entryYear : data.entryYear,
-                    graduationSemester: data.graduationSemester,
+                    graduation_semester: data.graduation_semester,
                     graduationYear: data.graduationYear
                  });       
                  if(data.coursePlan != null)
@@ -90,7 +90,7 @@ export default class editStudent extends Component{
             password: this.state.password,
             entrySemester: this.state.entrySemester,
             entryYear : this.state.entryYear,
-            graduationSemester: this.state.graduationSemester,
+            graduation_semester: this.state.graduation_semester,
             graduationYear: this.state.graduationYear
         }
         //The gpd can be updating the student or the student can update themselves.
@@ -165,7 +165,7 @@ export default class editStudent extends Component{
                     </FormGroup>
                     <FormGroup row>
                         <Label for="graduation_semester" sm={1}>Graduation Semester</Label>
-                        <Col sm={4}><Input type="text" id="graduation_semester"placeholder={this.state.graduationSemester}   onChange = {e=> this.setState( {  graduationSemester: e.target.value })}/></Col>
+                        <Col sm={4}><Input type="text" id="graduation_semester"placeholder={this.state.graduation_semester}   onChange = {e=> this.setState( {  graduation_semester: e.target.value })}/></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="graduation_year" sm={1}>Graduation Year</Label>
