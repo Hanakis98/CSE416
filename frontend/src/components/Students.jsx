@@ -80,7 +80,7 @@ export default class Students extends Component {
     }
 
     buildJSONfromRow = (row) => {
-        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[9], graduation_year: row[10], password:sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"), coursePlan :null }
+        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[10], graduation_year: row[11], password:sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"), coursePlan :null }
         return json
     }
 
@@ -247,7 +247,7 @@ export default class Students extends Component {
     }
 
     addStudent = (json_data) => {
-
+        console.log(json_data)
         fetch('http://localhost:3001/students/addStudent', {
             method: 'POST', // or 'PUT'
             headers: {
@@ -359,29 +359,30 @@ export default class Students extends Component {
         console.log(name, semester, valid, complete)
         this.readAllStudent().then(currentStudents => {
             var filteredStudents = currentStudents.filter(function(student){
+                
                 let validName = true
                 if (name !== null){
                     validName = (student.first_name + " " + student.last_name).toLowerCase().startsWith(name) 
                 }
                 let validSemester = true
                 if (semester !== null){
-                    validSemester = student.entrySemester === semester
+                    validSemester = (student.graduation_semester +" " + student.graduation_year).startsWith(semester)
                 }
 
                 let validCoursePlan = true
-                if (valid !== null){
+                if (valid !== null&& valid==true){
                     validCoursePlan = student.validCoursePlan === valid
                 }
 
                 let validComplete = true
-                if (complete !== null){
+                if (complete !== null && complete==true){
                     validComplete = student.completeCoursePlan === complete 
                 }
 
-                
+                console.log(validName , validSemester , validCoursePlan , validComplete)
                 return validName && validSemester && validCoursePlan && validComplete
             })  
-            
+            console.log(filteredStudents)
             if (filteredStudents.length > 0) {
                 this.setState({students: filteredStudents})
             }else{
@@ -474,7 +475,7 @@ export default class Students extends Component {
                                 <td>7</td>
                                 <td>5</td>
                                 <td>2</td>
-                                <td>{x.entrySemester}</td>
+                                <td>{x.graduation_semester +" " + x.graduation_year}</td>
                                 <td>6</td>
                                 <td>{x.validCoursePlan ? "Valid" : "Invalid"}</td>
                                 <td>{x.completeCoursePlan ? "Complete" : "Incomplete"}</td>

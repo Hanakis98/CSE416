@@ -43,7 +43,7 @@ const FilterModal = (props) => {
             <div>
       <Button outline color="primary" onClick={toggle} style={{padding:'18px'}}>{buttonLabel}</Button>
       <Modal isOpen={modal} toggle={toggle} className={className}>
-        <ModalHeader toggle={e => toggleEscape(e.target.innerText)}>Filter Student List</ModalHeader>
+        <ModalHeader toggle={toggle}>Filter Student List</ModalHeader>
         <ModalBody>
           <Form>
             <FormGroup>
@@ -68,7 +68,7 @@ const FilterModal = (props) => {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={e => toggleEscape(e.target.innerText)}>Filter</Button>{' '}
-          <Button outline color="secondary" onClick={e => toggleEscape(e.target.innerText)}>Cancel</Button>
+          <Button outline color="secondary" onClick={e => toggleEscape(e.target.innerText)}>Clear Filter</Button>
         </ModalFooter>
       </Modal>
     </div>

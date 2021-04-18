@@ -21,8 +21,8 @@ export default class AddStudent extends Component{
             error: 10  ,
             entryYear:"",
             entrySemester:"",
-            graduationYear:"",
-            graduationSemester:"",
+            graduation_year:"",
+            graduation_semester:"",
             coursePlan: []
         };
         
@@ -53,8 +53,8 @@ export default class AddStudent extends Component{
             password: this.state.password,
             entryYear: this.state.entryYear,
             entrySemester: this.state.entrySemester,
-            graduationSemester: this.state.graduationSemester,
-            graduationYear: this.state.graduationYear,
+            graduation_semester: this.state.graduation_semester,
+            graduation_year: this.state.graduation_year,
 
 
             coursePlan: []
@@ -114,7 +114,7 @@ export default class AddStudent extends Component{
                     </FormGroup>
                     <FormGroup row>
                         <Label for="id" sm={3}>Graduation Semester</Label>
-                        <Col sm={8}><Input type="text" id="gradSemester" onChange = {e=> this.setState( {graduationSemester: e.target.value })} /></Col>
+                        <Col sm={8}><Input type="text" id="gradSemester" onChange = {e=> this.setState( {graduation_semester: e.target.value })} /></Col>
                     </FormGroup>
 
 
