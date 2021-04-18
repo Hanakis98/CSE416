@@ -63,10 +63,10 @@ export default class Courses extends Component {
             } else if (index === 4 && data !== 'year') {
                 validHeader = false
                 console.log(index)
-            } else if (index === 5 && data !== 'timeslot\r') {
-                validHeader = false
-                console.log(index)
-            }
+             }// else if (index === 5 && data !== 'timeslot\r') {
+            //     validHeader = false
+            //     console.log(index)
+            // }
         })
         return validHeader
     }
