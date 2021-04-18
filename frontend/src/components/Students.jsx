@@ -360,7 +360,7 @@ export default class Students extends Component {
                     validName = (student.first_name + " " + student.last_name).toLowerCase().startsWith(name) 
                 }
                 let validSemester = true
-                if (semester !== null){
+                if (semester !== null&& semester==true){
                     validSemester = (student.graduation_semester +" " + student.graduation_year).startsWith(semester)
                 }
 
