@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import  React   from 'react';
+import React from 'react';
 import { Table, Container, Row, Col, Button } from 'reactstrap';
 
 export default class Courses extends Component {
@@ -7,23 +7,23 @@ export default class Courses extends Component {
         super(props);
         this.state = {
             isOpen: false,
-            courses:[]
+            courses: []
         };
     }
 
     componentDidMount() {
-        this.readAllCourses().then(courses => this.setState({courses: courses}))
+        this.readAllCourses().then(courses => this.setState({ courses: courses }))
     }
-    readAllCourses = (params) =>  {
+    readAllCourses = (params) => {
         var route = 'http://localhost:3001/courses/allOfferedCourses/'
-    
+
         return fetch(route, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
-            }   
+            }
             ,
-            credentials: 'include', 
+            credentials: 'include',
         })
             .then(response => response.json())
             .then(data => {
@@ -72,7 +72,7 @@ export default class Courses extends Component {
     }
 
     buildJSONfromRow = (row) => {
-        let json = { sbu_id:"OFFERING", department: row[0], course_num: row[1], section: row[2], semester: row[3], year: row[4], timeslot: row[5], description:"" ,credits:"",prerequisites:[] }
+        let json = { sbu_id: "OFFERING", department: row[0], course_num: row[1], section: row[2], semester: row[3], year: row[4], timeslot: row[5], description: "", credits: "", prerequisites: [] }
         return json
     }
 
@@ -106,7 +106,7 @@ export default class Courses extends Component {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
-            }, credentials: 'include', 
+            }, credentials: 'include',
             body: JSON.stringify(json_data),
         })
             .then(response => response.json())
@@ -117,28 +117,28 @@ export default class Courses extends Component {
             .catch((error) => {
                 console.error('Error:', error);
             });
-    
+
     }
 
     deleteCourse = (d, cn, s, y) => {
-        const data = { sbu_id: "OFFERING" ,department: d, course_num:cn, semester:s, year:y }
+        const data = { sbu_id: "OFFERING", department: d, course_num: cn, semester: s, year: y }
 
 
         fetch('http://localhost:3001/courses/deleteCourse', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
-            }, credentials: 'include', 
+            }, credentials: 'include',
             body: JSON.stringify(data),
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);  
-                this.setState({courses: data})
+                console.log('Success:', data);
+                this.setState({ courses: data })
             })
             .catch((error) => {
                 console.error('Error:', error);
-        });
+            });
 
     }
 
@@ -148,28 +148,28 @@ export default class Courses extends Component {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
-            }, credentials: 'include', 
+            }, credentials: 'include',
         })
             .then(response => response.json())
             .then(data => {
-                this.setState({courses: data})
+                this.setState({ courses: data })
                 console.log('Success:', data);
             })
             .catch((error) => {
                 console.error('Error:', error);
-        });
+            });
     }
 
     render() {
         return (
             <Container>
-                <Row>              
-               
-                     <Col xs="2">
+                <Row>
+
+                    <Col xs="2">
                         <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
                         <Button onClick={(e) => this.uploadStudentData.click()}>Scrape Course Info </Button>
                     </Col>
-                   
+
                     <Col xs="2">
                         <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
                         <Button onClick={(e) => this.uploadStudentData.click()}>Import course offerings </Button>
@@ -177,12 +177,12 @@ export default class Courses extends Component {
                     <Col xs="2">
                         <Button onClick={this.deleteAllCourses}>Delete All Courses</Button>
                     </Col>
-                    
+
                 </Row>
                 <br></br>
                 <br></br>
 
-                <Table  xs="3">
+                <Table xs="3">
                     <thead><tr>
                         <th>Depatment</th>
                         <th>Course Number</th>
@@ -195,24 +195,24 @@ export default class Courses extends Component {
 
 
                     </tr></thead>
-                    
+
                     <tbody>
                         {this.state.courses.length !== 0 && this.state.courses.map(x => (
                             <tr>
-                                <td>{x.department }</td>
+                                <td>{x.department}</td>
                                 <td>{x.course_num}</td>
                                 <td>{x.section}</td>
                                 <td>{x.semester}</td>
                                 <td>{x.year}</td>
                                 <td>{x.timeslot}  </td>
-                          
-                                <td> 
-                                <button onClick={() => this.deleteCourse(x.department,x.course_num,x.semester,x.year)}>Delete</button> 
+
+                                <td>
+                                    <button onClick={() => this.deleteCourse(x.department, x.course_num, x.semester, x.year)}>Delete</button>
                                 </td>
-                             
-                                 
+
+
                             </tr>
-                            
+
                         ))}
                     </tbody>
                 </Table>
