@@ -4,6 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 import { Table, Container, Label, Input, Row, Col, Button, NavLink } from 'reactstrap';
 import FilterModal from './FilterModal.jsx';
 import DeleteAllModal from './DeleteAllModal.jsx';
+import FilterWarningModal from './FilterWarningModal.jsx'
 //import Cookies from 'js-cookie';
 
 var sha = require("sha1")
@@ -13,7 +14,8 @@ export default class Students extends Component {
         super(props);
         this.state = {
             isOpen: false,
-            students: []
+            students: [],
+            showFilterWarningModal: false
         };
     } 
 
@@ -338,8 +340,8 @@ export default class Students extends Component {
        if (name !== ""){
             this.readAllStudent().then(currentStudents => {
                 var filteredStudents = currentStudents.filter(function(student){
-                    return student.first_name + " " + student.last_name === name 
-                    || student.sbu_id === name
+                    return (student.first_name + " " + student.last_name).toLowerCase().startsWith(name) 
+                    
                 })  
                 this.setState({students: filteredStudents})
        
@@ -347,6 +349,55 @@ export default class Students extends Component {
         }else{
             this.readAllStudent().then(newStudents => this.setState({students: newStudents}))
         }
+    }
+
+    reloadStudent = () => {
+        this.readAllStudent().then(newStudents => this.setState({students: newStudents}))
+    }
+
+    searchStudentByCriteria = (name, semester, valid, complete) => {
+        console.log(name, semester, valid, complete)
+        this.readAllStudent().then(currentStudents => {
+            var filteredStudents = currentStudents.filter(function(student){
+                let validName = true
+                if (name !== null){
+                    validName = (student.first_name + " " + student.last_name).toLowerCase().startsWith(name) 
+                }
+                let validSemester = true
+                if (semester !== null){
+                    validSemester = student.entrySemester === semester
+                }
+
+                let validCoursePlan = true
+                if (valid !== null){
+                    validCoursePlan = student.validCoursePlan === valid
+                }
+
+                let validComplete = true
+                if (complete !== null){
+                    validComplete = student.completeCoursePlan === complete 
+                }
+
+                
+                return validName && validSemester && validCoursePlan && validComplete
+            })  
+            
+            if (filteredStudents.length > 0) {
+                this.setState({students: filteredStudents})
+            }else{
+                this.toggleFilterWarningModal()
+            }
+            
+   
+        })
+        
+        
+    }
+
+    toggleFilterWarningModal = () => {
+        var newShowModal = !this.state.showFilterWarningModal
+        this.setState({showFilterWarningModal: newShowModal})
+        
     }
 
     render() {
@@ -370,7 +421,8 @@ export default class Students extends Component {
                         </Col>
 
                         <Col sm={0.1} style={{padding:"0px", margin:"5px"}}>
-                        <FilterModal buttonLabel="Filter"></FilterModal>
+                        <FilterModal buttonLabel="Filter" filterStudents={this.searchStudentByCriteria} reloadStudent={this.reloadStudent}></FilterModal>
+                        <FilterWarningModal toggle={this.toggleFilterWarningModal} modal={this.state.showFilterWarningModal}></FilterWarningModal>
                         </Col>
                    
                         <NavLink href="/add" style={{padding:"0px", margin:"5px"}}><Button style={{ width:"80px"}} color="success">Add Student</Button></NavLink>
@@ -422,10 +474,10 @@ export default class Students extends Component {
                                 <td>7</td>
                                 <td>5</td>
                                 <td>2</td>
-                                <td>Spring 2022</td>
+                                <td>{x.entrySemester}</td>
                                 <td>6</td>
-                                <td>Valid</td>
-                                <td>Incomplete</td>
+                                <td>{x.validCoursePlan ? "Valid" : "Invalid"}</td>
+                                <td>{x.completeCoursePlan ? "Complete" : "Incomplete"}</td>
                                 <td> 
                                     <button onClick={() => this.deleteStudent(x.sbu_id)}>Delete</button>
                                     <Link style={{padding:"0px"}} class="nav-link" to={"/editStudent?user="+x.sbu_id}>
