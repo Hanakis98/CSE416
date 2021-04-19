@@ -7,6 +7,7 @@ const collectionName = "CoursePlans";
 const coursePlanModel = require("../models/coursePlanModel.js")
 const courseModel = require("../models/courseModel.js")
 const axios = require('axios');
+var domain = "http://localhost:3001"
 
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
 
@@ -64,7 +65,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             console.log(arr)
             for (var i =0; i < res.length; i++)
             axios
-            .put('http://localhost:3001/students/updateStudentCoursePlan', {
+            .put(domain + '/students/updateStudentCoursePlan', {
              coursePlan: res[i]
                  })
             .then(res => {

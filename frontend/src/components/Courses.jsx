@@ -2,6 +2,7 @@ import { Component } from 'react';
 import  React   from 'react';
 import { Table, Container, Row, Col, Button } from 'reactstrap';
 
+var domain = "http://localhost:3001"
 export default class Courses extends Component {
     constructor(props) {
         super(props);
@@ -15,7 +16,7 @@ export default class Courses extends Component {
         this.readAllCourses().then(courses => this.setState({courses: courses}))
     }
     readAllCourses = (params) =>  {
-        var route = 'http://localhost:3001/courses/allOfferedCourses/'
+        var route = domain + '/courses/allOfferedCourses/'
     
         return fetch(route, {
             headers: {
@@ -102,7 +103,7 @@ export default class Courses extends Component {
 
     addCourse = (json_data) => {
 
-        fetch('http://localhost:3001/courses/addCourse', {
+        fetch( domain + '/courses/addCourse', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -124,7 +125,7 @@ export default class Courses extends Component {
         const data = { sbu_id: "OFFERING" ,department: d, course_num:cn, semester:s, year:y }
 
 
-        fetch('http://localhost:3001/courses/deleteCourse', {
+        fetch(domain + '/courses/deleteCourse', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -144,7 +145,7 @@ export default class Courses extends Component {
 
     deleteAllCourses = (id) => {
         //let data = {sbu_id: id}
-        fetch('http://localhost:3001/courses/deleteAllOfferedCourses', {
+        fetch(domain + '/courses/deleteAllOfferedCourses', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',

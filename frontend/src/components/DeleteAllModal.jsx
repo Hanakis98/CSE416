@@ -2,7 +2,8 @@ import { React, useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form } from 'reactstrap';
 
 const DeleteAllModal = (props) => {
-  
+  var domain = "http://localhost:3001"
+
     const {
         buttonLabel,
         className,
@@ -18,7 +19,7 @@ const DeleteAllModal = (props) => {
     const toggleAndDelete = (id) =>{
       setModal(!modal)
 
-      fetch('http://localhost:3001/students/deleteAllStudent', {
+      fetch(domain + '/students/deleteAllStudent', {
         method: 'DELETE', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',

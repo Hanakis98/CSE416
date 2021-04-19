@@ -8,7 +8,8 @@ import FilterWarningModal from './FilterWarningModal.jsx'
 //import Cookies from 'js-cookie';
 
 var sha = require("sha1")
- 
+var domain = "http://localhost:3001"
+
 export default class Students extends Component {
     constructor(props) {
         super(props);
@@ -146,7 +147,7 @@ export default class Students extends Component {
 
     coursePlanFileChange = async event => {
         //Delete all current plans
-        fetch('http://localhost:3001/coursePlans/deleteAllPlans', {
+        fetch( domain + '/coursePlans/deleteAllPlans', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -179,7 +180,7 @@ export default class Students extends Component {
                     console.log(sbIDs[i]);
                     var data2 = { sbu_id: sbIDs[i] }
 
-                    fetch('http://localhost:3001/coursePlans/newCoursePlan', {
+                    fetch(domain + '/coursePlans/newCoursePlan', {
                         method: 'POST', // or 'PUT'
                         headers: {
                             'Content-Type': 'application/json',
@@ -193,7 +194,7 @@ export default class Students extends Component {
                 //AddCourses To there course plan
                 for(let i = 0; i < json_data.length; i++) {
 
-                    fetch('http://localhost:3001/coursePlans/addCourseToPlan', {
+                    fetch(domain + '/coursePlans/addCourseToPlan', {
                         method: 'POST', // or 'PUT'
                         headers: {
                             'Content-Type': 'application/json',
@@ -203,7 +204,7 @@ export default class Students extends Component {
 
                 }
                 //Now the course plans have been made. tell all course plans to add themselves to the respective student
-                fetch('http://localhost:3001/coursePlans/addAllPlansToTheirStudent', {
+                fetch(domain + '/coursePlans/addAllPlansToTheirStudent', {
                     method: 'POST', // or 'PUT'
                     headers: {
                         'Content-Type': 'application/json',
@@ -224,7 +225,7 @@ export default class Students extends Component {
         console.log(studentID)
         const data = { sbu_id: studentID }
 
-        fetch('http://localhost:3001/students/deleteStudent', {
+        fetch(domain + '/students/deleteStudent', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -244,7 +245,7 @@ export default class Students extends Component {
 
     addStudent = (json_data) => {
         console.log(json_data)
-        fetch('http://localhost:3001/students/addStudent', {
+        fetch(domain  + '/students/addStudent', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -263,7 +264,7 @@ export default class Students extends Component {
     }
 
     readAllStudent = (params) =>  {
-        var route = 'http://localhost:3001/students/allStudents/'
+        var route = domain + '/students/allStudents/'
     
         return fetch(route, {
             redirect: 'follow',
@@ -288,7 +289,7 @@ export default class Students extends Component {
     deleteAllStudent = (id) => {
         //let data = {sbu_id: id}
 
-        fetch('http://localhost:3001/students/deleteAllStudent', {
+        fetch(domain + '/students/deleteAllStudent', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -313,7 +314,7 @@ export default class Students extends Component {
         const data = { username: 'example', id: "2" };
         var old_id = "1"
     
-        fetch('http://localhost:3001/students/updateStudent', {
+        fetch(domain + '/students/updateStudent', {
             method: 'PUT', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',

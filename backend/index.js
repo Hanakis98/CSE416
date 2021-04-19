@@ -12,9 +12,10 @@ const requirementsRoutes = require("./routes/requirements.js");
 const coursePlanRoutes = require("./routes/course_plan.js");
 const degreeRequirements = require("./routes/degree_requirements.js");
 const cookieParser = require("cookie-parser");
+var frontEndDomain = "http://localhost:3000"
 
 app.use(logger('dev'));
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({credentials: true, origin: frontEndDomain}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser())
@@ -27,7 +28,7 @@ app.use("/degreeRequirements", degreeRequirements);
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Origin', "http://localhost:3000");
+  res.header('Access-Control-Allow-Origin', frontEndDomain);
   res.header('Access-Control-Allow-Methods', 'application/json');
   next();
 });

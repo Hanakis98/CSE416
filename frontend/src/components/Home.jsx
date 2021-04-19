@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 
 var sha = require("sha1")
 var axios = require("axios")
+var domain = "http://localhost:3001"
 
 export default class  Home extends Component {
   constructor(props){
@@ -38,7 +39,7 @@ export default class  Home extends Component {
     axios.withCredentials=true
     axios({
       method: 'POST',
-      url: `http://localhost:3001/advisors/login`,
+      url: domain + `/advisors/login`,
       data:  json_data,
       // responseType: 'json',
       headers: {
@@ -66,7 +67,7 @@ export default class  Home extends Component {
     axios.withCredentials=true
     axios({
       method: 'POST',
-      url: `http://localhost:3001/students/login`,
+      url: domain + `/students/login`,
       data:  json_data,
       // responseType: 'json',
       headers: {

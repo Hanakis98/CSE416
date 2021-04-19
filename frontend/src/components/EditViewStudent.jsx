@@ -5,6 +5,7 @@ import { Table,Container, Row, Col, Form, Button, Label, Input, FormGroup } from
 
 var sha = require("sha1")
 var u=0;
+var domain = "http://localhost:3001"
 
 export default class editStudent extends Component{
     constructor(props) {
@@ -33,9 +34,9 @@ export default class editStudent extends Component{
         const query = new URLSearchParams(window.location.search);
         u = query.get('user')
         
-        var urlToGetStudent="http://localhost:3001/students/getOneStudent"
+        var urlToGetStudent= domain + "/students/getOneStudent"
         if(u != null  ){
-            urlToGetStudent = "http://localhost:3001/students/getOneStudent?user="+u
+            urlToGetStudent = domain + "/students/getOneStudent?user="+u
         }
         fetch(urlToGetStudent, {
             method: 'GET', // or 'PUT'
@@ -95,9 +96,9 @@ export default class editStudent extends Component{
         }
         //The gpd can be updating the student or the student can update themselves.
         //Change the URL depending on this and then send a PUT to update
-        var URLtoUpdateStudent="http://localhost:3001/students/updateStudent";
+        var URLtoUpdateStudent=domain + "/students/updateStudent";
             if(u != null  ){
-                URLtoUpdateStudent = "http://localhost:3001/students/updateStudent?user="+u
+                URLtoUpdateStudent = domain + "/students/updateStudent?user="+u
             }
         fetch(URLtoUpdateStudent, {
             method: 'PUT', // or 'PUT'

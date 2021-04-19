@@ -4,6 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import { Button, Collapse, Navbar, NavbarToggler, NavbarText, NavbarBrand, Nav, NavItem } from 'reactstrap';
 import Cookies from 'js-cookie';
 import axios from 'axios'
+var domain = "http://localhost:3001"
 
 class Nav2 extends Component{
     constructor(props) {
@@ -25,7 +26,7 @@ class Nav2 extends Component{
     logout = () => {
         axios({
             method: 'POST',
-            url: `http://localhost:3001/logout`,
+            url: domain+`/logout`,
             // responseType: 'json',
             headers: {
               Accept: 'application/json',

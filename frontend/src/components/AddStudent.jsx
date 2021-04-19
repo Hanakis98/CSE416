@@ -4,7 +4,7 @@ import  React  from 'react';
 import { Alert, Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
 
 var sha = require("sha1")
-
+var domain = "http://localhost:3001"
 export default class AddStudent extends Component{
     constructor(props) {
         super(props);
@@ -59,7 +59,7 @@ export default class AddStudent extends Component{
 
             coursePlan: []
         }
-        fetch('http://localhost:3001/students/addStudent', {
+        fetch(domain + '/students/addStudent', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
