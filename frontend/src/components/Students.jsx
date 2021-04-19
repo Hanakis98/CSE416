@@ -5,7 +5,7 @@ import { Table, Container, Label, Input, Row, Col, Button, NavLink } from 'react
 import FilterModal from './FilterModal.jsx';
 import DeleteAllModal from './DeleteAllModal.jsx';
 import FilterWarningModal from './FilterWarningModal.jsx'
-//import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 
 var sha = require("sha1")
 var domain = "http://localhost:3001"
@@ -403,6 +403,7 @@ export default class Students extends Component {
         // if(gpdLoggedIn !== "1")
         //TODO: use a separate token auth API request to do this instead of the response from GET /allStudents
         if(this.state.students == null){
+            Cookies.set('gpdLoggedIn', '0');
             return <Redirect to={{
                 pathname:'/', 
                 state: { notauth: true}
