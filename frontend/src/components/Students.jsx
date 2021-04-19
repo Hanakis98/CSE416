@@ -357,7 +357,7 @@ export default class Students extends Component {
                 
                 let validName = true
                 if (name !== null){
-                    validName = (student.first_name + " " + student.last_name).toLowerCase().startsWith(name) 
+                    validName = (student.first_name + " " + student.last_name).toLowerCase().startsWith(name.toLowerCase()) 
                 }
                 let validSemester = true
                 if (semester !== null&& semester==true){

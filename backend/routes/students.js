@@ -109,8 +109,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             email: request.body.email,
             department:  request.body.department,
             track: request.body.track,
-            entrySemester: request.body.entrySemester,
-            entryYear: request.body.entryYear,
+            entry_semester: request.body.entry_semester,
+            entry_year: request.body.entry_year,
             graduation_semester: request.body.graduation_semester,
             graduation_year: request.body.graduation_year,
 

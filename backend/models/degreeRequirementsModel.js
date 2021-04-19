@@ -14,7 +14,7 @@ var degreeReqSchema = new mongoose.Schema({
     timeLimit: String,
     proficencyReqs: [String],
     courseReqs: [String],
-    entrySemester: String,
+    entry_semester: String,
     expectedGradSemester: String,
     hasGraduated: Boolean,
     percentageComplete: String,

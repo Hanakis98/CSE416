@@ -12,7 +12,7 @@
     "timeLimit": "int",
     "proficencyReqs": ["string"],
     "courseReqs": ["string"],
-    "entrySemester": "string",
+    "entry_semester": "string",
     "expectedGradSemester": "string",
     "hasGraduated": "bool",
     "percentageComplete": "long",
