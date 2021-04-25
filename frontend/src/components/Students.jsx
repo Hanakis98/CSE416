@@ -409,7 +409,7 @@ export default class Students extends Component {
         }
         return (
             <Container>
-                <Row style={{alignItems: 'center', justifyContent: 'space-between'}}>
+                <Row style={{paddingLeft:"10px", paddingRight:"10px",alignItems: 'center', justifyContent: 'space-between'}}>
                     
                     <Col sm={3} style={{padding:"0px", margin:"5px"}}>
                         <Label>Search</Label>

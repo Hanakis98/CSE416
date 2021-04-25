@@ -164,37 +164,28 @@ export default class Courses extends Component {
     render() {
         return (
             <Container>
-                <Row style={{alignItems: 'center', justifyContent: 'flex-start'}}>
+                <Row style={{paddingLeft:"10px", paddingRight:"10px", alignItems: 'center', justifyContent: 'flex-end'}}>
                
-                     <Col xs="2" style={{padding:"0px", margin:"5px"}}>
-                        <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
-                        <Button onClick={(e) => this.uploadStudentData.click()}>Scrape Course Info </Button>
-                    </Col>
-                   
-                    <Col xs="2" style={{padding:"0px", margin:"5px"}}>
-                        <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
-                        <Button onClick={(e) => this.uploadStudentData.click()}>Import course offerings </Button>
-                    </Col>
-                    <Col xs="2" style={{padding:"0px", margin:"5px"}}>
-                        <Button onClick={this.deleteAllCourses} style={{ width:"100px"}}>Delete All Courses</Button>
-                    </Col>
+                    <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
+                    <Button onClick={(e) => this.uploadStudentData.click()} style={{ width:"120px", margin:"5px"}}>Scrape Course Info </Button>
+                    
+                    <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
+                    <Button onClick={(e) => this.uploadStudentData.click()} style={{ width:"130px", margin:"5px"}}>Import Course Offerings </Button>
+
+                    <Button onClick={this.deleteAllCourses} style={{ width:"100px", margin:"5px"}}>Delete All Courses</Button>
                     
                 </Row>
-                <br></br>
-                <br></br>
 
                 <Table  xs="3">
                     <thead><tr>
-                        <th>Depatment</th>
-                        <th>Course Number</th>
+                        <th>Department</th>
+                        <th>Course</th>
                         <th>Section</th>
                         <th>Semester</th>
                         <th>Year</th>
                         <th>Timeslot</th>
                         <th></th>
                         <th></th>
-
-
                     </tr></thead>
                     
                     <tbody>
