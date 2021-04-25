@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import  React   from 'react';
 import { Table, Container, Row, Col, Button } from 'reactstrap';
+import { backendDomain } from './../App.js';
 
-var domain = "http://localhost:3001"
 export default class Courses extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +16,7 @@ export default class Courses extends Component {
         this.readAllCourses().then(courses => this.setState({courses: courses}))
     }
     readAllCourses = (params) =>  {
-        var route = domain + '/courses/allOfferedCourses/'
+        var route = backendDomain + '/courses/allOfferedCourses/'
     
         return fetch(route, {
             headers: {
@@ -103,7 +103,7 @@ export default class Courses extends Component {
 
     addCourse = (json_data) => {
 
-        fetch( domain + '/courses/addCourse', {
+        fetch( backendDomain + '/courses/addCourse', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ export default class Courses extends Component {
         const data = { sbu_id: "OFFERING" ,department: d, course_num:cn, semester:s, year:y }
 
 
-        fetch(domain + '/courses/deleteCourse', {
+        fetch(backendDomain + '/courses/deleteCourse', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -145,7 +145,7 @@ export default class Courses extends Component {
 
     deleteAllCourses = (id) => {
         //let data = {sbu_id: id}
-        fetch(domain + '/courses/deleteAllOfferedCourses', {
+        fetch(backendDomain + '/courses/deleteAllOfferedCourses', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -164,19 +164,19 @@ export default class Courses extends Component {
     render() {
         return (
             <Container>
-                <Row>              
+                <Row style={{alignItems: 'center', justifyContent: 'flex-start'}}>
                
-                     <Col xs="2">
+                     <Col xs="2" style={{padding:"0px", margin:"5px"}}>
                         <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
                         <Button onClick={(e) => this.uploadStudentData.click()}>Scrape Course Info </Button>
                     </Col>
                    
-                    <Col xs="2">
+                    <Col xs="2" style={{padding:"0px", margin:"5px"}}>
                         <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
                         <Button onClick={(e) => this.uploadStudentData.click()}>Import course offerings </Button>
                     </Col>
-                    <Col xs="2">
-                        <Button onClick={this.deleteAllCourses}>Delete All Courses</Button>
+                    <Col xs="2" style={{padding:"0px", margin:"5px"}}>
+                        <Button onClick={this.deleteAllCourses} style={{ width:"100px"}}>Delete All Courses</Button>
                     </Col>
                     
                 </Row>

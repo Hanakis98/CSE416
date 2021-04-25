@@ -1,11 +1,10 @@
 import {Component}  from 'react';
 import  React  from 'react';
-
 import { Table,Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
+import { backendDomain } from './../App.js';
 
 var sha = require("sha1")
 var u=0;
-var domain = "http://localhost:3001"
 
 export default class editStudent extends Component{
     constructor(props) {
@@ -34,9 +33,9 @@ export default class editStudent extends Component{
         const query = new URLSearchParams(window.location.search);
         u = query.get('user')
         
-        var urlToGetStudent= domain + "/students/getOneStudent"
+        var urlToGetStudent= backendDomain + "/students/getOneStudent"
         if(u != null  ){
-            urlToGetStudent = domain + "/students/getOneStudent?user="+u
+            urlToGetStudent = backendDomain + "/students/getOneStudent?user="+u
         }
         fetch(urlToGetStudent, {
             method: 'GET', // or 'PUT'
@@ -96,9 +95,9 @@ export default class editStudent extends Component{
         }
         //The gpd can be updating the student or the student can update themselves.
         //Change the URL depending on this and then send a PUT to update
-        var URLtoUpdateStudent=domain + "/students/updateStudent";
+        var URLtoUpdateStudent=backendDomain + "/students/updateStudent";
             if(u != null  ){
-                URLtoUpdateStudent = domain + "/students/updateStudent?user="+u
+                URLtoUpdateStudent = backendDomain + "/students/updateStudent?user="+u
             }
         fetch(URLtoUpdateStudent, {
             method: 'PUT', // or 'PUT'

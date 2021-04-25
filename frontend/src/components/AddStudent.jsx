@@ -1,10 +1,10 @@
 import {  Component } from 'react';
 import  React  from 'react';
-
 import { Alert, Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
+import { backendDomain } from './../App.js';
 
 var sha = require("sha1")
-var domain = "http://localhost:3001"
+
 export default class AddStudent extends Component{
     constructor(props) {
         super(props);
@@ -59,7 +59,7 @@ export default class AddStudent extends Component{
 
             coursePlan: []
         }
-        fetch(domain + '/students/addStudent', {
+        fetch(backendDomain + '/students/addStudent', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
