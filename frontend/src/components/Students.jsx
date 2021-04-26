@@ -7,6 +7,7 @@ import DeleteAllModal from './DeleteAllModal.jsx';
 import FilterWarningModal from './FilterWarningModal.jsx'
 import Cookies from 'js-cookie';
 import { backendDomain } from './../App.js';
+var domain = "http://localhost:3001"
 
 var sha = require("sha1")
 
