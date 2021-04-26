@@ -1,7 +1,7 @@
 import {Component}  from 'react';
 import  React  from 'react';
-
 import { Table,Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
+import { backendDomain } from './../App.js';
 
 var sha = require("sha1")
 var u=0;
@@ -20,10 +20,10 @@ export default class editStudent extends Component{
             sbu_id: "",
             courses:[],
             studentUserName:u,
-            entrySemester: "",
-            entryYear : "",
+            entry_semester: "",
+            entry_year : "",
             graduation_semester: "",
-            graduationYear: ""
+            graduation_year: ""
                }; 
 
         this.handleChange = this.handleChange.bind(this);
@@ -33,9 +33,9 @@ export default class editStudent extends Component{
         const query = new URLSearchParams(window.location.search);
         u = query.get('user')
         
-        var urlToGetStudent="http://localhost:3001/students/getOneStudent"
+        var urlToGetStudent= backendDomain + "/students/getOneStudent"
         if(u != null  ){
-            urlToGetStudent = "http://localhost:3001/students/getOneStudent?user="+u
+            urlToGetStudent = backendDomain + "/students/getOneStudent?user="+u
         }
         fetch(urlToGetStudent, {
             method: 'GET', // or 'PUT'
@@ -54,10 +54,10 @@ export default class editStudent extends Component{
                     track: data.track,
                     sbu_id: data.sbu_id,
                     studentUserName:u,
-                    entrySemester: data.entrySemester,
-                    entryYear : data.entryYear,
+                    entry_semester: data.entry_semester,
+                    entry_year : data.entry_year,
                     graduation_semester: data.graduation_semester,
-                    graduationYear: data.graduationYear
+                    graduation_year: data.graduation_year
                  });       
                  if(data.coursePlan != null)
                     this.setState ( {
@@ -88,16 +88,16 @@ export default class editStudent extends Component{
             department:  this.state.department,
             track: this.state.track,
             password: this.state.password,
-            entrySemester: this.state.entrySemester,
-            entryYear : this.state.entryYear,
+            entry_semester: this.state.entry_semester,
+            entry_year : this.state.entry_year,
             graduation_semester: this.state.graduation_semester,
-            graduationYear: this.state.graduationYear
+            graduation_year: this.state.graduation_year
         }
         //The gpd can be updating the student or the student can update themselves.
         //Change the URL depending on this and then send a PUT to update
-        var URLtoUpdateStudent="http://localhost:3001/students/updateStudent";
+        var URLtoUpdateStudent=backendDomain + "/students/updateStudent";
             if(u != null  ){
-                URLtoUpdateStudent = "http://localhost:3001/students/updateStudent?user="+u
+                URLtoUpdateStudent = backendDomain + "/students/updateStudent?user="+u
             }
         fetch(URLtoUpdateStudent, {
             method: 'PUT', // or 'PUT'
@@ -157,11 +157,11 @@ export default class editStudent extends Component{
                     </FormGroup>
                     <FormGroup row>
                         <Label for="entry_semester" sm={1}>Entry Semester</Label>
-                        <Col sm={4}><Input type="text" id="entry_semester"placeholder={this.state.entrySemester}   onChange = {e=> this.setState( { entrySemester : e.target.value})}/></Col>
+                        <Col sm={4}><Input type="text" id="entry_semester"placeholder={this.state.entry_semester}   onChange = {e=> this.setState( { entry_semester : e.target.value})}/></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="entry_year" sm={1}>Entry Year</Label>
-                        <Col sm={4}><Input type="text" id="entry_year"placeholder={this.state.entryYear}   onChange = {e=> this.setState( { entryYear : e.target.value })}/></Col>
+                        <Col sm={4}><Input type="text" id="entry_year"placeholder={this.state.entry_year}   onChange = {e=> this.setState( { entry_year : e.target.value })}/></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="graduation_semester" sm={1}>Graduation Semester</Label>
@@ -169,7 +169,7 @@ export default class editStudent extends Component{
                     </FormGroup>
                     <FormGroup row>
                         <Label for="graduation_year" sm={1}>Graduation Year</Label>
-                        <Col sm={4}><Input type="text" id="graduation_year" placeholder={this.state.graduationYear}   onChange = {e=> this.setState( { graduationYear: e.target.value})}/></Col>
+                        <Col sm={4}><Input type="text" id="graduation_year" placeholder={this.state.graduation_year}   onChange = {e=> this.setState( { graduation_year: e.target.value})}/></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="major" sm={1}>Major</Label>

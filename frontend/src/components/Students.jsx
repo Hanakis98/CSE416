@@ -5,7 +5,9 @@ import { Table, Container, Label, Input, Row, Col, Button, NavLink } from 'react
 import FilterModal from './FilterModal.jsx';
 import DeleteAllModal from './DeleteAllModal.jsx';
 import FilterWarningModal from './FilterWarningModal.jsx'
-//import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
+import { backendDomain } from './../App.js';
+var domain = "http://localhost:3001"
 
 var sha = require("sha1")
 
@@ -23,6 +25,7 @@ export default class Students extends Component {
         this.readAllStudent().then(newStudents => this.setState({ students: newStudents }));
     }
 
+    // Convert text to csv 
     convertTextToCSV = (text) => {
         let csvData = [];
         let lbreak = text.split("\n");
@@ -31,7 +34,7 @@ export default class Students extends Component {
         });
         return csvData
     }
-
+    //Verify header for studnet data
     verifyHeader = (header) => {
         let validHeader = true
         header.forEach(function (data, index) {
@@ -78,12 +81,13 @@ export default class Students extends Component {
         })
         return validHeader
     }
-
+    
+    //Build JSON for import student data
     buildJSONfromRow = (row) => {
         let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[10], graduation_year: row[11], password:sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"), coursePlan :null }
         return json
     }
-
+    //Go through all the student data and create new student 
     onStudentFileChange = async event => {
         var file = event.target.files[0]
         console.log(file)
@@ -137,16 +141,16 @@ export default class Students extends Component {
         })
         return validHeader
     }
-
+    //Build JSON for import  course plan data
     buildJSONfromRow2 = (row) => {
         let json = { sbu_id: row[0], department: row[1], course_num: row[2], section: row[3], semester: row[4], year: row[5], grade: row[6] }
         console.log(json)
         return json
     }
-
+    //Create course plans from course plan data
     coursePlanFileChange = async event => {
         //Delete all current plans
-        fetch('http://localhost:3001/coursePlans/deleteAllPlans', {
+        fetch( backendDomain + '/coursePlans/deleteAllPlans', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -179,7 +183,7 @@ export default class Students extends Component {
                     console.log(sbIDs[i]);
                     var data2 = { sbu_id: sbIDs[i] }
 
-                    fetch('http://localhost:3001/coursePlans/newCoursePlan', {
+                    fetch(backendDomain + '/coursePlans/newCoursePlan', {
                         method: 'POST', // or 'PUT'
                         headers: {
                             'Content-Type': 'application/json',
@@ -187,44 +191,79 @@ export default class Students extends Component {
                         credentials: 'include',
                         body: JSON.stringify(data2)
                     })
-
                 }
-
                 //AddCourses To there course plan
                 for (let i = 0; i < json_data.length; i++) {
 
-                    fetch('http://localhost:3001/coursePlans/addCourseToPlan', {
+                    fetch(backendDomain + '/coursePlans/addCourseToPlan', {
                         method: 'POST', // or 'PUT'
                         headers: {
                             'Content-Type': 'application/json',
                         }, credentials: 'include',
                         body: JSON.stringify(json_data[i]),
-                    });
-
+                    }); 
                 }
                 //Now the course plans have been made. tell all course plans to add themselves to the respective student
-                fetch('http://localhost:3001/coursePlans/addAllPlansToTheirStudent', {
+                fetch(backendDomain + '/coursePlans/addAllPlansToTheirStudent', {
                     method: 'POST', // or 'PUT'
                     headers: {
                         'Content-Type': 'application/json',
-                    }, credentials: 'include',
-                });
-
-
+                    }, credentials: 'include', 
+                }); 
                 console.log(json_data)
-                // json_data.map(x => this.addCourseToPlan(x))
-
-            } else
-                console.log("F")
+            }  
         }
+    };
+    //Import grades 
+    importGradesFileChange = async event => {
+        var file = event.target.files[0]
+        var extension = file.name.split('.').pop()
+        if (extension === 'csv') {
+            let text = await file.text();
+            let csvData = this.convertTextToCSV(text)
 
+            // Verfiy header of csv file
+            let header = csvData[0]
+            let data = csvData.slice(1)
+            if (this.verifyHeader2(header)) {
+
+                let json_data = data.map(x => this.buildJSONfromRow2(x))
+                console.log(json_data)
+                for(let i = 0; i < json_data.length; i++) {
+                    console.log(json_data[i])
+                    fetch(domain + '/courses/addGrade', {
+                        method: 'POST', // or 'PUT'
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }, credentials: 'include', 
+                        body: JSON.stringify(json_data[i]),
+                    }); 
+                }
+            
+            }
+        }
     };
 
+    deletePlansAndCourses= ()=>{
+        fetch(domain + '/coursePlans/deleteAllPlans', {
+            method: 'DELETE', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            }, credentials: 'include', 
+        })
+        fetch(domain + '/courses/deleteAllCourses', {
+            method: 'DELETE', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            }, credentials: 'include', 
+        })
+    }
+    //Delete student
     deleteStudent = (studentID) => {
         console.log(studentID)
         const data = { sbu_id: studentID }
 
-        fetch('http://localhost:3001/students/deleteStudent', {
+        fetch(backendDomain + '/students/deleteStudent', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -241,10 +280,10 @@ export default class Students extends Component {
             });
 
     }
-
+    //Add student. Called when importing student data
     addStudent = (json_data) => {
         console.log(json_data)
-        fetch('http://localhost:3001/students/addStudent', {
+        fetch(backendDomain  + '/students/addStudent', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -261,10 +300,10 @@ export default class Students extends Component {
             });
 
     }
-
-    readAllStudent = (params) => {
-        var route = 'http://localhost:3001/students/allStudents/'
-
+    //readAllStudent is for showing all the students on the
+    readAllStudent = (params) =>  {
+        var route = backendDomain + '/students/allStudents/'
+    
         return fetch(route, {
             redirect: 'follow',
             headers: {
@@ -288,7 +327,7 @@ export default class Students extends Component {
     deleteAllStudent = (id) => {
         //let data = {sbu_id: id}
 
-        fetch('http://localhost:3001/students/deleteAllStudent', {
+        fetch(backendDomain + '/students/deleteAllStudent', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -312,8 +351,8 @@ export default class Students extends Component {
     
         const data = { username: 'example', id: "2" };
         var old_id = "1"
-
-        fetch('http://localhost:3001/students/updateStudent', {
+    
+        fetch(backendDomain + '/students/updateStudent', {
             method: 'PUT', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -356,22 +395,21 @@ export default class Students extends Component {
             var filteredStudents = currentStudents.filter(function(student){
                 
                 let validName = true
-                if (name !== "") {                   
-                    validName = (student.first_name + " " + student.last_name).toLowerCase().startsWith(name)
+                if (name !== null){
+                    validName = (student.first_name + " " + student.last_name).toLowerCase().startsWith(name.toLowerCase()) 
                 }
                 let validSemester = true
-                if (semester !== ""){
+                if (semester !== null && semester === true){
                     validSemester = (student.graduation_semester +" " + student.graduation_year).startsWith(semester)
                 }
 
                 let validCoursePlan = true
-                if (valid !== null&& valid==true){                    
+                if (valid !== null && valid === true){
                     validCoursePlan = student.validCoursePlan === valid
                 }
 
                 let validComplete = true
-                if (complete !== null && complete==true){
-                    console.log(student.completeCoursePlan)
+                if (complete !== null && complete === true){
                     validComplete = student.completeCoursePlan === complete 
                 }
 
@@ -398,19 +436,18 @@ export default class Students extends Component {
     }
 
     render() {
-        // redirect by checking cookies instead of auth response
-        // const gpdLoggedIn=Cookies.get("gpdLoggedIn");
-        // if(gpdLoggedIn !== "1")
+        const gpdLoggedIn=Cookies.get("gpdLoggedIn");
         //TODO: use a separate token auth API request to do this instead of the response from GET /allStudents
-        if (this.state.students == null) {
+        if(gpdLoggedIn !== "1" || this.state.students == null){
+            Cookies.set('gpdLoggedIn', '0');
             return <Redirect to={{
-                pathname: '/',
+                pathname:'/', 
                 state: { notauth: true }
             }} />
         }
         return (
             <Container>
-                <Row style={{alignItems: 'center', justifyContent: 'space-between'}}>
+                <Row style={{paddingLeft:"10px", paddingRight:"10px",alignItems: 'center', justifyContent: 'space-between'}}>
                     
                     <Col sm={3} style={{padding:"0px", margin:"5px"}}>
                         <Label>Search</Label>
@@ -428,10 +465,9 @@ export default class Students extends Component {
 
                     {/* <Col xs={1}></Col> */}
                     <Col xs={4.5}>
-
-
-                        <Button style={{ margin: "5px", width: "80px" }}>Import Grades</Button>
-
+                    <input id="myInput" type="file" ref={(ref) => this.importGrades = ref} style={{ display: 'none' }} onChange={this.importGradesFileChange} />
+                        <Button style={{ margin:"5px", width:"80px"}} onClick={(e) => this.importGrades.click()}  onChange={this.importGradesFileChange}>Import Grades</Button>
+                    
                         <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onStudentFileChange} />
                         <Button style={{ margin: "5px", width: "120px" }} onClick={(e) => this.uploadStudentData.click()}>Import Student Data</Button>
 
@@ -488,6 +524,8 @@ export default class Students extends Component {
                         ))}
                     </tbody>
                 </Table>
+                <Button style={{ margin:"5px", width:"120px"}} onClick={(e) => this.deletePlansAndCourses()}>Delete all courses and plans</Button>
+
             </Container>
         );
     }

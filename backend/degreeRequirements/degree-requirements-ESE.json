@@ -7,7 +7,7 @@
     "minCredits": 30,
     "trackRequirements":[
         {
-            "track": "Non Thesis ",
+            "track": "Non Thesis",
             "requiredCourses":[
                 {
                     "name":"Switching and Routing in Parallel and Distributed Systems",

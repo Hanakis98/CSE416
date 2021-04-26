@@ -1,13 +1,15 @@
 const express = require("express");
 const { ObjectID } = require("mongodb");
+const { ObjectId } = require("mongodb");
 const router = express.Router();
 const db = require("../database.js");
 const dbName = "CSE416";
 const collectionName = "Courses";
-
+const axios = require('axios');
+var domain = "http://localhost:3001"
 
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
-
+ 
     router.get("/allCourses", (request, response) => {
         // return updated list
         dbCollection.find().toArray((error, result) => {
@@ -16,8 +18,40 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
+
+    router.post("/addGrade", (request, response) => {
+        
+           dbCollection.updateOne( { sbu_id: request.body.sbu_id, course_num: request.body.course_num, department: request.body.department}, {$set:{grade:request.body.grade}},(error, res) => {
+                if (error) throw error;
+                //update the course object
+          
+
+                axios
+                .post(domain + '/coursePlans/addGrade', {
+                    sbu_id: request.body.sbu_id,
+                    course_num: request.body.course_num,
+                    department: request.body.department,
+                    grade:request.body.grade  ,
+                    section: request.body.section  ,
+                    year: request.body.year,
+                    semester: request.body.semester,
+                    description: request.body.description
+                    })
+                .then(res => {
+                    response.send()
+                })
+                .catch(error => {
+                })
+                //Now have to update courseplan object and student object
+
+
+            } );
+    
+
+
+    });
     router.get("/allOfferedCourses", (request, response) => {
-        // return updated list
+        // return updated list 
         dbCollection.find( {sbu_id:"OFFERING"}  ).toArray((error, result) => {
             if (error) throw error;
             response.json(result);
@@ -79,5 +113,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 }, function(err) { // failureCallback
     throw (err);
 });
+
+
 
 module.exports = router

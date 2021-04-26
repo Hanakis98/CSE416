@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import React from 'react';
 import { Table, Container, Row, Col, Button } from 'reactstrap';
+import { backendDomain } from './../App.js';
 
 export default class Courses extends Component {
     constructor(props) {
@@ -14,9 +15,15 @@ export default class Courses extends Component {
     componentDidMount() {
         this.readAllCourses().then(courses => this.setState({ courses: courses }))
     }
+<<<<<<< HEAD
     readAllCourses = (params) => {
         var route = 'http://localhost:3001/courses/allOfferedCourses/'
 
+=======
+    readAllCourses = (params) =>  {
+        var route = backendDomain + '/courses/allOfferedCourses/'
+    
+>>>>>>> refs/remotes/origin/master
         return fetch(route, {
             headers: {
                 'Content-Type': 'application/json',
@@ -63,10 +70,10 @@ export default class Courses extends Component {
             } else if (index === 4 && data !== 'year') {
                 validHeader = false
                 console.log(index)
-            } else if (index === 5 && data !== 'timeslot\r') {
-                validHeader = false
-                console.log(index)
-            }
+             }// else if (index === 5 && data !== 'timeslot\r') {
+            //     validHeader = false
+            //     console.log(index)
+            // }
         })
         return validHeader
     }
@@ -102,7 +109,7 @@ export default class Courses extends Component {
 
     addCourse = (json_data) => {
 
-        fetch('http://localhost:3001/courses/addCourse', {
+        fetch( backendDomain + '/courses/addCourse', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -124,7 +131,7 @@ export default class Courses extends Component {
         const data = { sbu_id: "OFFERING", department: d, course_num: cn, semester: s, year: y }
 
 
-        fetch('http://localhost:3001/courses/deleteCourse', {
+        fetch(backendDomain + '/courses/deleteCourse', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -144,7 +151,7 @@ export default class Courses extends Component {
 
     deleteAllCourses = (id) => {
         //let data = {sbu_id: id}
-        fetch('http://localhost:3001/courses/deleteAllOfferedCourses', {
+        fetch(backendDomain + '/courses/deleteAllOfferedCourses', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -163,6 +170,7 @@ export default class Courses extends Component {
     render() {
         return (
             <Container>
+<<<<<<< HEAD
                 <Row>
 
                     <Col xs="2">
@@ -178,22 +186,30 @@ export default class Courses extends Component {
                         <Button onClick={this.deleteAllCourses}>Delete All Courses</Button>
                     </Col>
 
+=======
+                <Row style={{paddingLeft:"10px", paddingRight:"10px", alignItems: 'center', justifyContent: 'flex-end'}}>
+               
+                    <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
+                    <Button onClick={(e) => this.uploadStudentData.click()} style={{ width:"120px", margin:"5px"}}>Scrape Course Info </Button>
+                    
+                    <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
+                    <Button onClick={(e) => this.uploadStudentData.click()} style={{ width:"130px", margin:"5px"}}>Import Course Offerings </Button>
+
+                    <Button onClick={this.deleteAllCourses} style={{ width:"100px", margin:"5px"}}>Delete All Courses</Button>
+                    
+>>>>>>> refs/remotes/origin/master
                 </Row>
-                <br></br>
-                <br></br>
 
                 <Table xs="3">
                     <thead><tr>
-                        <th>Depatment</th>
-                        <th>Course Number</th>
+                        <th>Department</th>
+                        <th>Course</th>
                         <th>Section</th>
                         <th>Semester</th>
                         <th>Year</th>
                         <th>Timeslot</th>
                         <th></th>
                         <th></th>
-
-
                     </tr></thead>
 
                     <tbody>

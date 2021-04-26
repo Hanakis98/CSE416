@@ -1,7 +1,7 @@
 import {  Component } from 'react';
 import  React  from 'react';
-
 import { Alert, Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
+import { backendDomain } from './../App.js';
 
 var sha = require("sha1")
 
@@ -19,8 +19,8 @@ export default class AddStudent extends Component{
             track: "",
             sbu_id: "",
             error: 10  ,
-            entryYear:"",
-            entrySemester:"",
+            entry_year:"",
+            entry_semester:"",
             graduation_year:"",
             graduation_semester:"",
             coursePlan: []
@@ -38,7 +38,7 @@ export default class AddStudent extends Component{
         event.preventDefault();
     }
     addStudent = ()=> {
-        if(this.state.firstName === "" || this.state.lastName === ""|| this.state.sbu_id === ""|| this.state.email === ""|| this.state.major === ""|| this.state.track === "" || this.state.password === "" ||this.state.entrySemester === "" || this.state.entryYear === "")
+        if(this.state.firstName === "" || this.state.lastName === ""|| this.state.sbu_id === ""|| this.state.email === ""|| this.state.major === ""|| this.state.track === "" || this.state.password === "" ||this.state.entry_semester === "" || this.state.entry_year === "")
             {
                 this.setState({error:1})
                 return 
@@ -51,15 +51,15 @@ export default class AddStudent extends Component{
             department:  this.state.major,
             track: this.state.track,
             password: this.state.password,
-            entryYear: this.state.entryYear,
-            entrySemester: this.state.entrySemester,
+            entry_year: this.state.entry_year,
+            entry_semester: this.state.entry_semester,
             graduation_semester: this.state.graduation_semester,
             graduation_year: this.state.graduation_year,
 
 
             coursePlan: []
         }
-        fetch('http://localhost:3001/students/addStudent', {
+        fetch(backendDomain + '/students/addStudent', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -101,16 +101,16 @@ export default class AddStudent extends Component{
                     </FormGroup>
 
                     <FormGroup row>
-                        <Label for="id" sm={3}>EntryYear</Label>
-                        <Col sm={8}><Input type="text" id="entryYear" onChange = {e=> this.setState( {entryYear: e.target.value })} /></Col>
+                        <Label for="id" sm={3}>Entry Year</Label>
+                        <Col sm={8}><Input type="text" id="entry_year" onChange = {e=> this.setState( {entry_year: e.target.value })} /></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="id" sm={3}>Entry Semester</Label>
-                        <Col sm={8}><Input type="text" id="entrySemester" onChange = {e=> this.setState( {entrySemester: e.target.value })} /></Col>
+                        <Col sm={8}><Input type="text" id="entry_semester" onChange = {e=> this.setState( {entry_semester: e.target.value })} /></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="id" sm={3}>Graduation Year</Label>
-                        <Col sm={8}><Input type="text" id="gradYear" onChange = {e=> this.setState( {graduationYear: e.target.value })} /></Col>
+                        <Col sm={8}><Input type="text" id="gradYear" onChange = {e=> this.setState( {graduation_year: e.target.value })} /></Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="id" sm={3}>Graduation Semester</Label>
