@@ -15,15 +15,9 @@ export default class Courses extends Component {
     componentDidMount() {
         this.readAllCourses().then(courses => this.setState({ courses: courses }))
     }
-<<<<<<< HEAD
-    readAllCourses = (params) => {
-        var route = 'http://localhost:3001/courses/allOfferedCourses/'
-
-=======
     readAllCourses = (params) =>  {
         var route = backendDomain + '/courses/allOfferedCourses/'
     
->>>>>>> refs/remotes/origin/master
         return fetch(route, {
             headers: {
                 'Content-Type': 'application/json',
@@ -170,23 +164,6 @@ export default class Courses extends Component {
     render() {
         return (
             <Container>
-<<<<<<< HEAD
-                <Row>
-
-                    <Col xs="2">
-                        <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
-                        <Button onClick={(e) => this.uploadStudentData.click()}>Scrape Course Info </Button>
-                    </Col>
-
-                    <Col xs="2">
-                        <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
-                        <Button onClick={(e) => this.uploadStudentData.click()}>Import course offerings </Button>
-                    </Col>
-                    <Col xs="2">
-                        <Button onClick={this.deleteAllCourses}>Delete All Courses</Button>
-                    </Col>
-
-=======
                 <Row style={{paddingLeft:"10px", paddingRight:"10px", alignItems: 'center', justifyContent: 'flex-end'}}>
                
                     <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
@@ -197,7 +174,6 @@ export default class Courses extends Component {
 
                     <Button onClick={this.deleteAllCourses} style={{ width:"100px", margin:"5px"}}>Delete All Courses</Button>
                     
->>>>>>> refs/remotes/origin/master
                 </Row>
 
                 <Table xs="3">
