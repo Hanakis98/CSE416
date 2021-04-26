@@ -1,12 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Nav2, Home, Students, Degrees, Courses, Trends, AddStudent,EditStudent } from "./components";
+import { Navbar, Home, Students, Degrees, Courses, Trends, AddStudent,EditStudent } from "./components";
+
+export let backendDomain = "http://localhost:3001";
 
 export default function App() {
   return (
     <div className="App">
       <Router>
-        <Nav2 />
+        <Navbar />
         <Switch>
           <Route path="/" exact component={(props) => <Home {...props}/>} />
           <Route path="/students" exact component={() => <Students />} />

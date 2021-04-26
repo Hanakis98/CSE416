@@ -6,9 +6,9 @@ import FilterModal from './FilterModal.jsx';
 import DeleteAllModal from './DeleteAllModal.jsx';
 import FilterWarningModal from './FilterWarningModal.jsx'
 import Cookies from 'js-cookie';
+import { backendDomain } from './../App.js';
 
 var sha = require("sha1")
-var domain = "http://localhost:3001"
 
 export default class Students extends Component {
     constructor(props) {
@@ -149,7 +149,7 @@ export default class Students extends Component {
     //Create course plans from course plan data
     coursePlanFileChange = async event => {
         //Delete all current plans
-        fetch( domain + '/coursePlans/deleteAllPlans', {
+        fetch( backendDomain + '/coursePlans/deleteAllPlans', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ export default class Students extends Component {
                     console.log(sbIDs[i]);
                     var data2 = { sbu_id: sbIDs[i] }
 
-                    fetch(domain + '/coursePlans/newCoursePlan', {
+                    fetch(backendDomain + '/coursePlans/newCoursePlan', {
                         method: 'POST', // or 'PUT'
                         headers: {
                             'Content-Type': 'application/json',
@@ -194,7 +194,7 @@ export default class Students extends Component {
                 //AddCourses To there course plan
                 for(let i = 0; i < json_data.length; i++) {
 
-                    fetch(domain + '/coursePlans/addCourseToPlan', {
+                    fetch(backendDomain + '/coursePlans/addCourseToPlan', {
                         method: 'POST', // or 'PUT'
                         headers: {
                             'Content-Type': 'application/json',
@@ -203,7 +203,7 @@ export default class Students extends Component {
                     }); 
                 }
                 //Now the course plans have been made. tell all course plans to add themselves to the respective student
-                fetch(domain + '/coursePlans/addAllPlansToTheirStudent', {
+                fetch(backendDomain + '/coursePlans/addAllPlansToTheirStudent', {
                     method: 'POST', // or 'PUT'
                     headers: {
                         'Content-Type': 'application/json',
@@ -262,7 +262,7 @@ export default class Students extends Component {
         console.log(studentID)
         const data = { sbu_id: studentID }
 
-        fetch(domain + '/students/deleteStudent', {
+        fetch(backendDomain + '/students/deleteStudent', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -282,7 +282,7 @@ export default class Students extends Component {
     //Add student. Called when importing student data
     addStudent = (json_data) => {
         console.log(json_data)
-        fetch(domain  + '/students/addStudent', {
+        fetch(backendDomain  + '/students/addStudent', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -301,7 +301,7 @@ export default class Students extends Component {
     }
     //readAllStudent is for showing all the students on the
     readAllStudent = (params) =>  {
-        var route = domain + '/students/allStudents/'
+        var route = backendDomain + '/students/allStudents/'
     
         return fetch(route, {
             redirect: 'follow',
@@ -326,7 +326,7 @@ export default class Students extends Component {
     deleteAllStudent = (id) => {
         //let data = {sbu_id: id}
 
-        fetch(domain + '/students/deleteAllStudent', {
+        fetch(backendDomain + '/students/deleteAllStudent', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -351,7 +351,7 @@ export default class Students extends Component {
         const data = { username: 'example', id: "2" };
         var old_id = "1"
     
-        fetch(domain + '/students/updateStudent', {
+        fetch(backendDomain + '/students/updateStudent', {
             method: 'PUT', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -398,17 +398,17 @@ export default class Students extends Component {
                     validName = (student.first_name + " " + student.last_name).toLowerCase().startsWith(name.toLowerCase()) 
                 }
                 let validSemester = true
-                if (semester !== null&& semester==true){
+                if (semester !== null && semester === true){
                     validSemester = (student.graduation_semester +" " + student.graduation_year).startsWith(semester)
                 }
 
                 let validCoursePlan = true
-                if (valid !== null&& valid==true){
+                if (valid !== null && valid === true){
                     validCoursePlan = student.validCoursePlan === valid
                 }
 
                 let validComplete = true
-                if (complete !== null && complete==true){
+                if (complete !== null && complete === true){
                     validComplete = student.completeCoursePlan === complete 
                 }
 
@@ -435,20 +435,18 @@ export default class Students extends Component {
     }
 
     render() {
-        // redirect by checking cookies instead of auth response
-        // const gpdLoggedIn=Cookies.get("gpdLoggedIn");
-        // if(gpdLoggedIn !== "1")
+        const gpdLoggedIn=Cookies.get("gpdLoggedIn");
         //TODO: use a separate token auth API request to do this instead of the response from GET /allStudents
-        if(this.state.students == null){
+        if(gpdLoggedIn !== "1" || this.state.students == null){
             Cookies.set('gpdLoggedIn', '0');
             return <Redirect to={{
                 pathname:'/', 
-                state: { notauth: true}
+                state: { notauth: true }
             }} />
         }
         return (
             <Container>
-                <Row style={{alignItems: 'center', justifyContent: 'space-between'}}>
+                <Row style={{paddingLeft:"10px", paddingRight:"10px",alignItems: 'center', justifyContent: 'space-between'}}>
                     
                     <Col sm={3} style={{padding:"0px", margin:"5px"}}>
                         <Label>Search</Label>

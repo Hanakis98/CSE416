@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import  React   from 'react';
 import { Table, Container, Row, Col, Button } from 'reactstrap';
+import { backendDomain } from './../App.js';
 
-var domain = "http://localhost:3001"
 export default class Courses extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +16,7 @@ export default class Courses extends Component {
         this.readAllCourses().then(courses => this.setState({courses: courses}))
     }
     readAllCourses = (params) =>  {
-        var route = domain + '/courses/allOfferedCourses/'
+        var route = backendDomain + '/courses/allOfferedCourses/'
     
         return fetch(route, {
             headers: {
@@ -103,7 +103,7 @@ export default class Courses extends Component {
 
     addCourse = (json_data) => {
 
-        fetch( domain + '/courses/addCourse', {
+        fetch( backendDomain + '/courses/addCourse', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -125,7 +125,7 @@ export default class Courses extends Component {
         const data = { sbu_id: "OFFERING" ,department: d, course_num:cn, semester:s, year:y }
 
 
-        fetch(domain + '/courses/deleteCourse', {
+        fetch(backendDomain + '/courses/deleteCourse', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -145,7 +145,7 @@ export default class Courses extends Component {
 
     deleteAllCourses = (id) => {
         //let data = {sbu_id: id}
-        fetch(domain + '/courses/deleteAllOfferedCourses', {
+        fetch(backendDomain + '/courses/deleteAllOfferedCourses', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -164,37 +164,28 @@ export default class Courses extends Component {
     render() {
         return (
             <Container>
-                <Row>              
+                <Row style={{paddingLeft:"10px", paddingRight:"10px", alignItems: 'center', justifyContent: 'flex-end'}}>
                
-                     <Col xs="2">
-                        <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
-                        <Button onClick={(e) => this.uploadStudentData.click()}>Scrape Course Info </Button>
-                    </Col>
-                   
-                    <Col xs="2">
-                        <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
-                        <Button onClick={(e) => this.uploadStudentData.click()}>Import course offerings </Button>
-                    </Col>
-                    <Col xs="2">
-                        <Button onClick={this.deleteAllCourses}>Delete All Courses</Button>
-                    </Col>
+                    <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
+                    <Button onClick={(e) => this.uploadStudentData.click()} style={{ width:"120px", margin:"5px"}}>Scrape Course Info </Button>
+                    
+                    <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
+                    <Button onClick={(e) => this.uploadStudentData.click()} style={{ width:"130px", margin:"5px"}}>Import Course Offerings </Button>
+
+                    <Button onClick={this.deleteAllCourses} style={{ width:"100px", margin:"5px"}}>Delete All Courses</Button>
                     
                 </Row>
-                <br></br>
-                <br></br>
 
                 <Table  xs="3">
                     <thead><tr>
-                        <th>Depatment</th>
-                        <th>Course Number</th>
+                        <th>Department</th>
+                        <th>Course</th>
                         <th>Section</th>
                         <th>Semester</th>
                         <th>Year</th>
                         <th>Timeslot</th>
                         <th></th>
                         <th></th>
-
-
                     </tr></thead>
                     
                     <tbody>

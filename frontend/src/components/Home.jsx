@@ -2,10 +2,10 @@ import React, {  Component, } from 'react';
 import { Redirect } from "react-router-dom";
 import { Row, Alert, Container, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import Cookies from 'js-cookie';
+import { backendDomain } from './../App.js';
 
 var sha = require("sha1")
 var axios = require("axios")
-var domain = "http://localhost:3001"
 
 export default class  Home extends Component {
   constructor(props){
@@ -39,7 +39,7 @@ export default class  Home extends Component {
     axios.withCredentials=true
     axios({
       method: 'POST',
-      url: domain + `/advisors/login`,
+      url: backendDomain + `/advisors/login`,
       data:  json_data,
       // responseType: 'json',
       headers: {
@@ -67,7 +67,7 @@ export default class  Home extends Component {
     axios.withCredentials=true
     axios({
       method: 'POST',
-      url: domain + `/students/login`,
+      url: backendDomain + `/students/login`,
       data:  json_data,
       // responseType: 'json',
       headers: {
