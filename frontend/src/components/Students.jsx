@@ -356,21 +356,22 @@ export default class Students extends Component {
             var filteredStudents = currentStudents.filter(function(student){
                 
                 let validName = true
-                if (name !== null) {
+                if (name !== "") {                   
                     validName = (student.first_name + " " + student.last_name).toLowerCase().startsWith(name)
                 }
                 let validSemester = true
-                if (semester !== null){
+                if (semester !== ""){
                     validSemester = (student.graduation_semester +" " + student.graduation_year).startsWith(semester)
                 }
 
                 let validCoursePlan = true
-                if (valid !== null&& valid==true){
+                if (valid !== null&& valid==true){                    
                     validCoursePlan = student.validCoursePlan === valid
                 }
 
                 let validComplete = true
                 if (complete !== null && complete==true){
+                    console.log(student.completeCoursePlan)
                     validComplete = student.completeCoursePlan === complete 
                 }
 

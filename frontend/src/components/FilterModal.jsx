@@ -14,8 +14,8 @@ const FilterModal = (props) => {
 
    
     const [modal, setModal] = useState(false);
-    const [filterName, setFilterName] = useState(null);
-    const [filterSemester, setFilterSemester] = useState(null);
+    const [filterName, setFilterName] = useState("");
+    const [filterSemester, setFilterSemester] = useState("");
     const [filterCoursplanValidity, setValdity] = useState(false)
     const [filterCompleteCoursePlan, setComplete] = useState(false)
 
