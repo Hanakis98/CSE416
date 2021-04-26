@@ -24,6 +24,7 @@ export default class Students extends Component {
         this.readAllStudent().then(newStudents => this.setState({students: newStudents}));
     }
 
+    // Convert text to csv 
     convertTextToCSV = (text) => {
         let csvData = [];
         let lbreak = text.split("\n");
@@ -32,7 +33,7 @@ export default class Students extends Component {
         });
         return csvData
     }
-
+    //Verify header for studnet data
     verifyHeader = (header) => {
         let validHeader = true
         header.forEach(function (data, index) {
@@ -79,12 +80,13 @@ export default class Students extends Component {
         })
         return validHeader
     }
-
+    
+    //Build JSON for import student data
     buildJSONfromRow = (row) => {
         let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[10], graduation_year: row[11], password:sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"), coursePlan :null }
         return json
     }
-
+    //Go through all the student data and create new student 
     onStudentFileChange = async event => {
         var file = event.target.files[0]
         console.log(file)
@@ -138,13 +140,13 @@ export default class Students extends Component {
         })
         return validHeader
     }
-    
+    //Build JSON for import  course plan data
     buildJSONfromRow2 = (row) => {
         let json = { sbu_id: row[0], department: row[1], course_num: row[2], section: row[3], semester: row[4], year: row[5], grade: row[6]}
         console.log(json)
         return json
     }
-
+    //Create course plans from course plan data
     coursePlanFileChange = async event => {
         //Delete all current plans
         fetch( domain + '/coursePlans/deleteAllPlans', {
@@ -188,9 +190,7 @@ export default class Students extends Component {
                         credentials: 'include', 
                         body: JSON.stringify(data2)
                     })
-                       
                 }
-
                 //AddCourses To there course plan
                 for(let i = 0; i < json_data.length; i++) {
 
@@ -201,7 +201,6 @@ export default class Students extends Component {
                         }, credentials: 'include', 
                         body: JSON.stringify(json_data[i]),
                     }); 
-
                 }
                 //Now the course plans have been made. tell all course plans to add themselves to the respective student
                 fetch(domain + '/coursePlans/addAllPlansToTheirStudent', {
@@ -210,17 +209,55 @@ export default class Students extends Component {
                         'Content-Type': 'application/json',
                     }, credentials: 'include', 
                 }); 
-          
-
                 console.log(json_data)
-               // json_data.map(x => this.addCourseToPlan(x))
-
-            }  else
-            console.log("F")
+            }  
         }
-      
+    };
+    //Import grades 
+    importGradesFileChange = async event => {
+        var file = event.target.files[0]
+        var extension = file.name.split('.').pop()
+        if (extension === 'csv') {
+            let text = await file.text();
+            let csvData = this.convertTextToCSV(text)
+
+            // Verfiy header of csv file
+            let header = csvData[0]
+            let data = csvData.slice(1)
+            if (this.verifyHeader2(header)) {
+
+                let json_data = data.map(x => this.buildJSONfromRow2(x))
+                console.log(json_data)
+                for(let i = 0; i < json_data.length; i++) {
+                    console.log(json_data[i])
+                    fetch(domain + '/courses/addGrade', {
+                        method: 'POST', // or 'PUT'
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }, credentials: 'include', 
+                        body: JSON.stringify(json_data[i]),
+                    }); 
+                }
+            
+            }
+        }
     };
 
+    deletePlansAndCourses= ()=>{
+        fetch(domain + '/coursePlans/deleteAllPlans', {
+            method: 'DELETE', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            }, credentials: 'include', 
+        })
+        fetch(domain + '/courses/deleteAllCourses', {
+            method: 'DELETE', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            }, credentials: 'include', 
+        })
+    }
+    //Delete student
     deleteStudent = (studentID) => {
         console.log(studentID)
         const data = { sbu_id: studentID }
@@ -242,7 +279,7 @@ export default class Students extends Component {
         });
 
     }
-
+    //Add student. Called when importing student data
     addStudent = (json_data) => {
         console.log(json_data)
         fetch(domain  + '/students/addStudent', {
@@ -262,7 +299,7 @@ export default class Students extends Component {
             });
     
     }
-
+    //readAllStudent is for showing all the students on the
     readAllStudent = (params) =>  {
         var route = domain + '/students/allStudents/'
     
@@ -429,8 +466,8 @@ export default class Students extends Component {
 
                     {/* <Col xs={1}></Col> */}
                     <Col xs={4.5}>
-
-                        <Button style={{ margin:"5px", width:"80px"}}>Import Grades</Button>
+                    <input id="myInput" type="file" ref={(ref) => this.importGrades = ref} style={{ display: 'none' }} onChange={this.importGradesFileChange} />
+                        <Button style={{ margin:"5px", width:"80px"}} onClick={(e) => this.importGrades.click()}  onChange={this.importGradesFileChange}>Import Grades</Button>
                     
                         <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onStudentFileChange} />
                         <Button style={{ margin:"5px", width:"120px"}} onClick={(e) => this.uploadStudentData.click()}>Import Student Data</Button>
@@ -488,6 +525,8 @@ export default class Students extends Component {
                         ))}
                     </tbody>
                 </Table>
+                <Button style={{ margin:"5px", width:"120px"}} onClick={(e) => this.deletePlansAndCourses()}>Delete all courses and plans</Button>
+
             </Container>
         );
     }

@@ -10,7 +10,48 @@ const axios = require('axios');
 var domain = "http://localhost:3001"
 
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+    //update students grade
+    
+    router.post("/getStudentCoursePlan", (request, response) => {
+ 
+        dbCollection.findOne( {sbu_id: request.body.sbu_id}, (error, result) => {
+            response.json(result)
+            response.send()
+        } ); 
+    });
 
+    router.post("/addGrade", (request, response) => {
+        //update the course object
+        dbCollection.updateOne( {sbu_id: request.body.sbu_id}, { $pull:{courses: {  sbu_id: request.body.sbu_id, course_num: request.body.course_num, department: request.body.department   } }}, (error,result)=> {
+
+
+            dbCollection.updateOne( {sbu_id: request.body.sbu_id}, { $push:{courses: {  
+                sbu_id: request.body.sbu_id,
+                course_num: request.body.course_num,
+                department: request.body.department,
+                grade:request.body.grade  ,
+                section: request.body.section  ,
+                year: request.body.year, 
+                semester: request.body.semester,
+                description: request.body.description
+            
+            } }}, (error, result) => {
+                axios
+                .post(domain + '/students/regrabCoursePlan', {
+                    sbu_id: request.body.sbu_id
+                })
+                .then(res => {
+                })
+                .catch(error => {
+                })
+            } );  
+
+
+
+        } );  
+
+        //Now have to update courseplan object and student object
+});
     router.get("/allPlans", (request, response) => { // get ALL
         // return updated list
         dbCollection.find().toArray((error, result) => {
@@ -21,7 +62,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
     router.post("/newCoursePlan", (request, response) => { // get ALL
         // return updated list
-        console.log("newCOursePlane" + request.body.sbu_id)
         const newCoursePlan =  new coursePlanModel({
             sbu_id: request.body.sbu_id,
             courses:[]
