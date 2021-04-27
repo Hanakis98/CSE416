@@ -161,16 +161,47 @@ export default class Courses extends Component {
         });
     }
 
+    scrapeCourseInfo = async event => {
+        // var re = /(?<=[A-Z]{3} [0-9]{3})(.*)(?=\n\n)/g
+        var file = event.target.files[0]
+        var text = await file.text();
+
+        text = text.substring(text.indexOf(":") -7)
+        var arr = text.split("\n\n\n\n")
+
+        for ( var i =0; i < arr.length ; i++){
+            fetch(backendDomain + '/courses/scrapeCourseInfo', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include', 
+                body: JSON.stringify( {courseInfo: arr[i]})
+            })
+            console.log(JSON.stringify({courseInfo: arr[i]}))
+
+
+        }
+
+        //var match;
+        // while ((match = re.exec(text)) != null) {
+        //     console.log(match);
+        // }         
+        // console.log( re.exec(text))
+
+        
+    }
     render() {
         return (
             <Container>
                 <Row style={{paddingLeft:"10px", paddingRight:"10px", alignItems: 'center', justifyContent: 'flex-end'}}>
                
-                    <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
-                    <Button onClick={(e) => this.uploadStudentData.click()} style={{ width:"120px", margin:"5px"}}>Scrape Course Info </Button>
+                    <input id="myInput" type="file" ref={(ref) => this.uploadCourseInfo = ref} style={{ display: 'none' }} onChange={this.scrapeCourseInfo} />
+                    <Button onClick={(e) => this.uploadCourseInfo.click()} style={{ width:"120px", margin:"5px"}}>Scrape Course Info </Button>
                     
-                    <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
-                    <Button onClick={(e) => this.uploadStudentData.click()} style={{ width:"130px", margin:"5px"}}>Import Course Offerings </Button>
+                    <input id="myInput" type="file" ref={(ref) => this.uploadCourses = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
+                    <Button onClick={(e) => this.uploadCourses.click()} style={{ width:"130px", margin:"5px"}}>Import Course Offerings </Button>
+
 
                     <Button onClick={this.deleteAllCourses} style={{ width:"100px", margin:"5px"}}>Delete All Courses</Button>
                     

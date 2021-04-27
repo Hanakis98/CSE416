@@ -25,7 +25,6 @@ app.use("/courses", coursesRoutes);
 app.use("/requirements", requirementsRoutes);
 app.use("/coursePlans", coursePlanRoutes);
 app.use("/degreeRequirements", degreeRequirements);
-
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Origin', frontEndDomain);

@@ -9,7 +9,12 @@ const axios = require('axios');
 var domain = "http://localhost:3001"
 
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
- 
+    
+    router.post("/scrapeCourseInfo", (request, response) => {
+            console.log(request.body.courseInfo)
+    });
+
+     
     router.get("/allCourses", (request, response) => {
         // return updated list
         dbCollection.find().toArray((error, result) => {
