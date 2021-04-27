@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import React from 'react';
-import { Table, Container, Row, Col, Button } from 'reactstrap';
+import { Table, Container, Row, Button } from 'reactstrap';
 import { backendDomain } from './../App.js';
 
 export default class Courses extends Component {

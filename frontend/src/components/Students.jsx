@@ -7,7 +7,6 @@ import DeleteAllModal from './DeleteAllModal.jsx';
 import FilterWarningModal from './FilterWarningModal.jsx'
 import Cookies from 'js-cookie';
 import { backendDomain } from './../App.js';
-var domain = "http://localhost:3001"
 
 var sha = require("sha1")
 
@@ -231,7 +230,7 @@ export default class Students extends Component {
                 console.log(json_data)
                 for(let i = 0; i < json_data.length; i++) {
                     console.log(json_data[i])
-                    fetch(domain + '/courses/addGrade', {
+                    fetch(backendDomain + '/courses/addGrade', {
                         method: 'POST', // or 'PUT'
                         headers: {
                             'Content-Type': 'application/json',
@@ -245,13 +244,13 @@ export default class Students extends Component {
     };
 
     deletePlansAndCourses= ()=>{
-        fetch(domain + '/coursePlans/deleteAllPlans', {
+        fetch(backendDomain + '/coursePlans/deleteAllPlans', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
             }, credentials: 'include', 
         })
-        fetch(domain + '/courses/deleteAllCourses', {
+        fetch(backendDomain + '/courses/deleteAllCourses', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
