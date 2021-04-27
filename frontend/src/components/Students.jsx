@@ -390,7 +390,7 @@ export default class Students extends Component {
     }
 
     searchStudentByCriteria = (name, semester, valid, complete) => {
-        console.log(name, semester, valid, complete)
+       
         this.readAllStudent().then(currentStudents => {
             var filteredStudents = currentStudents.filter(function(student){
                 
@@ -412,20 +412,16 @@ export default class Students extends Component {
                 if (complete !== null && complete === true){
                     validComplete = student.completeCoursePlan === complete 
                 }
-
-                console.log(validName , validSemester , validCoursePlan , validComplete)
+                
                 return validName && validSemester && validCoursePlan && validComplete
             })  
-            console.log(filteredStudents)
+            
             if (filteredStudents.length > 0) {
                 this.setState({ students: filteredStudents })
             } else {
                 this.toggleFilterWarningModal()
             }
-
-
         })
-
 
     }
 

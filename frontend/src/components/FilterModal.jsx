@@ -28,8 +28,6 @@ const FilterModal = (props) => {
       if (target === 'Filter'){
         // Apply filtering
         filterStudents(filterName, filterSemester, filterCoursplanValidity, filterCompleteCoursePlan)
-      
-      
       }else{
         reloadStudent()
       }  
@@ -40,7 +38,7 @@ const FilterModal = (props) => {
     
     
       return (
-            <div>
+       <div>
       <Button outline color="primary" onClick={toggle} style={{padding:'18px'}}>{buttonLabel}</Button>
       <Modal isOpen={modal} toggle={toggle} className={className}>
         <ModalHeader toggle={toggle}>Filter Student List</ModalHeader>
