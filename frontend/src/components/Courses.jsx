@@ -2,12 +2,15 @@ import { Component } from 'react';
 import React from 'react';
 import { Table, Container, Row, Button } from 'reactstrap';
 import { backendDomain } from './../App.js';
-
+import ViewCourseModal from './ViewCourseModal.jsx'
 export default class Courses extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isOpen: false,
+            scrapeYear: null,
+            scrapeSemester: null,
+            scrapeDepartment:null,
             courses: []
         };
     }
@@ -168,26 +171,29 @@ export default class Courses extends Component {
 
         text = text.substring(text.indexOf(":") -7)
         var arr = text.split("\n\n\n\n")
-
+        console.log(arr.length,arr)
         for ( var i =0; i < arr.length ; i++){
-            fetch(backendDomain + '/courses/scrapeCourseInfo', {
+
+            if (arr[i].substring(0,10).includes(this.state.scrapeDepartment))
+            {                 
+                console.log(arr[i].substring(0,50)) 
+
+                fetch(backendDomain + '/courses/scrapeCourseInfo', {
                 method: 'POST', // or 'PUT'
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include', 
-                body: JSON.stringify( {courseInfo: arr[i]})
+                body: JSON.stringify( {
+                    courseInfo: arr[i] ,
+                    year: this.state.scrapeYear,
+                    semester: this.state.scrapeSemester,
+                    departments: this.state.scrapeDepartment
+                })
             })
-            console.log(JSON.stringify({courseInfo: arr[i]}))
-
-
+            }
         }
 
-        //var match;
-        // while ((match = re.exec(text)) != null) {
-        //     console.log(match);
-        // }         
-        // console.log( re.exec(text))
 
         
     }
@@ -196,8 +202,7 @@ export default class Courses extends Component {
             <Container>
                 <Row style={{paddingLeft:"10px", paddingRight:"10px", alignItems: 'center', justifyContent: 'flex-end'}}>
                
-                    <input id="myInput" type="file" ref={(ref) => this.uploadCourseInfo = ref} style={{ display: 'none' }} onChange={this.scrapeCourseInfo} />
-                    <Button onClick={(e) => this.uploadCourseInfo.click()} style={{ width:"120px", margin:"5px"}}>Scrape Course Info </Button>
+  
                     
                     <input id="myInput" type="file" ref={(ref) => this.uploadCourses = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
                     <Button onClick={(e) => this.uploadCourses.click()} style={{ width:"130px", margin:"5px"}}>Import Course Offerings </Button>
@@ -215,6 +220,8 @@ export default class Courses extends Component {
                         <th>Semester</th>
                         <th>Year</th>
                         <th>Timeslot</th>
+                        <th>Credits</th>
+
                         <th></th>
                         <th></th>
                     </tr></thead>
@@ -228,16 +235,27 @@ export default class Courses extends Component {
                                 <td>{x.semester}</td>
                                 <td>{x.year}</td>
                                 <td>{x.timeslot}  </td>
+                                <td>{x.credits}  </td>
 
                                 <td>
                                     <button onClick={() => this.deleteCourse(x.department, x.course_num, x.semester, x.year)}>Delete</button>
-                                </td>
 
+                                </td>
+                                <td>
+                                <ViewCourseModal  buttonLabel="View Description"  description={x.description} > </ViewCourseModal>
+                                </td>
 
                             </tr>
 
                         ))}
                     </tbody>
+                    <input id = "semester" type="input" placeholder="semester"onChange={e => this.state.scrapeSemester = e.target.value}></input>
+                    <input id = "year" type="input" placeholder="year"onChange={e => this.state.scrapeYear = e.target.value}></input>
+                    <input id = "department" type="input" placeholder="department"onChange={e => this.state.scrapeDepartment = e.target.value}></input>
+
+                    <br></br>
+                    <input id="myInput" type="file" ref={(ref) => this.uploadCourseInfo = ref} style={{ display: 'none' }} onChange={this.scrapeCourseInfo} />
+                    <Button onClick={(e) => this.uploadCourseInfo.click()} style={{ width:"120px", margin:"5px"}}>Scrape Course Info </Button>
                 </Table>
             </Container>
         );

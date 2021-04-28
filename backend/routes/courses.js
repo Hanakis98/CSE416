@@ -11,7 +11,29 @@ var domain = "http://localhost:3001"
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
     
     router.post("/scrapeCourseInfo", (request, response) => {
-            console.log(request.body.courseInfo)
+            const regexForCourseShortHand = /[A-Z]{3} \d{3}:/g;
+            const regexForCourseCredits = /\d credits/g;
+            const regexForCourseDescription = /[A-Z]{3} \d{3}: /g;
+
+            var courseNameInfo = request.body.courseInfo.match(regexForCourseShortHand)
+            var creditsString = request.body.courseInfo.match(regexForCourseCredits)
+
+            if(courseNameInfo!=null){
+            var department = courseNameInfo[0].substring(0,3);
+            var course_num = courseNameInfo[0].substring(4,7)
+            var credits = creditsString[0].substring(0,1)
+
+
+
+            console.log("UPDATING" ,request.body.year, request.body.semester, department,course_num,credits)
+            dbCollection.updateOne( { sbu_id: "OFFERING" , year: request.body.year , semester: request.body.semester, department: department ,course_num: course_num},{$set:{description:request.body.courseInfo, credits: credits}},(error, res) => {
+
+
+
+
+            });
+            }
+            //console.log(request.body.courseInfo)
     });
 
      

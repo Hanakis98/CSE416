@@ -83,17 +83,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                         res.cookie("studentLoggedIn",1,{ maxage:1000*1000, httpOnly: false ,path:"/" });
                         res.cookie("gpdLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
                         res.send();
-                      
                     }
-                    
                 }
               );
            });
-
-
-
-
- 
       });
       
 

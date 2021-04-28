@@ -165,7 +165,6 @@ export default class Students extends Component {
             let header = csvData[0]
             let data = csvData.slice(1)
             if (this.verifyHeader2(header)) {
-                console.log("fF")
 
                 let json_data = data.map(x => this.buildJSONfromRow2(x))
                 var sbIDs = []
@@ -209,7 +208,7 @@ export default class Students extends Component {
                         'Content-Type': 'application/json',
                     }, credentials: 'include', 
                 }); 
-                console.log(json_data)
+                // console.log(json_data)
             }  
         }
     };
