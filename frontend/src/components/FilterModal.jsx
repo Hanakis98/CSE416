@@ -1,9 +1,6 @@
 import { React, useState } from 'react';
 import { Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup } from 'reactstrap';
 
-
-
-
 const FilterModal = (props) => {
     const {
         buttonLabel,
@@ -11,12 +8,11 @@ const FilterModal = (props) => {
         filterStudents,
         reloadStudent
     } = props;
-
    
     const [modal, setModal] = useState(false);
     const [filterName, setFilterName] = useState("");
     const [filterSemester, setFilterSemester] = useState("");
-    const [filterCoursplanValidity, setValdity] = useState(false)
+    const [filterCourseplanValidity, setValidity] = useState(false)
     const [filterCompleteCoursePlan, setComplete] = useState(false)
 
     const toggle = (target) => {
@@ -27,19 +23,14 @@ const FilterModal = (props) => {
     const toggleEscape = (target) => {
       if (target === 'Filter'){
         // Apply filtering
-        filterStudents(filterName, filterSemester, filterCoursplanValidity, filterCompleteCoursePlan)
-      
-      
+        filterStudents(filterName, filterSemester, filterCourseplanValidity, filterCompleteCoursePlan)
       }else{
         reloadStudent()
       }  
       setModal(!modal);
     }
 
-   
-    
-    
-      return (
+    return (
             <div>
       <Button outline color="primary" onClick={toggle} style={{padding:'18px'}}>{buttonLabel}</Button>
       <Modal isOpen={modal} toggle={toggle} className={className}>
@@ -55,7 +46,7 @@ const FilterModal = (props) => {
             </FormGroup>
             <FormGroup check>
                 <Label check>
-                <Input type="checkbox" onClick = {e => setValdity(e.target.checked) } />
+                <Input type="checkbox" onClick = {e => setValidity(e.target.checked) } />
                     Course Plan Validity
                 </Label>
                 <br />
@@ -72,8 +63,8 @@ const FilterModal = (props) => {
         </ModalFooter>
       </Modal>
     </div>
-        );
-    
+    );
+
 }
 
 export default FilterModal;
