@@ -1,5 +1,6 @@
 import {Component}  from 'react';
 import  React  from 'react';
+import { Redirect } from "react-router-dom";
 import { Alert, Table, Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
 import Cookies from 'js-cookie';
 import { backendDomain } from './../App.js';
@@ -9,7 +10,6 @@ var u=0;
 
 export default class editStudent extends Component{
     constructor(props) {
-
         super(props);
         this.state={
             firstName: "",
@@ -26,18 +26,25 @@ export default class editStudent extends Component{
             graduation_semester: "",
             graduation_year: ""
         }; 
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
 
+    componentDidMount(){
+        this.fetchStudentInfo()//.then(n => this.setState({}))
+    }
+
+    fetchStudentInfo = () => {
         // Get the query paramter and then get the students info and update the state of the page
         const query = new URLSearchParams(window.location.search);
         u = query.get('user')
         
         var urlToGetStudent= backendDomain + "/students/getOneStudent"
+
         if(u != null  ){
             urlToGetStudent = backendDomain + "/students/getOneStudent?user="+u
         }
+        
         fetch(urlToGetStudent, {
             method: 'GET', // or 'PUT'
             headers: {
@@ -46,6 +53,14 @@ export default class editStudent extends Component{
                 })
             .then(response => response.json())
             .then(data => {
+                //console.log(data);
+                if(data.notAllowed != null){
+                    //auth fail from api call?
+                    Cookies.set("gpdLoggedIn", "0");
+                    Cookies.set("studentLoggedIn", "0");
+                    this.setState({});
+                    return;
+                }
                 this.setState ( {
                     firstName: data.first_name,
                     lastName: data.last_name,
@@ -59,21 +74,20 @@ export default class editStudent extends Component{
                     entry_year : data.entry_year,
                     graduation_semester: data.graduation_semester,
                     graduation_year: data.graduation_year
-                 });       
-                 if(data.coursePlan != null)
+                });
+                if(data.coursePlan != null){
                     this.setState ( {
                         courses: data.coursePlan.courses
                     }); 
-
+                }
 
             })
             .catch((error) => {
                 console.error('Error:', error);
-
+                console.log("testst");
             });
-  
-
     }
+
     updateStudent=() =>{
         //When update student is pressed, make sure forms filled out and then submit
         // if(this.state.firstName === "" || this.state.lastName === ""|| this.state.sbu_id === ""|| this.state.email === ""|| this.state.major === ""|| this.state.track === "" || this.state.password === "")
@@ -116,7 +130,7 @@ export default class editStudent extends Component{
                 console.error('Error:', error);
 
             });
-        }
+    }
 
     handleChange(event){
         this.setState({category: event.target.value});
@@ -128,6 +142,20 @@ export default class editStudent extends Component{
     }
    
     render(){
+        const gpdLoggedIn=Cookies.get("gpdLoggedIn");
+        const studentLoggedIn=Cookies.get("studentLoggedIn");
+        //TODO: use a separate token auth API request to do this instead of the response from the GET
+        
+        // if(api call fails due to no authentication){
+        //     Cookies.set('gpdLoggedIn', '0');
+        //     Cookies.set('studentLoggedIn', '0');
+        // }
+        if(gpdLoggedIn !== "1" && studentLoggedIn !== "1"){
+            return <Redirect to={{
+                pathname:'/', 
+                state: { notauth: true }
+            }} />
+        }
         return (
             <Container>
                 <Row style={{ justifyContent: 'center'}}>
@@ -299,8 +327,8 @@ export default class editStudent extends Component{
                                 </Col>
                             </FormGroup>
                             <Row style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <Button onClick = {console.log("click")} color="success" style={{width:"120px",margin:"5px"}} >Generate Course Plan Suggestions</Button>
-                                <Button onClick = {console.log("click")} color="success" style={{width:"140px",margin:"5px"}} >Generate Smart Course Plan Suggestions</Button>
+                                <Button onClick = {null} color="success" style={{width:"120px",margin:"5px"}} >Generate Course Plan Suggestions</Button>
+                                <Button onClick = {null} color="success" style={{width:"140px",margin:"5px"}} >Generate Smart Course Plan Suggestions</Button>
 
                             </Row>
                             

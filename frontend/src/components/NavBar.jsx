@@ -14,13 +14,11 @@ class Nav2 extends Component{
         this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false,
-            username: Cookies.get("firstName") +  " " + Cookies.get("lastName") 
         };
     }
     toggle() {
         this.setState({
             isOpen: !this.state.isOpen
-
         });
     }
     logout = () => {
@@ -51,7 +49,7 @@ class Nav2 extends Component{
     render(){
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
         const studentLoggedIn=Cookies.get("studentLoggedIn");
-        
+        let username = Cookies.get("firstName") +  " " + Cookies.get("lastName")
         //navbar buttons change depending on which type of user is logged in
         return (
         <div className="navigation">
@@ -89,7 +87,7 @@ class Nav2 extends Component{
 
                     {(studentLoggedIn === '1' || gpdLoggedIn === '1') &&
                     <Nav className="ml-auto" navbar>
-                        <NavbarText style={{marginRight: "8px"}}>{this.state.username}</NavbarText>
+                        <NavbarText style={{marginRight: "8px"}}>{username}</NavbarText>
                         <Button onClick={this.logout} color="primary">
                         Log Out
                         </Button>
