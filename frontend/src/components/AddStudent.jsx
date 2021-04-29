@@ -56,7 +56,6 @@ export default class AddStudent extends Component{
             graduation_semester: this.state.graduation_semester,
             graduation_year: this.state.graduation_year,
 
-
             coursePlan: []
         }
         fetch(backendDomain + '/students/addStudent', {

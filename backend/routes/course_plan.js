@@ -13,29 +13,27 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     //update students grade
     
     router.post("/getStudentCoursePlan", (request, response) => {
- 
         dbCollection.findOne( {sbu_id: request.body.sbu_id}, (error, result) => {
             response.json(result)
-            response.send()
+            return
         } ); 
     });
 
+
     router.post("/addGrade", (request, response) => {
         //update the course object
-        dbCollection.updateOne( {sbu_id: request.body.sbu_id}, { $pull:{courses: {  sbu_id: request.body.sbu_id, course_num: request.body.course_num, department: request.body.department   } }}, (error,result)=> {
+        console.log("COURSE NUM:",request.body.course_num,request.body.sbu_id)
+        dbCollection.findOne( {sbu_id: request.body.sbu_id }, (error,result)=> {
+            console.log(result.courses)
+            updateCourses = result.courses
+            for ( var i  = 0; i < result.courses.length; i++){
+                if(result.courses[i].course_num = request.body.course_num){
+                    updateCourses[i].grade = request.body.grade
+                }
+            }
 
-
-            dbCollection.updateOne( {sbu_id: request.body.sbu_id}, { $push:{courses: {  
-                sbu_id: request.body.sbu_id,
-                course_num: request.body.course_num,
-                department: request.body.department,
-                grade:request.body.grade  ,
-                section: request.body.section  ,
-                year: request.body.year, 
-                semester: request.body.semester,
-                description: request.body.description
-            
-            } }}, (error, result) => {
+            dbCollection.updateOne( {sbu_id: request.body.sbu_id} ,{$set:{ courses:updateCourses} }, (e,r)=> {
+                console.log("T",r.courses)
                 axios
                 .post(domain + '/students/regrabCoursePlan', {
                     sbu_id: request.body.sbu_id
@@ -44,11 +42,33 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 })
                 .catch(error => {
                 })
-            } );  
+         
+
+            });
+
+        });
+        // dbCollection.updateOne( {sbu_id: request.body.sbu_id,   }, {"$pull":  {"newCourse":{"courses": {"department": "AMS"}}}}, (error,result)=> {
+        //     console.log(result)
+        //     if(result!=null)
+        //     dbCollection.updateOne( {sbu_id: request.body.sbu_id}, { $push:{courses: {  
+                
+        //         newCourse: {
+        //             course_num: "TEST"
+        //         // course_num: result.course_num,
+        //         // department: result.department,
+        //         // section: request.body.section  ,
+        //         // year: request.body.year, 
+        //         // semester: request.body.semester,
+        //         // description: result.description},
+        //         // grade:request.body.grade ,
+        //         // hasTaken: true
+
+        //     } }}}, (error, result) => {
 
 
 
-        } );  
+
+        // } );  
 
         //Now have to update courseplan object and student object
 });
@@ -67,56 +87,50 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             courses:[]
         })
         newCoursePlan.save();
+        response.send()
         
     });
     router.post("/addCourseToPlan", (request, response) => { // get ALL
-
-        var newCourse = new courseModel({
-            sbu_id:request.body.sbu_id,
+        console.log(request.body)
+        axios
+        .post(domain + '/courses/getCourse', 
+        {
             department: request.body.department,
-            description : "",
             course_num: request.body.course_num,
-            section: request.body.section,
             semester: request.body.semester,
             year: request.body.year,
-            timeslot : request.body.timeslot,
-            grade: request.body.grade,
-            credits: request.body.credits ,
-            prerequisites:[]
-        });
-        newCourse.save(function(err, doc) {
-            if (err) return console.error(err);
-          });
+         
+        })
+        .then(res => {
+            dbCollection.updateOne({ sbu_id: request.body.sbu_id }, {
+                    $push: 
+                    {courses : 
+                        {   
+                            newCourse:{
+                                prerequisites: res.data.prerequisites,
+                                department: res.data.department,
+                                course_num: res.data.course_num,
+                                semester: res.data.semester,
+                                year: res.data.year,
+                                section: res.data.section,
+                                timeslot: res.data.timeslot,
+                                section: res.data.section,
+                                description: res.data.description,
+                                credits: res.data.credits
 
-        dbCollection.updateOne({ sbu_id: request.body.sbu_id }, { $push: {courses : newCourse} }, (error, result) => {
-            if (error) throw error;
-            // send back entire updated list, to make sure frontend data is up-to-date
-            dbCollection.find().toArray(function(_error, _result) {
-                if (_error) throw _error;
-                response.json(_result);
-            });
+
+                            }, 
+                            grade: request.body.grade, 
+                            hasTaken:false
+                        }
+                    } 
+                });
+                response.send()
+
         });
-        
-    });
-    router.post("/addAllPlansToTheirStudent", (request, response) => {
-        var arr=[]
-        dbCollection.find().toArray(function(error, res) {
-            arr=res        
-            console.log(arr)
-            for (var i =0; i < res.length; i++)
-            axios
-            .put(domain + '/students/updateStudentCoursePlan', {
-             coursePlan: res[i]
-                 })
-            .then(res => {
-            })
-            .catch(error => {
-            })
-        
-           
-        }); 
 
     });
+
     router.delete("/deleteAllPlans", (request, response) => {
       
         console.log("Delete All Item");

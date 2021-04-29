@@ -76,7 +76,7 @@ export default class Courses extends Component {
     }
 
     buildJSONfromRow = (row) => {
-        let json = { sbu_id: "OFFERING", department: row[0], course_num: row[1], section: row[2], semester: row[3], year: row[4], timeslot: row[5], description: "", credits: "", prerequisites: [] }
+        let json = {  department: row[0], course_num: row[1], section: row[2], semester: row[3], year: row[4], timeslot: row[5], description: "", credits: "", prerequisites: [] }
         return json
     }
 
@@ -98,8 +98,7 @@ export default class Courses extends Component {
             console.log(header)
             if (this.verifyHeader(header)) {
                 let json_data = data.map(x => this.buildJSONfromRow(x))
-                console.log(json_data)
-                json_data.map(x => this.addCourse(x))
+                json_data.map(x => {this.addCourse(x)})
             }
         }
     };
@@ -125,7 +124,7 @@ export default class Courses extends Component {
     }
 
     deleteCourse = (d, cn, s, y) => {
-        const data = { sbu_id: "OFFERING", department: d, course_num: cn, semester: s, year: y }
+        const data = {  department: d, course_num: cn, semester: s, year: y }
 
 
         fetch(backendDomain + '/courses/deleteCourse', {

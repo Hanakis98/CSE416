@@ -176,42 +176,74 @@ export default class Students extends Component {
                         sbIDs.push(id)
                     }
                 }
+                console.log("IDS" , sbIDs)
                 //Make a new course plan object for each student, but dont add it to the student onbejct yet
-                for (let i = 0; i < sbIDs.length; i++) {
-                    console.log(sbIDs[i]);
-                    var data2 = { sbu_id: sbIDs[i] }
+                await  this.meth1(sbIDs)
+                 console.log("wait1")
+                 await this.meth2(json_data)
+                 console.log("wait2")
 
-                    fetch(backendDomain + '/coursePlans/newCoursePlan', {
-                        method: 'POST', // or 'PUT'
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        credentials: 'include',
-                        body: JSON.stringify(data2)
-                    })
-                }
+                await this.meth3(sbIDs)
+                console.log("wait3")
+
                 //AddCourses To there course plan
-                for (let i = 0; i < json_data.length; i++) {
 
-                    fetch(backendDomain + '/coursePlans/addCourseToPlan', {
-                        method: 'POST', // or 'PUT'
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }, credentials: 'include',
-                        body: JSON.stringify(json_data[i]),
-                    }); 
-                }
-                //Now the course plans have been made. tell all course plans to add themselves to the respective student
-                fetch(backendDomain + '/coursePlans/addAllPlansToTheirStudent', {
-                    method: 'POST', // or 'PUT'
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }, credentials: 'include', 
-                }); 
-                // console.log(json_data)
+                console.log(sbIDs)
+          
             }  
         }
     };
+    async  meth1 (sbIDs)   {
+        for (let i = 0; i < sbIDs.length; i++) {
+            console.log(sbIDs[i]);
+
+            await fetch(backendDomain + '/coursePlans/newCoursePlan', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ sbu_id: sbIDs[i] })
+            })
+            console.log("wait1")
+
+        }
+    }
+
+    async meth2  (json_data)  {
+
+        for (let i = 0; i < json_data.length; i++) {
+
+            console.log( "course to add", json_data[i])
+            await  fetch(backendDomain + '/coursePlans/addCourseToPlan', {
+                  method: 'POST', // or 'PUT'
+                  headers: {
+                      'Content-Type': 'application/json',
+                  }, credentials: 'include',
+                  body: JSON.stringify(json_data[i]),
+              })
+              console.log("wait2")
+
+          }
+
+    }
+    async meth3  (sbIDs) {
+        for (let i = 0; i < sbIDs.length; i++) {
+
+            console.log("regrab",{sbu_id:sbIDs[i]})
+        //Now the course plans have been made. tell all course plans to add themselves to the respective student
+         await fetch(backendDomain + '/students/regrabCoursePlan', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            }, credentials: 'include', 
+            body: JSON.stringify({sbu_id:sbIDs[i]})
+        })
+        console.log("wait3")
+
+        }
+    }
+
     //Import grades 
     importGradesFileChange = async event => {
         var file = event.target.files[0]
@@ -229,13 +261,14 @@ export default class Students extends Component {
                 console.log(json_data)
                 for(let i = 0; i < json_data.length; i++) {
                     console.log(json_data[i])
-                    fetch(backendDomain + '/courses/addGrade', {
+                    fetch(backendDomain + '/coursePlans/addGrade', {
                         method: 'POST', // or 'PUT'
                         headers: {
                             'Content-Type': 'application/json',
                         }, credentials: 'include', 
                         body: JSON.stringify(json_data[i]),
                     }); 
+                    
                 }
             
             }

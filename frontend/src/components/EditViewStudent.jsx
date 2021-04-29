@@ -268,12 +268,12 @@ export default class editStudent extends Component{
                             <tbody>
                                 {this.state.courses.length !==0 && this.state.courses.map(x =>
                                 <tr>
-                                    <td>{x.department }</td>
-                                    <td>{x.course_num}</td>
-                                    <td>{x.section}</td>
-                                    <td>{x.semester}</td>
-                                    <td>{x.year}</td>
-                                    <td>{x.timeslot}  </td>
+                                    <td>{x.newCourse.department }</td>
+                                    <td>{x.newCourse.course_num}</td>
+                                    <td>{x.newCourse.section}</td>
+                                    <td>{x.newCourse.semester}</td>
+                                    <td>{x.newCourse.year}</td>
+                                    <td>{x.newCourse.timeslot}  </td>
                                     <td>{x.grade}  </td>
 
                                     <td> 

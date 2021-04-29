@@ -25,11 +25,12 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
         })
         .then(res => {
+            console.log("student courseplan " ,res.data)
             dbCollection.updateOne( {sbu_id: request.body.sbu_id}, 
                 {$set: {coursePlan: res.data}} );
                 
         })
-        
+        response.send()
         //Now have to update courseplan object and student object
         });
 
@@ -109,8 +110,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
     router.post("/addStudent", (request, response) => {
         var token  = (request.cookies["token"])
-
-      
         var newStudent = new studentModel({
             first_name : request.body.first_name,
             last_name : request.body.last_name,
@@ -124,7 +123,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             entry_year: request.body.entry_year,
             graduation_semester: request.body.graduation_semester,
             graduation_year: request.body.graduation_year,
-
             coursePlan: null
         })
 
@@ -141,7 +139,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     router.delete("/deleteStudent", (request, response) => {
 
         var token  = (request.cookies.token)
-
         console.log( jwt.verify(token,keys.secretOrKeyAdvisors))
 
         const itemId = request.body.sbu_id;
@@ -190,10 +187,11 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 response.json({notAllowed:"notAllowed"});
                 response.send()
             }
-        }            console.log(itemId)
+        }           
 
 
         dbCollection.findOne({ sbu_id: itemId}, (error, result) => {
+            console.l
             if (error) throw error;
             // return item
             response.json(result);
@@ -234,6 +232,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     router.put("/updateStudentCoursePlan", (request, response) => {
 
         const newPlan = request.body.coursePlan
+        console.log("NEW COURSE PLAN" ,newPlan)
+        if(newPlan !=null)
         dbCollection.updateOne({ sbu_id: newPlan.sbu_id }, { $set: {coursePlan: newPlan} }, (error, result) => {
        
         });
