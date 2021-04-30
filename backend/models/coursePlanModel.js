@@ -3,7 +3,11 @@ var mongoose = require('mongoose');
 var coursePlanSchema = new mongoose.Schema({
     
     sbu_id : String,
-    courses:[Object]
+    courses:[
+        {Object,
+        grade: "",
+        hasTaken: false}
+    ]
     
     
 });

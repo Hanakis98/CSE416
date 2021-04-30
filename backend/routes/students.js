@@ -15,7 +15,48 @@ var sha = require("sha1")
 const cookieParser = require("cookie-parser");
 router.use(cookieParser())
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+    router.post("/addComment",(request, response) =>{
+        console.log(     request.body.sbu_id,          request.body.commentToAdd            )
+        dbCollection.updateOne({ sbu_id: request.body.sbu_id }, {
+            $push: 
+            {comments : 
+               request.body.commentToAdd
+            } 
+        });
+        response.send()
+    });
+
+    router.post("/deleteComment",(request, response) =>{
+
+        console.log(request.body)
+       var newCommentsArray=[]
+        dbCollection.findOne({ sbu_id: request.body.sbu_id }, (error,result)=> {
+
+
+            newCommentsArray= result.comments
+
+            for( var i =0; i < result.comments.length; i++){
+                if ( newCommentsArray[i] ===  request.body.commnetToDelete) { 
     
+                    newCommentsArray.splice(i, 1); 
+                }
+        
+            }
+            console.log("aftersplice", newCommentsArray)
+            dbCollection.updateOne({ sbu_id: request.body.sbu_id }, {
+                $set: 
+                {comments :   
+                    newCommentsArray
+                    
+                } 
+            });
+
+        });
+        console.log(newCommentsArray)
+
+        response.send()
+
+    });
     router.post("/regrabCoursePlan", (request, response) => {
         //update the course object
 
@@ -25,11 +66,12 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
         })
         .then(res => {
+            console.log("student courseplan " ,res.data)
             dbCollection.updateOne( {sbu_id: request.body.sbu_id}, 
                 {$set: {coursePlan: res.data}} );
                 
         })
-        
+        response.send()
         //Now have to update courseplan object and student object
         });
 
@@ -83,17 +125,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                         res.cookie("studentLoggedIn",1,{ maxage:1000*1000, httpOnly: false ,path:"/" });
                         res.cookie("gpdLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
                         res.send();
-                      
                     }
-                    
                 }
               );
            });
-
-
-
-
- 
       });
       
 
@@ -116,8 +151,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
     router.post("/addStudent", (request, response) => {
         var token  = (request.cookies["token"])
-
-      
         var newStudent = new studentModel({
             first_name : request.body.first_name,
             last_name : request.body.last_name,
@@ -131,7 +164,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             entry_year: request.body.entry_year,
             graduation_semester: request.body.graduation_semester,
             graduation_year: request.body.graduation_year,
-
+            comments: [],
             coursePlan: null
         })
 
@@ -148,7 +181,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     router.delete("/deleteStudent", (request, response) => {
 
         var token  = (request.cookies.token)
-
         console.log( jwt.verify(token,keys.secretOrKeyAdvisors))
 
         const itemId = request.body.sbu_id;
@@ -197,10 +229,11 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 response.json({notAllowed:"notAllowed"});
                 response.send()
             }
-        }            console.log(itemId)
+        }           
 
 
         dbCollection.findOne({ sbu_id: itemId}, (error, result) => {
+            console.l
             if (error) throw error;
             // return item
             response.json(result);
@@ -241,6 +274,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     router.put("/updateStudentCoursePlan", (request, response) => {
 
         const newPlan = request.body.coursePlan
+        console.log("NEW COURSE PLAN" ,newPlan)
+        if(newPlan !=null)
         dbCollection.updateOne({ sbu_id: newPlan.sbu_id }, { $set: {coursePlan: newPlan} }, (error, result) => {
        
         });

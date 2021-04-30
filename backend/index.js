@@ -25,7 +25,6 @@ app.use("/courses", coursesRoutes);
 app.use("/requirements", requirementsRoutes);
 app.use("/coursePlans", coursePlanRoutes);
 app.use("/degreeRequirements", degreeRequirements);
-
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Origin', frontEndDomain);
@@ -40,7 +39,7 @@ app.post("/logout", (req, res) => {
     // Check if user exists
     // Check password    
       res.cookie("token",  false ,{ maxage:3000, httpOnly: true , path:"/" });
-      res.cookie("gpdLoggedIn",0,{ maxage:3000, httpOnly: false ,path:"/" });
+      res.cookie("gpdLoggedIn",0, { maxage:3000, httpOnly: false ,path:"/" });
       res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
 
       res.send();

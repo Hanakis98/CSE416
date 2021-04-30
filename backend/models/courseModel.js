@@ -2,7 +2,6 @@ const { ObjectId } = require('mongodb');
 var mongoose = require('mongoose');
 
 var courseSchema = new mongoose.Schema({
-    sbu_id:String,
     department: String,
     name: String,
     description : String,
@@ -10,9 +9,7 @@ var courseSchema = new mongoose.Schema({
     section: String,
     semester: String,
     year: String,
-    timeslot : String,
-    grade: String,
-   
+    timeslot : String,   
     credits: String ,
     prerequisites:[String]
 });
