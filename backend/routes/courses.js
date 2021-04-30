@@ -83,8 +83,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
-    router.delete("/deleteAllCourses", (request, response) => {
-      
+    router.delete("/deleteAllCourses", (request, response) => {      
         console.log("Delete All Item");
         dbCollection.deleteMany(
             function(error, result) {

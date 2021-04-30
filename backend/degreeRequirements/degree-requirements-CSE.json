@@ -5,6 +5,8 @@
     "date": "2021-03-17",
     "minGPA": 3.0,
     "minCredits": 31,
+    "transferMax": 9,
+    "transferRestrictionStonyBrook": 12, 
     "proficiencyRequirements":[
         {
             "type": "bridge",
@@ -34,7 +36,8 @@
 					"credits": 3
                 }
             ],
-            "facutlyName": "Scott Stoller"
+            "facutlyName": "Scott Stoller",
+            "numCourses": 7
         },
         {
             "track": "Special Project",
@@ -44,7 +47,8 @@
                     "courseNumber": "CSE 522",
 					"credits": 3
                 }               
-            ]
+            ],
+            "numCourses": 8
         },
         {
             "track": "Thesis",  
@@ -53,9 +57,11 @@
                     "name":"MS Thesis Research",
                     "courseNumber": "CSE 599",
 					"credits": 3,
-                    "reapeat": 9
+                    "repeat": 9,
+                    "atLeast": 6
                 }               
-            ]
+            ],
+            "numCourses": 6 
             
         }
     ],
@@ -193,6 +199,12 @@
                 }
             ],
             "type": "at least one of"
+        },
+
+        {
+            "area": "Electives",
+            "restriction": "500-638",
+            "exception": [500, 522, 523, 524, 580, 581,582, 583, 584,585,586,587,588,589,593, 596,597,598,599]
         }
     ]
     
