@@ -16,7 +16,7 @@ const cookieParser = require("cookie-parser");
 router.use(cookieParser())
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
     router.post("/addComment",(request, response) =>{
-        console.log(     request.body.sbu_id,          request.body.commentToAdd            )
+        console.log(     request.body.sbu_id,           request.body.commentToAdd            )
         dbCollection.updateOne({ sbu_id: request.body.sbu_id }, {
             $push: 
             {comments : 

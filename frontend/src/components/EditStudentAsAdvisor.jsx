@@ -95,17 +95,18 @@ export default class EditStudentAsAdvisor extends Component{
                 'Content-Type': 'application/json',
             } ,credentials: 'include', 
             body: JSON.stringify({sbu_id: sbuid ,commnetToDelete : comment})
-                })
+                }).then(data=>            window.location.reload()                )
 
     }
     addComment=(commentToAdd, sbu_id)=>{
+        if(commentToAdd!="")
         fetch(backendDomain + "/students/addComment", {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
             } ,credentials: 'include', 
             body: JSON.stringify({sbu_id: sbu_id ,commentToAdd : commentToAdd})
-                })
+                }).then(data=>            window.location.reload()                )
     }
     updateStudent=() =>{ 
        
