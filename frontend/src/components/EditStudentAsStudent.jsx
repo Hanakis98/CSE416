@@ -25,7 +25,9 @@ export default class EditStudentAsStudent extends Component{
             entry_semester: "",
             entry_year : "",
             graduation_semester: "",
-            graduation_year: ""
+            graduation_year: "",
+            comments: [],
+            commentToAdd:""
         }; 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -70,7 +72,9 @@ export default class EditStudentAsStudent extends Component{
                     entry_semester: data.entry_semester,
                     entry_year : data.entry_year,
                     graduation_semester: data.graduation_semester,
-                    graduation_year: data.graduation_year
+                    graduation_year: data.graduation_year,
+                    comments: data.comments
+
                 });
                 if(data.coursePlan != null){
                     this.setState ( {
@@ -274,6 +278,25 @@ export default class EditStudentAsStudent extends Component{
                                 </tr>
                                 )}
                             </tbody>
+                        </Table>
+                        <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Comments</p>
+
+                        <Table  xs="3">
+                            <thead><tr>
+                    
+                            </tr></thead>
+                            <tbody>
+                                {this.state.comments.length !==0 && this.state.comments.map(x =>
+                                <tr>
+                                    <td>{x}</td>
+
+
+                                    <td> 
+                                    </td>
+                                </tr>
+                                )}
+                            </tbody>
+                           
                         </Table>
                     </Col>
                 </Row>

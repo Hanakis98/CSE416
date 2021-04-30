@@ -39,7 +39,7 @@ app.post("/logout", (req, res) => {
     // Check if user exists
     // Check password    
       res.cookie("token",  false ,{ maxage:3000, httpOnly: true , path:"/" });
-      res.cookie("gpdLoggedIn",0,{ maxage:3000, httpOnly: false ,path:"/" });
+      res.cookie("gpdLoggedIn",0, { maxage:3000, httpOnly: false ,path:"/" });
       res.cookie("studentLoggedIn",0,{ maxage:300, httpOnly: false ,path:"/" });
 
       res.send();

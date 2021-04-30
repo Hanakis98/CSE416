@@ -15,7 +15,48 @@ var sha = require("sha1")
 const cookieParser = require("cookie-parser");
 router.use(cookieParser())
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+    router.post("/addComment",(request, response) =>{
+        console.log(     request.body.sbu_id,          request.body.commentToAdd            )
+        dbCollection.updateOne({ sbu_id: request.body.sbu_id }, {
+            $push: 
+            {comments : 
+               request.body.commentToAdd
+            } 
+        });
+        response.send()
+    });
+
+    router.post("/deleteComment",(request, response) =>{
+
+        console.log(request.body)
+       var newCommentsArray=[]
+        dbCollection.findOne({ sbu_id: request.body.sbu_id }, (error,result)=> {
+
+
+            newCommentsArray= result.comments
+
+            for( var i =0; i < result.comments.length; i++){
+                if ( newCommentsArray[i] ===  request.body.commnetToDelete) { 
     
+                    newCommentsArray.splice(i, 1); 
+                }
+        
+            }
+            console.log("aftersplice", newCommentsArray)
+            dbCollection.updateOne({ sbu_id: request.body.sbu_id }, {
+                $set: 
+                {comments :   
+                    newCommentsArray
+                    
+                } 
+            });
+
+        });
+        console.log(newCommentsArray)
+
+        response.send()
+
+    });
     router.post("/regrabCoursePlan", (request, response) => {
         //update the course object
 

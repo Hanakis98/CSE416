@@ -24,7 +24,9 @@ export default class EditStudentAsAdvisor extends Component{
             entry_semester: "",
             entry_year : "",
             graduation_semester: "",
-            graduation_year: ""
+            graduation_year: "",
+            comments: [],
+            commentToAdd:""
         }; 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -70,7 +72,8 @@ export default class EditStudentAsAdvisor extends Component{
                     entry_semester: data.entry_semester,
                     entry_year : data.entry_year,
                     graduation_semester: data.graduation_semester,
-                    graduation_year: data.graduation_year
+                    graduation_year: data.graduation_year,
+                    comments: data.comments
                 });
                 if(data.coursePlan != null){
                     this.setState ( {
@@ -84,14 +87,28 @@ export default class EditStudentAsAdvisor extends Component{
                 console.log("testst");
             });
     }
+    deleteComment=(sbuid, comment) =>{
 
-    updateStudent=() =>{
-        //When update student is pressed, make sure forms filled out and then submit
-        // if(this.state.firstName === "" || this.state.lastName === ""|| this.state.sbu_id === ""|| this.state.email === ""|| this.state.major === ""|| this.state.track === "" || this.state.password === "")
-        // {
-        //     this.setState({error:1})
-        //     return 
-        // }
+        fetch(backendDomain + "/students/deleteComment", {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            } ,credentials: 'include', 
+            body: JSON.stringify({sbu_id: sbuid ,commnetToDelete : comment})
+                })
+
+    }
+    addComment=(commentToAdd, sbu_id)=>{
+        fetch(backendDomain + "/students/addComment", {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            } ,credentials: 'include', 
+            body: JSON.stringify({sbu_id: sbu_id ,commentToAdd : commentToAdd})
+                })
+    }
+    updateStudent=() =>{ 
+       
         let json_data = {
             first_name: this.state.firstName,
             last_name: this.state.lastName,
@@ -193,11 +210,11 @@ export default class EditStudentAsAdvisor extends Component{
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="graduation_semester" sm={4}>Graduation Semester</Label>
-                                <Col sm={8}><Input type="text" id="graduation_semester"placeholder={this.state.graduation_semester}   onChange = {e=> this.setState( {  graduation_semester: e.target.value })}/></Col>
+                                <Col sm={8}><Input type="text" id="graduation_semester"value={this.state.graduation_semester}   onChange = {e=> this.setState( {  graduation_semester: e.target.value })}/></Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="graduation_year" sm={4}>Graduation Year</Label>
-                                <Col sm={8}><Input type="text" id="graduation_year" placeholder={this.state.graduation_year}   onChange = {e=> this.setState( { graduation_year: e.target.value})}/></Col>
+                                <Col sm={8}><Input type="text" id="graduation_year" value={this.state.graduation_year}   onChange = {e=> this.setState( { graduation_year: e.target.value})}/></Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="major" sm={4}>Major</Label>
@@ -280,6 +297,32 @@ export default class EditStudentAsAdvisor extends Component{
                                 )}
                             </tbody>
                         </Table>
+                        <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Comments</p>
+
+                        <Table  xs="3">
+                            <thead><tr>
+                    
+                            </tr></thead>
+                            <tbody>
+                                {this.state.comments.length !==0 && this.state.comments.map(x =>
+                                <tr>
+                                    <td>{x}</td>
+
+
+                                    <td> 
+                                    <button onClick={() => this.deleteComment(this.state.sbu_id,x)}>Delete</button> 
+                                    </td>
+                                </tr>
+                                )}
+                            </tbody>
+                            <FormGroup row style={{alignItems: 'center'}}>
+                                <Col sm={8}><Input type="text" id="commentToAdd"    onChange = {e=> this.setState( { commentToAdd: e.target.value})}/></Col>
+                                <br></br>
+                                <Button onClick = {(e) => this.addComment(this.state.commentToAdd, this.state.sbu_id)} color="success" style={{width:"120px",margin:"5px"}} >Add Comment</Button>
+
+                            </FormGroup>
+                        </Table>
+                        
                     </Col>
                 </Row>
                 <Row >
