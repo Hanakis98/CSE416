@@ -542,7 +542,7 @@ export default class Students extends Component {
                                 <td>{x.completeCoursePlan ? "Complete" : "Incomplete"}</td>
                                 <td>
                                     <button onClick={() => this.deleteStudent(x.sbu_id)}>Delete</button>
-                                    <Link style={{ padding: "0px" }} class="nav-link" to={"/editStudentAsStudent?user=" + x.sbu_id}>
+                                    <Link style={{ padding: "0px" }} class="nav-link" to={"/EditStudent?user=" + x.sbu_id}>
                                         <button>View/Edit</button>
                                     </Link>
                                 </td>

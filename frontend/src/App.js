@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Navbar, Home, Students, Degrees, Courses, Trends, AddStudent,EditStudentAsAdvisor, EditStudentAsStudent } from "./components";
+import { Navbar, Home, Students, Degrees, Courses, Trends, AddStudent,EditStudent } from "./components";
 
 export let backendDomain = "http://localhost:3001";
  
@@ -16,8 +16,7 @@ export default function App() {
           <Route path="/courses" exact component={() => <Courses />} />
           <Route path="/trends" exact component={() => <Trends />} />
           <Route path="/add" exact component={() => <AddStudent />} />
-          <Route path="/editStudent" exact component={() => <EditStudentAsAdvisor />} />
-          <Route path="/editStudentAsStudent" exact component={() => <EditStudentAsStudent />} />
+          <Route path="/editStudent" exact component={() => <EditStudent />} />
 
         </Switch> 
       </Router>
