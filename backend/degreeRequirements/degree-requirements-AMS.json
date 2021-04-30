@@ -134,7 +134,8 @@
             "electiveCourses":[
                 {
                     "totalCredits": 9,
-                    "type": "general"                     
+                    "type": "general",
+                    "courseRange": ["AMS 530", "AMS 534", "AMS 536", "CHE 528", "CHE 523", "AMS 548", "PHY 558"]                
                                  
                 }
             ]
@@ -324,8 +325,9 @@
             ], 
             "electiveCourses":[
                 {
-                    "totalCredits": 3,
-                    "type": "general"                  
+                    "totalCredits": 6,
+                    "type": "general",
+                    "allowedCourses": ["AMS 515", "AMS 522", "AMS 523", "AMS 526", "AMS 527", "AMS 528", "AMS 530", "AMS 540", "AMS 542", "AMS 550", "AMS 553", "AMS 560", "AMS 561", "AMS 562", "AMS 569", "AMS 570", "AMS 578", "AMS 580", "AMS 588", "AMS 595", "AMS 603"]                  
                 }
             ]
         }

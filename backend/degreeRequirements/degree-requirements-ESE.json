@@ -1,146 +1,186 @@
 {
     "longName": "Computer Engineering",
-    "shortName": "ESE",
+    "shortName": "ECE",
     "version": "Spring 2021",
     "date": "2021-03-17",
-    "minGPA": 3.0,
+    "majorGPA": 3.0,
+    "restritions": "max six of ESE 597, ESE 599, ESE 698",
+    "maxTransfer": 12,
     "minCredits": 30,
     "trackRequirements":[
         {
             "track": "Non Thesis",
             "requiredCourses":[
                 {
-                    "name":"Switching and Routing in Parallel and Distributed Systems",
-                    "courseNumber": "ESE 536",
-					"credits": 3
+                    "area": "Hardware",
+                    "gradeRequirement": "C or Higher",
+                    "courses": [{
+                        "name":"Switching and Routing in Parallel and Distributed Systems",
+                        "courseNumber": "ESE 536",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Computer Architecture",
+                        "courseNumber": "ESE 545",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Hardware-Software Co-Design of Embedded Systems",
+                        "courseNumber": "ESE 566",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Hardware Architectures for Deep Learning",
+                        "courseNumber": "ESE 587",
+                        "credits": 3
+                    }],
+                    "type":"at least one of"
                 },
                 {
-                    "name":"Computer Architecture",
-                    "courseNumber": "ESE 545",
-					"credits": 3
+                    "area": "Networking",
+                    "gradeRequirement": "C or Higher",
+                    "courses": [ {
+                        "name":"Wireless Network",
+                        "courseNumber": "ESE 505",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Wireless Networking and Mobile Computing",
+                        "courseNumber": "ESE 506",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Computer Communication Networks",
+                        "courseNumber": "ESE 546",
+                        "credits": 3
+                    },
+                    {
+                        "name":" Local & Wide Area Networks",
+                        "courseNumber": "ESE 548",
+                        "credits": 3
+                    }],
+                    "type":"at least one of"
                 },
                 {
-                    "name":"Hardware-Software Co-Design of Embedded Systems",
-                    "courseNumber": "ESE 566",
-					"credits": 3
+                    "area": "CAD and VLSI",
+                    "gradeRequirement": "C or Higher",
+                    "courses": [  {
+                        "name":"Advanced Digital System Design & Generation",
+                        "courseNumber": "ESE 507",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Computer Aided Design",
+                        "courseNumber": "ESE 530",
+                        "credits": 3
+                    },
+                    {
+                        "name":" Advanced VLSI System Testing",
+                        "courseNumber": "ESE 549",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Advanced VLSI System Design",
+                        "courseNumber": "ESE 555",
+                        "credits": 3
+                    },
+                    {
+                        "name":"VLSI Physical and Logic Design Automation",
+                        "courseNumber": "ESE 556",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Advanced VLSI Signal Processing Architecture",
+                        "courseNumber": "ESE 575",
+                        "credits": 3
+                    }]
                 },
                 {
-                    "name":"Hardware Architectures for Deep Learning",
-                    "courseNumber": "ESE 587",
-					"credits": 3
-                }, 
-                {
-                    "name":"Wireless Network",
-                    "courseNumber": "ESE 505",
-					"credits": 3
+                    "area": "Theory and Software",
+                    "gradeRequirement": "C or Higher",
+                    "courses": [ {
+                        "name":"System Specification and Modeling",
+                        "courseNumber": "ESE 501",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Convex Optimization and Eng. Applications",
+                        "courseNumber": "ESE 533",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Cyber Physical systems",
+                        "courseNumber": "ESE 534",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Mobile Cloud Computing",
+                        "courseNumber": "ESE 543",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Computational Models for Computer Engineers",
+                        "courseNumber": "ESE 554",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Digital Image Processing",
+                        "courseNumber": "ESE 558",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Pattern Recognition",
+                        "courseNumber": "ESE 588",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Learning Systems for Engineering Applications.",
+                        "courseNumber": "ESE 589",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Operating Systems",
+                        "courseNumber": "CSE 506",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Principles of Programming Languages",
+                        "courseNumber": "CSE 526",
+                        "credits": 3
+                    },
+                    {
+                        "name":"Analysis of Algorithms",
+                        "courseNumber": "CSE 548",
+                        "credits": 3
+                    }],
+                    "type":"at least two of"
                 },
+                
                 {
-                    "name":"Wireless Networking and Mobile Computing",
-                    "courseNumber": "ESE 506",
-					"credits": 3
+                    "area": "Internship",
+                    "courses":[
+                        {
+                            "name":"Internship",
+                            "courseNumber": "ESE 597",
+                            "credits": 3,
+                            "repeat":9
+                        }
+                    ],         
+                    "type":"at least one of"           
                 },
+
                 {
-                    "name":"Computer Communication Networks",
-                    "courseNumber": "ESE 546",
-					"credits": 3
-                },
-                {
-                    "name":" Local & Wide Area Networks",
-                    "courseNumber": "ESE 548",
-					"credits": 3
-                }, {
-                    "name":"Advanced Digital System Design & Generation",
-                    "courseNumber": "ESE 507",
-					"credits": 3
-                },
-                {
-                    "name":"Computer Aided Design",
-                    "courseNumber": "ESE 530",
-					"credits": 3
-                },
-                {
-                    "name":" Advanced VLSI System Testing",
-                    "courseNumber": "ESE 549",
-					"credits": 3
-                },
-                {
-                    "name":"Advanced VLSI System Design",
-                    "courseNumber": "ESE 555",
-					"credits": 3
-                },
-                {
-                    "name":"VLSI Physical and Logic Design Automation",
-                    "courseNumber": "ESE 556",
-					"credits": 3
-                },
-                {
-                    "name":"Advanced VLSI Signal Processing Architecture",
-                    "courseNumber": "ESE 575",
-					"credits": 3
-                },
-                {
-                    "name":"System Specification and Modeling",
-                    "courseNumber": "ESE 501",
-					"credits": 3
-                },
-                {
-                    "name":"Convex Optimization and Eng. Applications",
-                    "courseNumber": "ESE 533",
-					"credits": 3
-                },
-                {
-                    "name":"Cyber Physical systems",
-                    "courseNumber": "ESE 534",
-					"credits": 3
-                },
-                {
-                    "name":"Mobile Cloud Computing",
-                    "courseNumber": "ESE 543",
-					"credits": 3
-                },
-                {
-                    "name":"Computational Models for Computer Engineers",
-                    "courseNumber": "ESE 554",
-					"credits": 3
-                },
-                {
-                    "name":"Digital Image Processing",
-                    "courseNumber": "ESE 558",
-					"credits": 3
-                },
-                {
-                    "name":"Pattern Recognition",
-                    "courseNumber": "ESE 588",
-					"credits": 3
-                },
-                {
-                    "name":"Learning Systems for Engineering Applications.",
-                    "courseNumber": "ESE 589",
-					"credits": 3
-                },
-                {
-                    "name":"Operating Systems",
-                    "courseNumber": "CSE 506",
-					"credits": 3
-                },
-                {
-                    "name":"Principles of Programming Languages",
-                    "courseNumber": "CSE 526",
-					"credits": 3
-                },
-                {
-                    "name":"Analysis of Algorithms",
-                    "courseNumber": "CSE 548",
-					"credits": 3
-                },
-                {
-                    "name":"Internship",
-                    "courseNumber": "ESE 597",
-					"credits": 3,
-                    "repeat":9
+                    "area": "Electives",
+                    "gradeRequirement": "C or Higher",
+                    "type": "at least three of",
+                    "exceptions": ["ESE 597", "ESE 599", "ESE 697", "ESE 698", "ESE 699"],
+                    "restrictions": "ESE 670 or Higher only one"
                 }
-            ],
-            "type":"at least one of"
+             
+               
+                
+            ]
+           
 
 
         },
@@ -148,299 +188,193 @@
             "track": "Thesis",  
             "requiredCourses":[
                 {
-                    "name":"Switching and Routing in Parallel and Distributed Systems",
-                    "courseNumber": "ESE 536",
-					"credits": 3
+                    "area": "Hardware",
+                    "gradeRequirement": "C or Higher",
+                    "requiredCourses":[
+                        {
+                            "name":"Switching and Routing in Parallel and Distributed Systems",
+                            "courseNumber": "ESE 536",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Computer Architecture",
+                            "courseNumber": "ESE 545",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Hardware-Software Co-Design of Embedded Systems",
+                            "courseNumber": "ESE 566",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Hardware Architectures for Deep Learning",
+                            "courseNumber": "ESE 587",
+                            "credits": 3
+                        }
+                    ],
+                    "type": "at least one of"
+                },
+                
+                {
+                    "area": "Networking",
+                    "gradeRequirement": "C or Higher",
+                    "requiredCourses":[
+                        {
+                            "name":"Wireless Network",
+                            "courseNumber": "ESE 505",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Wireless Networking and Mobile Computing",
+                            "courseNumber": "ESE 506",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Computer Communication Networks",
+                            "courseNumber": "ESE 546",
+                            "credits": 3
+                        },
+                        {
+                            "name":" Local & Wide Area Networks",
+                            "courseNumber": "ESE 548",
+                            "credits": 3
+                        }
+                    ],
+                    "type": "at least one of"
+                },
+                
+                {
+                    "area": "CAD and VLSI",
+                    "gradeRequirement": "C or Higher",
+                    "requiredCourses":[
+                        {
+                            "name":"Advanced Digital System Design & Generation",
+                            "courseNumber": "ESE 507",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Computer Aided Design",
+                            "courseNumber": "ESE 530",
+                            "credits": 3
+                        },
+                        {
+                            "name":" Advanced VLSI System Testing",
+                            "courseNumber": "ESE 549",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Advanced VLSI System Design",
+                            "courseNumber": "ESE 555",
+                            "credits": 3
+                        },
+                        {
+                            "name":"VLSI Physical and Logic Design Automation",
+                            "courseNumber": "ESE 556",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Advanced VLSI Signal Processing Architecture",
+                            "courseNumber": "ESE 575",
+                            "credits": 3
+                        }
+                    ],
+                    "type": "at least one of"
                 },
                 {
-                    "name":"Computer Architecture",
-                    "courseNumber": "ESE 545",
-					"credits": 3
+                    "area": "Theory and Software",
+                    "gradeRequirement": "C or Higher",
+                    "requiredCourses":[
+                        {
+                            "name":"System Specification and Modeling",
+                            "courseNumber": "ESE 501",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Convex Optimization and Eng. Applications",
+                            "courseNumber": "ESE 533",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Cyber Physical systems",
+                            "courseNumber": "ESE 534",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Mobile Cloud Computing",
+                            "courseNumber": "ESE 543",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Computational Models for Computer Engineers",
+                            "courseNumber": "ESE 554",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Digital Image Processing",
+                            "courseNumber": "ESE 558",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Pattern Recognition",
+                            "courseNumber": "ESE 588",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Learning Systems for Engineering Applications.",
+                            "courseNumber": "ESE 589",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Operating Systems",
+                            "courseNumber": "CSE 506",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Principles of Programming Languages",
+                            "courseNumber": "CSE 526",
+                            "credits": 3
+                        },
+                        {
+                            "name":"Analysis of Algorithms",
+                            "courseNumber": "CSE 548",
+                            "credits": 3
+                        }
+                    ],
+                    "type": "at least two of"
                 },
                 {
-                    "name":"Hardware-Software Co-Design of Embedded Systems",
-                    "courseNumber": "ESE 566",
-					"credits": 3
+                    "area": "Internship",
+                    "courses":[
+                        {
+                            "name":"Internship",
+                            "courseNumber": "ESE 597",
+                            "credits": 3,
+                            "repeat":9
+                        }
+                    ],         
+                    "type":"at least one of"           
                 },
+
                 {
-                    "name":"Hardware Architectures for Deep Learning",
-                    "courseNumber": "ESE 587",
-					"credits": 3
-                }, 
-                {
-                    "name":"Wireless Network",
-                    "courseNumber": "ESE 505",
-					"credits": 3
+                    "area": "Electives",
+                    "gradeRequirement": "C or Higher",
+                    "type": "at least one of",
+                    "exceptions": ["ESE 597", "ESE 599", "ESE 697", "ESE 698", "ESE 699"],
+                    "restrictions": "ESE 670 or Higher only one"
                 },
+
                 {
-                    "name":"Wireless Networking and Mobile Computing",
-                    "courseNumber": "ESE 506",
-					"credits": 3
-                },
-                {
-                    "name":"Computer Communication Networks",
-                    "courseNumber": "ESE 546",
-					"credits": 3
-                },
-                {
-                    "name":" Local & Wide Area Networks",
-                    "courseNumber": "ESE 548",
-					"credits": 3
-                }, {
-                    "name":"Advanced Digital System Design & Generation",
-                    "courseNumber": "ESE 507",
-					"credits": 3
-                },
-                {
-                    "name":"Computer Aided Design",
-                    "courseNumber": "ESE 530",
-					"credits": 3
-                },
-                {
-                    "name":" Advanced VLSI System Testing",
-                    "courseNumber": "ESE 549",
-					"credits": 3
-                },
-                {
-                    "name":"Advanced VLSI System Design",
-                    "courseNumber": "ESE 555",
-					"credits": 3
-                },
-                {
-                    "name":"VLSI Physical and Logic Design Automation",
-                    "courseNumber": "ESE 556",
-					"credits": 3
-                },
-                {
-                    "name":"Advanced VLSI Signal Processing Architecture",
-                    "courseNumber": "ESE 575",
-					"credits": 3
-                },
-                {
-                    "name":"System Specification and Modeling",
-                    "courseNumber": "ESE 501",
-					"credits": 3
-                },
-                {
-                    "name":"Convex Optimization and Eng. Applications",
-                    "courseNumber": "ESE 533",
-					"credits": 3
-                },
-                {
-                    "name":"Cyber Physical systems",
-                    "courseNumber": "ESE 534",
-					"credits": 3
-                },
-                {
-                    "name":"Mobile Cloud Computing",
-                    "courseNumber": "ESE 543",
-					"credits": 3
-                },
-                {
-                    "name":"Computational Models for Computer Engineers",
-                    "courseNumber": "ESE 554",
-					"credits": 3
-                },
-                {
-                    "name":"Digital Image Processing",
-                    "courseNumber": "ESE 558",
-					"credits": 3
-                },
-                {
-                    "name":"Pattern Recognition",
-                    "courseNumber": "ESE 588",
-					"credits": 3
-                },
-                {
-                    "name":"Learning Systems for Engineering Applications.",
-                    "courseNumber": "ESE 589",
-					"credits": 3
-                },
-                {
-                    "name":"Operating Systems",
-                    "courseNumber": "CSE 506",
-					"credits": 3
-                },
-                {
-                    "name":"Principles of Programming Languages",
-                    "courseNumber": "CSE 526",
-					"credits": 3
-                },
-                {
-                    "name":"Analysis of Algorithms",
-                    "courseNumber": "CSE 548",
-					"credits": 3
-                },
-                {
-                    "name":"Internship",
-                    "courseNumber": "ESE 597",
-					"credits": 3,
-                    "repeat":9
+                    "area": "Thesis",
+                    "completed": "yes"
                 }
-            ],
-            "type":["at least three of (500-596) " , "at least of of 597"]
+            ]
+            
             
                           
             
             
         }
-    ],
-    "courseRequirements":[
-        {
-            "area": "Hardware",
-            "gradeRequirement": "C or Higher",
-            "requiredCourses":[
-                {
-                    "name":"Switching and Routing in Parallel and Distributed Systems",
-                    "courseNumber": "ESE 536",
-					"credits": 3
-                },
-                {
-                    "name":"Computer Architecture",
-                    "courseNumber": "ESE 545",
-					"credits": 3
-                },
-                {
-                    "name":"Hardware-Software Co-Design of Embedded Systems",
-                    "courseNumber": "ESE 566",
-					"credits": 3
-                },
-                {
-                    "name":"Hardware Architectures for Deep Learning",
-                    "courseNumber": "ESE 587",
-					"credits": 3
-                }
-            ],
-            "type": "at least one of"
-        },
-        
-        {
-            "area": "Networking",
-            "gradeRequirement": "C or Higher",
-            "requiredCourses":[
-                {
-                    "name":"Wireless Network",
-                    "courseNumber": "ESE 505",
-					"credits": 3
-                },
-                {
-                    "name":"Wireless Networking and Mobile Computing",
-                    "courseNumber": "ESE 506",
-					"credits": 3
-                },
-                {
-                    "name":"Computer Communication Networks",
-                    "courseNumber": "ESE 546",
-					"credits": 3
-                },
-                {
-                    "name":" Local & Wide Area Networks",
-                    "courseNumber": "ESE 548",
-					"credits": 3
-                }
-            ],
-            "type": "at least one of"
-        },
-        
-        {
-            "area": "CAD and VLSI",
-            "gradeRequirement": "C or Higher",
-            "requiredCourses":[
-                {
-                    "name":"Advanced Digital System Design & Generation",
-                    "courseNumber": "ESE 507",
-					"credits": 3
-                },
-                {
-                    "name":"Computer Aided Design",
-                    "courseNumber": "ESE 530",
-					"credits": 3
-                },
-                {
-                    "name":" Advanced VLSI System Testing",
-                    "courseNumber": "ESE 549",
-					"credits": 3
-                },
-                {
-                    "name":"Advanced VLSI System Design",
-                    "courseNumber": "ESE 555",
-					"credits": 3
-                },
-                {
-                    "name":"VLSI Physical and Logic Design Automation",
-                    "courseNumber": "ESE 556",
-					"credits": 3
-                },
-                {
-                    "name":"Advanced VLSI Signal Processing Architecture",
-                    "courseNumber": "ESE 575",
-					"credits": 3
-                }
-            ],
-            "type": "at least one of"
-        },
-        {
-            "area": "Theory and Software",
-            "gradeRequirement": "C or Higher",
-            "requiredCourses":[
-                {
-                    "name":"System Specification and Modeling",
-                    "courseNumber": "ESE 501",
-					"credits": 3
-                },
-                {
-                    "name":"Convex Optimization and Eng. Applications",
-                    "courseNumber": "ESE 533",
-					"credits": 3
-                },
-                {
-                    "name":"Cyber Physical systems",
-                    "courseNumber": "ESE 534",
-					"credits": 3
-                },
-                {
-                    "name":"Mobile Cloud Computing",
-                    "courseNumber": "ESE 543",
-					"credits": 3
-                },
-                {
-                    "name":"Computational Models for Computer Engineers",
-                    "courseNumber": "ESE 554",
-					"credits": 3
-                },
-                {
-                    "name":"Digital Image Processing",
-                    "courseNumber": "ESE 558",
-					"credits": 3
-                },
-                {
-                    "name":"Pattern Recognition",
-                    "courseNumber": "ESE 588",
-					"credits": 3
-                },
-                {
-                    "name":"Learning Systems for Engineering Applications.",
-                    "courseNumber": "ESE 589",
-					"credits": 3
-                },
-                {
-                    "name":"Operating Systems",
-                    "courseNumber": "CSE 506",
-					"credits": 3
-                },
-                {
-                    "name":"Principles of Programming Languages",
-                    "courseNumber": "CSE 526",
-					"credits": 3
-                },
-                {
-                    "name":"Analysis of Algorithms",
-                    "courseNumber": "CSE 548",
-					"credits": 3
-                }
-            ],
-            "type": "at least two of"
-        }
     ]
+    
     
 }
