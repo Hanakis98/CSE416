@@ -6,4 +6,5 @@ export { default as Courses } from "./Courses";
 export { default as Trends } from "./Trends";
 export { default as AddStudent } from "./AddStudent";
 export { default as InvalidLogin } from "./InvalidLogin";
-export { default as EditStudent } from "./EditViewStudent";
+export { default as EditStudentAsAdvisor } from "./EditStudentAsAdvisor";
+export { default as EditStudentAsStudent } from "./EditStudentAsStudent";

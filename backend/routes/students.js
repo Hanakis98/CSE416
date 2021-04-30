@@ -123,6 +123,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             entry_year: request.body.entry_year,
             graduation_semester: request.body.graduation_semester,
             graduation_year: request.body.graduation_year,
+            comments: [],
             coursePlan: null
         })
 

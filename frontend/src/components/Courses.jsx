@@ -147,7 +147,7 @@ export default class Courses extends Component {
 
     deleteAllCourses = (id) => {
         //let data = {sbu_id: id}
-        fetch(backendDomain + '/courses/deleteAllOfferedCourses', {
+        fetch(backendDomain + '/courses/deleteAllCourses', {
             method: 'DELETE', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
@@ -164,18 +164,19 @@ export default class Courses extends Component {
     }
 
     scrapeCourseInfo = async event => {
-        // var re = /(?<=[A-Z]{3} [0-9]{3})(.*)(?=\n\n)/g
         var file = event.target.files[0]
         var text = await file.text();
 
         text = text.substring(text.indexOf(":") -7)
-        var arr = text.split("\n\n\n\n")
-        console.log(arr.length,arr)
-        for ( var i =0; i < arr.length ; i++){
+        //console.log(text)
 
-            if (arr[i].substring(0,10).includes(this.state.scrapeDepartment))
+        var arr = text.split("\r\r\r\r")
+        //console.log(arr.length,arr)
+        for ( var i =0; i < arr.length ; i++){
+            console.log("fff", arr[i].substring(0,50)) 
+
+            if (arr[i].substring(0,20).includes(this.state.scrapeDepartment ) )
             {                 
-                console.log(arr[i].substring(0,50)) 
 
                 fetch(backendDomain + '/courses/scrapeCourseInfo', {
                 method: 'POST', // or 'PUT'
@@ -188,8 +189,10 @@ export default class Courses extends Component {
                     year: this.state.scrapeYear,
                     semester: this.state.scrapeSemester,
                     departments: this.state.scrapeDepartment
-                })
-            })
+                }) 
+            }).then((response) => {
+                    // process response
+                  })
             }
         }
 

@@ -3,12 +3,12 @@ import  React  from 'react';
 import { Redirect } from "react-router-dom";
 import { Alert, Table, Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
 import Cookies from 'js-cookie';
-import { backendDomain } from './../App.js';
+import { backendDomain } from '../App.js';
 
 var sha = require("sha1")
 var u=0;
 
-export default class editStudent extends Component{
+export default class EditStudentAsAdvisor extends Component{
     constructor(props) {
         super(props);
         this.state={
@@ -39,11 +39,8 @@ export default class editStudent extends Component{
         const query = new URLSearchParams(window.location.search);
         u = query.get('user')
         
-        var urlToGetStudent= backendDomain + "/students/getOneStudent"
-
-        if(u != null  ){
-            urlToGetStudent = backendDomain + "/students/getOneStudent?user="+u
-        }
+        var urlToGetStudent  = backendDomain + "/students/getOneStudent?user="+u
+        
         
         fetch(urlToGetStudent, {
             method: 'GET', // or 'PUT'
@@ -167,32 +164,32 @@ export default class editStudent extends Component{
                         <Form>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="name" sm={4}>First Name</Label>
-                                <Col sm={8}><Input type="text" id="name" placeholder={this.state.firstName} onChange = {e=> this.setState( {firstName: e.target.value })} /></Col>
+                                <Col sm={8}><Input type="text" id="name" value={this.state.firstName} onChange = {e=> this.setState( {firstName: e.target.value })} /></Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="name" sm={4}>Last Name</Label>
-                                <Col sm={8}><Input type="text" id="name" placeholder={this.state.lastName} onChange = {e=> this.setState( {lastName: e.target.value })}/></Col>
+                                <Col sm={8}><Input type="text" id="name" value={this.state.lastName} onChange = {e=> this.setState( {lastName: e.target.value })}/></Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="id" sm={4}>ID</Label>
-                                <Col sm={8}><Input type="text" id="id" placeholder={this.state.sbu_id}  onChange = {e=> this.setState( {sbu_id: e.target.value })} /></Col>
+                                <Col sm={8}><Input type="text" id="id" value={this.state.sbu_id}  onChange = {e=> this.setState( {sbu_id: e.target.value })} /></Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="email" sm={4}>Email</Label>
-                                <Col sm={8}><Input type="text" id="email" placeholder={this.state.email}  onChange = {e=> this.setState( {email: e.target.value })}/></Col>
+                                <Col sm={8}><Input type="text" id="email" value={this.state.email}  onChange = {e=> this.setState( {email: e.target.value })}/></Col>
                             </FormGroup>
                         
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="password" sm={4}>Password</Label>
-                                <Col sm={8}><Input type="text" id="password"placeholder={this.state.password}   onChange = {e=> this.setState( {password:sha( e.target.value+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja") })}/></Col>
+                                <Col sm={8}><Input type="text" id="password"   onChange = {e=> this.setState( {password:sha( e.target.value+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja") })}/></Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="entry_semester" sm={4}>Entry Semester</Label>
-                                <Col sm={8}><Input type="text" id="entry_semester"placeholder={this.state.entry_semester}   onChange = {e=> this.setState( { entry_semester : e.target.value})}/></Col>
+                                <Col sm={8}><Input type="text" id="entry_semester"value={this.state.entry_semester}   onChange = {e=> this.setState( { entry_semester : e.target.value})}/></Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="entry_year" sm={4}>Entry Year</Label>
-                                <Col sm={8}><Input type="text" id="entry_year"placeholder={this.state.entry_year}   onChange = {e=> this.setState( { entry_year : e.target.value })}/></Col>
+                                <Col sm={8}><Input type="text" id="entry_year"value={this.state.entry_year}   onChange = {e=> this.setState( { entry_year : e.target.value })}/></Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="graduation_semester" sm={4}>Graduation Semester</Label>

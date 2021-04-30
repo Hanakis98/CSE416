@@ -78,7 +78,7 @@ class Nav2 extends Component{
                     {studentLoggedIn === '1' && 
                     <Nav className="mr-auto" navbar>
                     <NavItem >
-                        <Link class="nav-link" to="/editStudent">Edit My Info</Link>
+                        <Link class="nav-link" to="/editStudentAsStudent">Edit My Info</Link>
                     </NavItem>
                     <NavItem >
                         <Link class="nav-link" to="">Degree Progress</Link>

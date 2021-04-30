@@ -47,30 +47,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             });
 
         });
-        // dbCollection.updateOne( {sbu_id: request.body.sbu_id,   }, {"$pull":  {"newCourse":{"courses": {"department": "AMS"}}}}, (error,result)=> {
-        //     console.log(result)
-        //     if(result!=null)
-        //     dbCollection.updateOne( {sbu_id: request.body.sbu_id}, { $push:{courses: {  
-                
-        //         newCourse: {
-        //             course_num: "TEST"
-        //         // course_num: result.course_num,
-        //         // department: result.department,
-        //         // section: request.body.section  ,
-        //         // year: request.body.year, 
-        //         // semester: request.body.semester,
-        //         // description: result.description},
-        //         // grade:request.body.grade ,
-        //         // hasTaken: true
 
-        //     } }}}, (error, result) => {
-
-
-
-
-        // } );  
-
-        //Now have to update courseplan object and student object
 });
     router.get("/allPlans", (request, response) => { // get ALL
         // return updated list
@@ -91,7 +68,9 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         
     });
     router.post("/addCourseToPlan", (request, response) => { // get ALL
-        console.log(request.body)
+        // console.log(request.body)
+        //add this course to the course plan. If it exists already just grab it
+        //but if it doesnt then create it
         axios
         .post(domain + '/courses/getCourse', 
         {
@@ -117,8 +96,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                                 section: res.data.section,
                                 description: res.data.description,
                                 credits: res.data.credits
-
-
                             }, 
                             grade: request.body.grade, 
                             hasTaken:false
