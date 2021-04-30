@@ -4,7 +4,9 @@ import { Redirect } from "react-router-dom";
 import { Alert, Table, Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
 import Cookies from 'js-cookie';
 import { backendDomain } from '../App.js';
-
+import AddCourseModal from './AddCourseModal'
+import AddCourseWarningModal from './AddCourseWarningModal'
+import axios from 'axios'
 var sha = require("sha1")
 var u=0;
 
@@ -169,6 +171,47 @@ export default class EditStudentAsStudent extends Component{
             body: JSON.stringify({sbu_id: sbu_id ,commentToAdd : commentToAdd})
                 }).then(data=>            window.location.reload()                )
     }
+    toggleAddCourseWarningModal = () => {
+        var newShowModal = !this.state.showAddCourseWarningModal
+        this.setState({ showAddCourseWarningModal: newShowModal })
+
+    }
+    
+    addCourseToPlan = (department,courseNum,semester,year,section) => {
+        console.log(department,courseNum,semester,year,section)
+        fetch(backendDomain + "/courses/getCourseIfItExists", {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            } ,credentials: 'include', 
+            body: JSON.stringify({department: department, course_num:courseNum, semester:semester, year:year,section:section})
+
+                })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.department)
+                if(data.department == null)
+                {
+                    this.toggleAddCourseWarningModal()
+                    this.setState({ showAddCourseModal: false })}
+            });
+
+            fetch(backendDomain + '/coursePlans/addCourseToPlan', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                }, credentials: 'include',
+                body: JSON.stringify({sbu_id: this.state.sbu_id,department: department, course_num:courseNum, semester:semester, year:year,section:section})
+            })
+            fetch(backendDomain + '/students/regrabCoursePlan', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                }, credentials: 'include', 
+                body: JSON.stringify({sbu_id: this.state.sbu_id})
+            })
+
+    }
     render(){
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
         const studentLoggedIn=Cookies.get("studentLoggedIn");
@@ -314,7 +357,12 @@ export default class EditStudentAsStudent extends Component{
                                 </tr>
                                 )}
                             </tbody>
+
                         </Table>
+                                              
+                         <AddCourseModal buttonLabel="Add Course" addCourseToPlan={this.addCourseToPlan}></AddCourseModal>
+                         <AddCourseWarningModal  toggle={this.toggleAddCourseWarningModal} modal={this.state.showAddCourseWarningModal}></AddCourseWarningModal>
+
                         <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Comments</p>
 
                         <Table  xs="3">

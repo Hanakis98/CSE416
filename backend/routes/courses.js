@@ -48,6 +48,36 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
 
     });
+  
+    router.post("/getCourseIfItExists",(request, response) => {
+        //get a specific course and if it does not exist, create it
+        console.log(request.body.department)
+        dbCollection.findOne(            
+            {
+            department: request.body.department,
+            course_num: request.body.course_num,
+            semester: request.body.semester,
+            year: request.body.year 
+            },
+            (error, result) => {
+            console.log(result)
+            if(result==null){
+
+                response.json({department:null})
+                response.send()
+                return
+            }
+            else{
+                
+            console.log("COURSE EXISTS")
+            response.json(result)
+            response.send()
+            return
+            }
+        });
+
+
+    });
     router.post("/scrapeCourseInfo", (request, response) => {
             const regexForCourseShortHand = /[A-Z]{3} \d{3}:/g;
             const regexForCourseCredits = /\d credits/g;

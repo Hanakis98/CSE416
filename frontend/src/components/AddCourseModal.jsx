@@ -22,13 +22,6 @@ const AddCourseModal = (props) => {
       
     }
 
-    const toggleEscape = (target) => {
-      if (target === 'Filter'){
-        // Apply filtering
-      }else{
-      }  
-      setModal(!modal);
-    }
 
     return (
             <div>
@@ -39,26 +32,26 @@ const AddCourseModal = (props) => {
           <Form>
             <FormGroup>
                 <Label>Department</Label>
-                <Input onChange = {e => department = console.log(e.target.value)} />
+                <Input onChange = {e => department = e.target.value} />
             <br />
                 <Label>Course Number</Label>
-                <Input onChange = {e => courseNum = console.log(e.target.value)} />
+                <Input onChange = {e => courseNum = e.target.value} />
                 <br />
                 <Label>Section</Label>
-                <Input onChange = {e => section = console.log(e.target.value)} />
+                <Input onChange = {e => section = e.target.value} />
                 <br />
                 <Label>Semester</Label>
-                <Input onChange = {e => semester = console.log(e.target.value)} />
+                <Input onChange = {e => semester = (e.target.value)} />
                 <br />
                 <Label>Year</Label>
-                <Input onChange = {e => year = console.log(e.target.value)} />
+                <Input onChange = {e => year =(e.target.value)} />
 
             </FormGroup>
           
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={e => addCourseToPlan()}>Add Course</Button>{' '}
+          <Button color="primary" onClick={e => {addCourseToPlan(department,courseNum, semester, year, section); toggle()}}>Add Course</Button>{' '}
         </ModalFooter>
       </Modal>
     </div>

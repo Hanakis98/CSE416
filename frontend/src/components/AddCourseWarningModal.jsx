@@ -13,7 +13,7 @@ const AddCourseWarningModal = (props) => {
 
       <Modal isOpen={modal} toggle={toggle} className={className}>
         <ModalHeader toggle={e => toggle(e.target.innerText)}>Warning</ModalHeader>
-        <ModalBody>No Students Found
+        <ModalBody>Cannot Add Course<br></br> Course Not Being Offered 
         </ModalBody>
       </Modal>
     </div>
