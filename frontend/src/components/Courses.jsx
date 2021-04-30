@@ -251,9 +251,9 @@ export default class Courses extends Component {
 
                         ))}
                     </tbody>
-                    <input id = "semester" type="input" placeholder="semester"onChange={e => this.state.scrapeSemester = e.target.value}></input>
-                    <input id = "year" type="input" placeholder="year"onChange={e => this.state.scrapeYear = e.target.value}></input>
-                    <input id = "department" type="input" placeholder="department"onChange={e => this.state.scrapeDepartment = e.target.value}></input>
+                    <input id = "semester" type="input" placeholder="semester"onChange={e => this.setState({scrapeSemester: e.target.value})}></input>
+                    <input id = "year" type="input" placeholder="year"onChange={e => this.setState({scrapeYear: e.target.value})}></input>
+                    <input id = "department" type="input" placeholder="department"onChange={e => this.setState({scrapeDepartment: e.target.value})}></input>
 
                     <br></br>
                     <input id="myInput" type="file" ref={(ref) => this.uploadCourseInfo = ref} style={{ display: 'none' }} onChange={this.scrapeCourseInfo} />

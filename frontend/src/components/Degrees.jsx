@@ -12,7 +12,7 @@ export default class Degrees extends Component{
     }
     render(){
         return (
-            <p>ok</p>
+            <p>Degrees</p>
         );
     }
 }
