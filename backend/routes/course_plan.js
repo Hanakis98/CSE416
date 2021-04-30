@@ -40,7 +40,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             return
         } ); 
     });
-
+ 
 
     router.post("/addGrade", (request, response) => {
         //update the course object

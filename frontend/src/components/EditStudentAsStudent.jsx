@@ -39,10 +39,14 @@ export default class EditStudentAsStudent extends Component{
 
     fetchStudentInfo = () => {
         // Get the query paramter and then get the students info and update the state of the page
-
+        const query = new URLSearchParams(window.location.search);
+        u = query.get('user')
         
         var urlToGetStudent= backendDomain + "/students/getOneStudent"
 
+        if(u != null  ){
+            urlToGetStudent = backendDomain + "/students/getOneStudent?user="+u
+        }
         
         fetch(urlToGetStudent, {
             method: 'GET', // or 'PUT'
@@ -106,6 +110,7 @@ export default class EditStudentAsStudent extends Component{
         }
         //The gpd can be updating the student or the student can update themselves.
         //Change the URL depending on this and then send a PUT to update
+        
         var URLtoUpdateStudent=backendDomain + "/students/updateStudent";
             if(u != null  ){
                 URLtoUpdateStudent = backendDomain + "/students/updateStudent?user="+u
@@ -127,7 +132,25 @@ export default class EditStudentAsStudent extends Component{
 
             });
     }
+    deleteCourseFromPlan = (sbu_id,department,courseNum,semester,year)=>{
+        
+        console.log( (semester))
+        fetch(backendDomain + "/coursePlans/deleteCourseFromPlan", {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            } ,credentials: 'include', 
+            body: JSON.stringify({sbu_id: sbu_id , department: department, course_num: courseNum,semester: semester,year: year})
+                })   ;
+            fetch(backendDomain + "/students/regrabCoursePlan", {
+                    method: 'POST', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    } ,credentials: 'include', 
+                    body: JSON.stringify({sbu_id: sbu_id })
+                        }).then(data=>            window.location.reload() )   ;
 
+    }
     handleChange(event){
         this.setState({category: event.target.value});
         console.log(event.target.value)
@@ -136,7 +159,16 @@ export default class EditStudentAsStudent extends Component{
         console.log(this.state);
         event.preventDefault();
     }
-   
+    addComment=(commentToAdd, sbu_id)=>{
+        if(commentToAdd!="")
+        fetch(backendDomain + "/students/addComment", {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            } ,credentials: 'include', 
+            body: JSON.stringify({sbu_id: sbu_id ,commentToAdd : commentToAdd})
+                }).then(data=>            window.location.reload()                )
+    }
     render(){
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
         const studentLoggedIn=Cookies.get("studentLoggedIn");
@@ -169,10 +201,14 @@ export default class EditStudentAsStudent extends Component{
                                 <Label for="name" sm={4}>Last Name</Label>
                                 <Col sm={8}><Input type="text" id="name" value={this.state.lastName} onChange = {e=> this.setState( {lastName: e.target.value })}/></Col>
                             </FormGroup>
-                            <FormGroup row style={{alignItems: 'center'}}>
+                           {gpdLoggedIn==1 && <FormGroup row style={{alignItems: 'center'}}>
+                                <Label for="id" sm={4}>ID</Label>
+                                <Col sm={8}><Input type="text" id="id" readOnly={false} value={this.state.sbu_id}  onChange = {e=> this.setState( {sbu_id: e.target.value })} /></Col>
+                            </FormGroup>}
+                            {studentLoggedIn==1 && <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="id" sm={4}>ID</Label>
                                 <Col sm={8}><Input type="text" id="id" readOnly={true} value={this.state.sbu_id}  onChange = {e=> this.setState( {sbu_id: e.target.value })} /></Col>
-                            </FormGroup>
+                            </FormGroup>}
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="email" sm={4}>Email</Label>
                                 <Col sm={8}><Input type="text" id="email" value={this.state.email}  onChange = {e=> this.setState( {email: e.target.value })}/></Col>
@@ -270,11 +306,11 @@ export default class EditStudentAsStudent extends Component{
                                     <td>{x.newCourse.semester}</td>
                                     <td>{x.newCourse.year}</td>
                                     <td>{x.newCourse.timeslot}  </td>
-                                    <td>{x.grade}  </td>
+                                    {x.grade && <td>{x.grade}  </td>}
 
-                                    <td> 
-                                    {/* <button onClick={() => this.deleteCourse(x.department,x.courseNum,x.semester,x.year)}>Delete</button>  */}
-                                    </td>
+                                   {(gpdLoggedIn==1 || x.grade=="") && <td> 
+                                     <Button onClick={(e) => this.deleteCourseFromPlan(this.state.sbu_id,x.newCourse.department,x.newCourse.course_num,x.newCourse.semester,x.newCourse.year)}>Delete</Button>  
+                                    </td>}
                                 </tr>
                                 )}
                             </tbody>
@@ -290,11 +326,18 @@ export default class EditStudentAsStudent extends Component{
                                 <tr>
                                     <td>{x}</td>
 
-
-                                    <td> 
-                                    </td>
+                                        <br></br>
+                                
                                 </tr>
                                 )}
+                                   {gpdLoggedIn==1 &&  <td> 
+                                    <FormGroup row style={{alignItems: 'center'}}>
+                                        <Col sm={8}><Input type="text" id="commentToAdd"    onChange = {e=> this.setState( { commentToAdd: e.target.value})}/></Col>
+                                        <br></br>
+                                        <Button onClick = {(e) => this.addComment(this.state.commentToAdd, this.state.sbu_id)} color="success" style={{width:"120px",margin:"5px"}} >Add Comment</Button>
+
+                                    </FormGroup>
+                                    </td>}
                             </tbody>
                            
                         </Table>

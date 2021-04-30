@@ -3,12 +3,12 @@ const { ObjectID } = require("mongodb");
 const router = express.Router();
 const db = require("../database.js");
 const dbName = "CSE416";
-const collectionName = "degreeRequirements";
+const collectionName = "DegreeRequirements";
 
 
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
 
-    router.get("/allDegreeRequriements", (request, response) => { // get ALL
+    router.get("/allDegreeRequirements", (request, response) => { // get ALL
         // return updated list
         dbCollection.find().toArray((error, result) => {
             if (error) throw error;
