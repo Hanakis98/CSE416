@@ -54,7 +54,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         console.log(request.body.department)
         dbCollection.findOne(            
             {
-            department: request.body.department,
+            department: request.body.department, 
             course_num: request.body.course_num,
             semester: request.body.semester,
             year: request.body.year 

@@ -14,10 +14,43 @@ var domain = "http://localhost:3001"
 var sha = require("sha1")
 const cookieParser = require("cookie-parser");
 router.use(cookieParser())
+
+
+var mail = require('nodemailer') //NPM INSTALL THIS
+var myAccount = mail.createTransport({
+    service:"gmail",
+    auth:{
+    //Email to use is cse316teddy@gmail.com password is MyCSE316password
+    user:"cse316teddy@gmail.com",
+    pass:"MyCSE316password"
+
+    }
+    
+})
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
-    
-    
-    
+    router.post("/addCommentAndNotify",(request, response) =>{
+        dbCollection.updateOne({ sbu_id: request.body.sbu_id }, {
+      
+            $push: 
+            {comments : 
+               request.body.commentToAdd
+            } 
+        });
+        var mail = {
+            from :'cse316teddy@gmail.com',
+            to: request.body.email,
+            subject: "MAST System Notification",
+            html: `There is a new comment on your course plan, check it out http://localhost:3000/`
+        } 
+
+
+        myAccount.sendMail(mail);
+        response.send()
+
+
+    });
+
+
     router.post("/addComment",(request, response) =>{
         console.log(     request.body.sbu_id,           request.body.commentToAdd            )
         dbCollection.updateOne({ sbu_id: request.body.sbu_id }, {

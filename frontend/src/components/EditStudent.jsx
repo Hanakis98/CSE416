@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import { backendDomain } from '../App.js';
 import AddCourseModal from './AddCourseModal'
 import AddCourseWarningModal from './AddCourseWarningModal'
-import axios from 'axios'
+
 var sha = require("sha1")
 var u=0;
 
@@ -169,7 +169,26 @@ export default class EditStudentAsStudent extends Component{
                 'Content-Type': 'application/json',
             } ,credentials: 'include', 
             body: JSON.stringify({sbu_id: sbu_id ,commentToAdd : commentToAdd})
-                }).then(data=>            window.location.reload()                )
+                }).then(data=>window.location.reload()                )
+    }
+    
+    addCommentAndNotify=(commentToAdd, sbu_id)=>{
+        let templateParams = {
+            from_name: "MAST SYSTEM",
+            to_name: this.state.email,
+            subject: "COMMENT ON COURSEPLAN",
+            message_html: "THERES A NEW COMMENT ON YOUR COURSEPLAN",
+        }
+        if(commentToAdd!="")
+        fetch(backendDomain + "/students/addCommentAndNotify", {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            } ,credentials: 'include', 
+            body: JSON.stringify({sbu_id: sbu_id ,commentToAdd : commentToAdd, email: this.state.email})
+                }).then(data=>window.location.reload() );
+        
+     
     }
     toggleAddCourseWarningModal = () => {
         var newShowModal = !this.state.showAddCourseWarningModal
@@ -194,7 +213,7 @@ export default class EditStudentAsStudent extends Component{
                 {
                     this.toggleAddCourseWarningModal()
                     this.setState({ showAddCourseModal: false })}
-            });
+            });  
 
             fetch(backendDomain + '/coursePlans/addCourseToPlan', {
                 method: 'POST', // or 'PUT'
@@ -382,8 +401,10 @@ export default class EditStudentAsStudent extends Component{
                                     <FormGroup row style={{alignItems: 'center'}}>
                                         <Col sm={8}><Input type="text" id="commentToAdd"    onChange = {e=> this.setState( { commentToAdd: e.target.value})}/></Col>
                                         <br></br>
+                                        <Row>
                                         <Button onClick = {(e) => this.addComment(this.state.commentToAdd, this.state.sbu_id)} color="success" style={{width:"120px",margin:"5px"}} >Add Comment</Button>
-
+                                        <Button onClick = {(e) => this.addCommentAndNotify(this.state.commentToAdd, this.state.sbu_id)} color="success" style={{width:"120px",margin:"5px"}} >Add Comment and Notify</Button>
+                                        </Row>
                                     </FormGroup>
                                     </td>}
                             </tbody>
