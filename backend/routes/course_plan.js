@@ -10,7 +10,29 @@ const axios = require('axios');
 var domain = "http://localhost:3001"
 
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
-    //update students grade
+    
+    router.post("/deleteCourseFromPlan",(request, response) =>{
+        console.log(     request.body.sbu_id,           request.body.department,      request.body.course_num     )
+        dbCollection.findOne({ sbu_id: request.body.sbu_id },(error,result)=> {
+            var updateCourses = result.courses
+            for ( var i  = 0; i < updateCourses.length; i++)
+            {
+                if(updateCourses[i].newCourse.department == request.body.department && updateCourses[i].newCourse.course_num == request.body.course_num){
+                    updateCourses.splice(i, 1);    
+                    dbCollection.updateOne({ sbu_id: request.body.sbu_id },{
+                       $set:{ courses: updateCourses}
+                    });
+
+
+
+                    break          
+                  }
+            }
+
+        });
+        response.send()
+    });
+    
     
     router.post("/getStudentCoursePlan", (request, response) => {
         dbCollection.findOne( {sbu_id: request.body.sbu_id}, (error, result) => {
@@ -33,7 +55,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             }
 
             dbCollection.updateOne( {sbu_id: request.body.sbu_id} ,{$set:{ courses:updateCourses} }, (e,r)=> {
-                console.log("T",r.courses)
                 axios
                 .post(domain + '/students/regrabCoursePlan', {
                     sbu_id: request.body.sbu_id

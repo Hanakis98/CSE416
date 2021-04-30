@@ -15,6 +15,9 @@ var sha = require("sha1")
 const cookieParser = require("cookie-parser");
 router.use(cookieParser())
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+    
+    
+    
     router.post("/addComment",(request, response) =>{
         console.log(     request.body.sbu_id,           request.body.commentToAdd            )
         dbCollection.updateOne({ sbu_id: request.body.sbu_id }, {
@@ -54,7 +57,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
         console.log(newCommentsArray)
 
-        response.send()
+    response.send()
 
     });
     router.post("/regrabCoursePlan", (request, response) => {
@@ -233,7 +236,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
 
         dbCollection.findOne({ sbu_id: itemId}, (error, result) => {
-            console.l
             if (error) throw error;
             // return item
             response.json(result);
