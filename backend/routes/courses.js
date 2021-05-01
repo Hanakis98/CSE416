@@ -11,6 +11,7 @@ var domain = "http://localhost:3001"
 const courseModel = require("../models/courseModel.js")
 
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
+ 
     router.post("/getCourse",(request, response) => {
         //get a specific course and if it does not exist, create it
         dbCollection.findOne(            
@@ -91,6 +92,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             }
         try 
         {
+            
             var courseNameInfo = request.body.courseInfo.match(regexForCourseShortHand)
             var creditsString = request.body.courseInfo.match(regexForCourseCredits)
         }
@@ -138,8 +140,21 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         // return updated list
         dbCollection.find().toArray((error, result) => {
             if (error) throw error;
+            console.log(result)
+            //department,course_num,section,semester,year,timeslot
+            for (var x =0; x < result.length; x++){
+                delete result[x]["description"]
+                delete result[x]["prerequisites"]
+                delete result[x]["credits"]
+                console.log(result[x]["department"] + "," + result[x]["course_num"] + "," +result[x]["section"] + "," +result[x]["semester"] + "," +result[x]["year"] + "," +result[x]["timeslot"] )
+
+            }
+
             response.json(result);
         });
+
+
+
     });
         
     router.get("/allOfferedCourses", (request, response) => {
