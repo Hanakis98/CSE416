@@ -314,6 +314,13 @@ export default class EditStudentAsStudent extends Component{
                                 <Label for="track" sm={4}>Track</Label>
                                 <Col sm={8}><Input type="select" id="track" value={this.state.track} onChange = {e=> this.setState( {track: e.target.value })}>
                                     <option value="None">None</option>
+                                    {this.state.department === 'AMS' && <>
+                                        <option value="cam">Computational Applied Mathematics</option>
+                                        <option value="cb">Computational Biology</option>
+                                        <option value="or">Operations Research</option>
+                                        <option value="st">Statistics</option>
+                                        <option value="qf">Quantitative Finance</option>
+                                    </>}
                                     {this.state.department === 'BMI' && <>
                                         <option value="iit">Imaging Informatics with Thesis</option>
                                         <option value="iip">Imaging Informatics with Project</option>

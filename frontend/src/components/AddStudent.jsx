@@ -130,8 +130,7 @@ export default class AddStudent extends Component{
                         <Label for="major" sm={3}>Major</Label>
                         <Col sm={8}>
                         <Input type="select" id="major" onChange = {e=> this.setState( {major: e.target.value })} >
-                        <option value="None Selected">None</option>
-
+                        <option value="None">None</option>
                         <option value="AMS">AMS</option>
                         <option value="CSE">CSE</option>
                         <option value="ESE">ESE</option>
@@ -142,21 +141,35 @@ export default class AddStudent extends Component{
                     </FormGroup>
                     <FormGroup row>
                         <Label for="track" sm={3}>Track</Label>
-                        <Col sm={8}><Input type="select" id="track"  onChange = {e=> this.setState( {track: e.target.value })}>
-                        <option value="None Selected">None</option>
-
-                            <option value="iit">Imaging Informatics with thesis</option>
-                            <option value="iip">Imaging Informatics with project</option>
-                            <option value="cit">Clinical Informatics with thesis</option>
-                            <option value="cip">Clinical Informatics with project</option>
-                            <option value="tbt">Translational Bioinformatics with thesis</option>
-                            <option value="tbp">Translational Bioinformatics with project</option>
-                            <option value="t">Thesis</option>
-                            <option value="nt">Non-Thesis</option>
-                            <option value="ap">Advanced Project</option>
-                            <option value="sp">Special Project</option>
+                        <Col sm={8}>
+                            <Input type="select" id="track"  onChange = {e=> this.setState( {track: e.target.value })}>
+                                <option value="None">None</option>
+                                {this.state.major === 'AMS' && <>
+                                    <option value="cam">Computational Applied Mathematics</option>
+                                    <option value="cb">Computational Biology</option>
+                                    <option value="or">Operations Research</option>
+                                    <option value="st">Statistics</option>
+                                    <option value="qf">Quantitative Finance</option>
+                                </>}
+                                {this.state.major === 'BMI' && <>
+                                    <option value="iit">Imaging Informatics with Thesis</option>
+                                    <option value="iip">Imaging Informatics with Project</option>
+                                    <option value="cit">Clinical Informatics with Thesis</option>
+                                    <option value="cip">Clinical Informatics with Project</option>
+                                    <option value="tbt">Translational Bioinformatics with Thesis</option>
+                                    <option value="tbp">Translational Bioinformatics with Project</option>
+                                </>}
+                                {(this.state.major === 'ESE' || this.state.major === 'CSE' ) && 
+                                    <option value="t">Thesis</option>
+                                }
+                                {this.state.major === 'ESE' && 
+                                    <option value="nt">Non-Thesis</option>
+                                }
+                                {this.state.major === 'CSE' &&<> 
+                                    <option value="ap">Advanced Project</option>
+                                    <option value="sp">Special Project</option>
+                                </>}
                             </Input>
-                            
                         </Col>
                     </FormGroup>
                     <FormGroup row style={{justifyContent: 'center'}}>
