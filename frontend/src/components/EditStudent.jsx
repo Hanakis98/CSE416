@@ -294,38 +294,45 @@ export default class EditStudentAsStudent extends Component{
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="graduation_year" sm={4}>Graduation Year</Label>
-                                <Col sm={8}><Input type="text" id="graduation_year" placeholder={this.state.graduation_year}   onChange = {e=> this.setState( { graduation_year: e.target.value})}/></Col>
+                                <Col sm={8}>
+                                    <Input type="text" id="graduation_year" placeholder={this.state.graduation_year}   onChange = {e=> this.setState( { graduation_year: e.target.value})}/>
+                                </Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="major" sm={4}>Major</Label>
                                 <Col sm={8}>
-                                <Input type="select" id="major" value={this.state.department} onChange = {e=> this.setState( {department: e.target.value })} >
-                                <option value="None">None</option>
-
-                                <option value="AMS">AMS</option>
-                                <option value="CSE">CSE</option>
-                                <option value="ESE">ESE</option>
-                                <option value="BMI">BMI</option>
-                                </Input>
-                                
+                                    <Input type="select" id="major" value={this.state.department} onChange = {e=> this.setState( {department: e.target.value })} >
+                                        <option value="None">None</option>
+                                        <option value="AMS">AMS</option>
+                                        <option value="CSE">CSE</option>
+                                        <option value="ESE">ESE</option>
+                                        <option value="BMI">BMI</option>
+                                    </Input>
                                 </Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="track" sm={4}>Track</Label>
                                 <Col sm={8}><Input type="select" id="track" value={this.state.track} onChange = {e=> this.setState( {track: e.target.value })}>
                                     <option value="None">None</option>
-                                    {this.state.department === 'BMI' && <option value="iit">Imaging Informatics with thesis</option>}
-                                    {this.state.department === 'BMI' && <option value="iip">Imaging Informatics with project</option>}
-                                    {this.state.department === 'BMI' && <option value="cit">Clinical Informatics with thesis</option>}
-                                    {this.state.department === 'BMI' && <option value="cip">Clinical Informatics with project</option>}
-                                    {this.state.department === 'BMI' && <option value="tbt">Translational Bioinformatics with thesis</option>}
-                                    {this.state.department === 'BMI' && <option value="tbp">Translational Bioinformatics with project</option>}
-                                    {(this.state.department === 'ESE' || this.state.department === 'CSE' )&& <option value="t">Thesis</option>}
-                                    {this.state.department === 'ESE' && <option value="nt">Non-Thesis</option>}
-                                    {this.state.department === 'CSE' && <option value="ap">Advanced Project</option>}
-                                    {this.state.department === 'CSE' && <option value="sp">Special Project</option>}
+                                    {this.state.department === 'BMI' && <>
+                                        <option value="iit">Imaging Informatics with Thesis</option>
+                                        <option value="iip">Imaging Informatics with Project</option>
+                                        <option value="cit">Clinical Informatics with Thesis</option>
+                                        <option value="cip">Clinical Informatics with Project</option>
+                                        <option value="tbt">Translational Bioinformatics with Thesis</option>
+                                        <option value="tbp">Translational Bioinformatics with Project</option>
+                                    </>}
+                                    {(this.state.department === 'ESE' || this.state.department === 'CSE' ) && 
+                                        <option value="t">Thesis</option>
+                                    }
+                                    {this.state.department === 'ESE' && 
+                                        <option value="nt">Non-Thesis</option>
+                                    }
+                                    {this.state.department === 'CSE' &&<> 
+                                        <option value="ap">Advanced Project</option>
+                                        <option value="sp">Special Project</option>
+                                    </>}
                                     </Input>
-                                    
                                 </Col>
                             </FormGroup>
 
