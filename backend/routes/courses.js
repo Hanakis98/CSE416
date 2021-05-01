@@ -110,12 +110,15 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 }
 
                 //If the course is listed as a prereq
+
                 if(preReqs !=null)
                 {
-                    if(preReqs[0].includes(course_num))
+                    while(preReqs[0].includes(course_num)&& preReqs[0].includes(department))
                     {
-                        preReqs.shift()
+                       preReqs.shift()
+
                     }
+
                 }
 
                 dbCollection.updateOne( {  year: request.body.year , semester: request.body.semester, department: department ,course_num: course_num},

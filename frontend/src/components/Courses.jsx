@@ -170,7 +170,7 @@ export default class Courses extends Component {
         text = text.substring(text.indexOf(":") -7)
         //console.log(text)
 
-        var arr = text.split(/\s\s\s\s\s\s\s\s/)
+        var arr = text.split(/\s\s\s\s/)
         console.log(arr.length,arr)
         for ( var i =0; i < arr.length ; i++){
 
@@ -203,7 +203,14 @@ export default class Courses extends Component {
             <Container>
                 <Row style={{paddingLeft:"10px", paddingRight:"10px", alignItems: 'center', justifyContent: 'flex-end'}}>
                
-  
+                <input id = "semester" type="input" placeholder="semester"onChange={e => this.setState({scrapeSemester: e.target.value})}></input>
+                    <input id = "year" type="input" placeholder="year"onChange={e => this.setState({scrapeYear: e.target.value})}></input>
+                    <input id = "department" type="input" placeholder="department"onChange={e => this.setState({scrapeDepartment: e.target.value})}></input>
+
+                    <br></br>
+                    <input id="myInput" type="file" ref={(ref) => this.uploadCourseInfo = ref} style={{ display: 'none' }} onChange={this.scrapeCourseInfo} />
+                    <Button onClick={(e) => this.uploadCourseInfo.click()} style={{ width:"120px", margin:"5px"}}>Scrape Course Info </Button>
+                
                     
                     <input id="myInput" type="file" ref={(ref) => this.uploadCourses = ref} style={{ display: 'none' }} onChange={this.onCourseFileChange} />
                     <Button onClick={(e) => this.uploadCourses.click()} style={{ width:"130px", margin:"5px"}}>Import Course Offerings </Button>
@@ -250,13 +257,7 @@ export default class Courses extends Component {
 
                         ))}
                     </tbody>
-                    <input id = "semester" type="input" placeholder="semester"onChange={e => this.setState({scrapeSemester: e.target.value})}></input>
-                    <input id = "year" type="input" placeholder="year"onChange={e => this.setState({scrapeYear: e.target.value})}></input>
-                    <input id = "department" type="input" placeholder="department"onChange={e => this.setState({scrapeDepartment: e.target.value})}></input>
 
-                    <br></br>
-                    <input id="myInput" type="file" ref={(ref) => this.uploadCourseInfo = ref} style={{ display: 'none' }} onChange={this.scrapeCourseInfo} />
-                    <Button onClick={(e) => this.uploadCourseInfo.click()} style={{ width:"120px", margin:"5px"}}>Scrape Course Info </Button>
                 </Table>
             </Container>
         );
