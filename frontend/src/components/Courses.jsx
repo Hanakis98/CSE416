@@ -170,10 +170,9 @@ export default class Courses extends Component {
         text = text.substring(text.indexOf(":") -7)
         //console.log(text)
 
-        var arr = text.split("\r\r\r\r")
-        //console.log(arr.length,arr)
+        var arr = text.split(/\s\s\s\s\s\s\s\s/)
+        console.log(arr.length,arr)
         for ( var i =0; i < arr.length ; i++){
-            console.log("fff", arr[i].substring(0,50)) 
 
             if (arr[i].substring(0,20).includes(this.state.scrapeDepartment ) )
             {                 

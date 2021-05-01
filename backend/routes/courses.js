@@ -81,35 +81,49 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     router.post("/scrapeCourseInfo", (request, response) => {
             const regexForCourseShortHand = /[A-Z]{3} \d{3}:/g;
             const regexForCourseCredits = /\d credits/g;
-            console.log(request.body.courseInfo.substring(0,10))
-            try {
-
-                var courseNameInfo = request.body.courseInfo.match(regexForCourseShortHand)
-                var creditsString = request.body.courseInfo.match(regexForCourseCredits)
-    
+         //   console.log(request.body.courseInfo)
+         var preReqs ; 
+        if( request.body.courseInfo.includes("Prerequisite"))
+            { 
+            var preReqString =  request.body.courseInfo.substring(request.body.courseInfo.indexOf("Prerequisite"))
+            const regexForPreReqs = /\S\S\S \d\d\d/g;
+            var preReqs = request.body.courseInfo.match(regexForPreReqs)
             }
-            catch (error) {
-            response.send()
+        try 
+        {
+            var courseNameInfo = request.body.courseInfo.match(regexForCourseShortHand)
+            var creditsString = request.body.courseInfo.match(regexForCourseCredits)
+        }
+        catch (error)
+        {
+        response.send()
+        }
+
+        if(courseNameInfo!=null){
+                var department = courseNameInfo[0].substring(0,3);
+                var course_num = courseNameInfo[0].substring(4,7)
+                try {
+                    var credits = creditsString[0].substring(0,1)
+
+                } catch (error) {
+                    var credits=3
+                }
+
+                //If the course is listed as a prereq
+                if(preReqs !=null)
+                {
+                    if(preReqs[0].includes(course_num))
+                    {
+                        preReqs.shift()
                     }
-            if(courseNameInfo!=null){
-            var department = courseNameInfo[0].substring(0,3);
-            var course_num = courseNameInfo[0].substring(4,7)
-            try {
-                var credits = creditsString[0].substring(0,1)
+                }
 
-            } catch (error) {
-                var credits=3
-            }
+                dbCollection.updateOne( {  year: request.body.year , semester: request.body.semester, department: department ,course_num: course_num},
+                    {$set:{description:request.body.courseInfo, credits: credits,prerequisites:preReqs}},(error, res) => {
+                        
 
 
-            console.log("UPDATING" ,request.body.year, request.body.semester, department,course_num,credits)
-            dbCollection.updateOne( {  year: request.body.year , semester: request.body.semester, department: department ,course_num: course_num},
-                {$set:{description:request.body.courseInfo, credits: credits}},(error, res) => {
-            
-
-
-
-                });
+                    });
 
             }
             response.send()
