@@ -20,6 +20,7 @@ export default class Trends extends Component{
 
         console.log(data);
 
+
     }
 
     render(){
@@ -105,7 +106,7 @@ export default class Trends extends Component{
                 </Row>
 
                 <Row xs="1">
-                    <canvas id="myChart" width="400" height="400"></canvas>
+                    <div id="courseChart">Chart here</div>
                 </Row>
             </Container>
         );
