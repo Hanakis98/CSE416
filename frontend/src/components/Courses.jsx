@@ -10,7 +10,7 @@ export default class Courses extends Component {
             isOpen: false,
             scrapeYear: null,
             scrapeSemester: null,
-            scrapeDepartment:null,
+            scrapeDepartment:[],
             courses: []
         };
     }
@@ -102,6 +102,7 @@ export default class Courses extends Component {
                 json_data.map(x => {this.addCourse(x)})
             }
         }
+        this.readAllCourses().then(courses => this.setState({ courses: courses }))
     };
 
     addCourse = (json_data) => {
@@ -137,12 +138,13 @@ export default class Courses extends Component {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
-                this.setState({ courses: data })
+                console.log('Success:', data);       
+                this.readAllCourses().then(courses => this.setState({ courses: courses }))         
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
+       
 
     }
 
@@ -175,7 +177,7 @@ export default class Courses extends Component {
         console.log(arr.length,arr)
         for ( var i =0; i < arr.length ; i++){
 
-            if (arr[i].substring(0,20).includes(this.state.scrapeDepartment ) )
+            if ( this.state.scrapeDepartment.includes(arr[i].substring(0,20))  )
             {                 
 
                 fetch(backendDomain + '/courses/scrapeCourseInfo', {
@@ -195,6 +197,7 @@ export default class Courses extends Component {
                   })
             }
         }
+        this.readAllCourses().then(courses => this.setState({ courses: courses }))
 
 
         
@@ -206,7 +209,7 @@ export default class Courses extends Component {
                
                 <input id = "semester" type="input" placeholder="semester"onChange={e => this.setState({scrapeSemester: e.target.value})}></input>
                     <input id = "year" type="input" placeholder="year"onChange={e => this.setState({scrapeYear: e.target.value})}></input>
-                    <input id = "department" type="input" placeholder="department"onChange={e => this.setState({scrapeDepartment: e.target.value})}></input>
+                    <input id = "department" type="input" placeholder="department"onChange={e => this.setState({scrapeDepartment: (e.target.value.split(","))   })}></input>
 
                     <br></br>
                     <input id="myInput" type="file" ref={(ref) => this.uploadCourseInfo = ref} style={{ display: 'none' }} onChange={this.scrapeCourseInfo} />
