@@ -11,6 +11,7 @@ var courseSchema = new mongoose.Schema({
     year: String,
     timeslot : String,   
     credits: String ,
+    enrollment: String,
     prerequisites:[String]
 });
 

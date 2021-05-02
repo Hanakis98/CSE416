@@ -76,7 +76,7 @@ export default class Courses extends Component {
     }
 
     buildJSONfromRow = (row) => {
-        let json = {  department: row[0], course_num: row[1], section: row[2], semester: row[3], year: row[4], timeslot: row[5], description: "", credits: "", prerequisites: [] }
+        let json = { enrollment:"0", department: row[0], course_num: row[1], section: row[2], semester: row[3], year: row[4], timeslot: row[5], description: "", credits: "", prerequisites: []}
         return json
     }
 
@@ -98,6 +98,7 @@ export default class Courses extends Component {
             console.log(header)
             if (this.verifyHeader(header)) {
                 let json_data = data.map(x => this.buildJSONfromRow(x))
+
                 json_data.map(x => {this.addCourse(x)})
             }
         }

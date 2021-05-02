@@ -12,6 +12,10 @@ var domain = "http://localhost:3001"
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
     
     router.post("/deleteCourseFromPlan",(request, response) =>{
+        //Decrease enrollment total
+
+        //TODO decrease enrollment for course when a course is romeved from a plan
+
         console.log(     request.body.sbu_id,           request.body.department,      request.body.course_num     )
         dbCollection.findOne({ sbu_id: request.body.sbu_id },(error,result)=> {
             var updateCourses = result.courses
@@ -22,9 +26,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                     dbCollection.updateOne({ sbu_id: request.body.sbu_id },{
                        $set:{ courses: updateCourses}
                     });
-
-
-
                     break          
                   }
             }
@@ -33,7 +34,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         response.send()
     });
     
-    
     router.post("/getStudentCoursePlan", (request, response) => {
         dbCollection.findOne( {sbu_id: request.body.sbu_id}, (error, result) => {
             response.json(result)
@@ -41,7 +41,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         } ); 
     });
  
-
     router.post("/addGrade", (request, response) => {
         //update the course object
         console.log("COURSE NUM:",request.body.course_num,request.body.sbu_id)
@@ -53,7 +52,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                     updateCourses[i].grade = request.body.grade
                 }
             }
-
             dbCollection.updateOne( {sbu_id: request.body.sbu_id} ,{$set:{ courses:updateCourses} }, (e,r)=> {
                 axios
                 .post(domain + '/students/regrabCoursePlan', {
@@ -92,6 +90,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         // console.log(request.body)
         //add this course to the course plan. If it exists already just grab it
         //but if it doesnt then create it
+
+
         axios
         .post(domain + '/courses/getCourse', 
         {
@@ -122,7 +122,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                             hasTaken:false
                         }
                     } 
-                });
+                }
+               );
                 response.send()
 
         });
@@ -131,7 +132,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
     router.delete("/deleteAllPlans", (request, response) => {
       
-        console.log("Delete All Item");
+        //TODO go through each plan and decrease enrollment total
         dbCollection.deleteMany(function(error, result) {
             if (error) throw error;
             // send back entire updated list after successful request
@@ -142,7 +143,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
-    
    
 }, function(err) { // failureCallback
     throw (err);

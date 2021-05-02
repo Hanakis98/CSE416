@@ -14,6 +14,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
  
     router.post("/getCourse",(request, response) => {
         //get a specific course and if it does not exist, create it
+        //Need To update enrollment here
         dbCollection.findOne(            
             {
             department: request.body.department,
@@ -33,16 +34,26 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                     section: request.body.section,
                     timeslot : request.body.timeslot,   
                     credits: request.body.credits ,
-                    prerequisites:request.body.prerequisites
+                    prerequisites:request.body.prerequisites ,
+                    enrollment: "1"
                 })
                 newCourse.save()
                 response.json(newCourse)
                 return
             }
             else{
-                
-            console.log("COURSE EXISTS")
-            response.json(result)
+            var newEnrollment=   (parseInt(result.enrollment)+1 ).toString()
+
+            dbCollection.updateOne(            
+                {
+                department: request.body.department,
+                course_num: request.body.course_num,
+                semester: request.body.semester,
+                year: request.body.year 
+                },{$set:{enrollment:newEnrollment}});
+            
+                response.json(result)
+
             return
             }
         });
@@ -61,7 +72,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             year: request.body.year 
             },
             (error, result) => {
-            console.log(result)
             if(result==null){
 
                 response.json({department:null})
@@ -70,7 +80,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             }
             else{
                 
-            console.log("COURSE EXISTS")
             response.json(result)
             response.send()
             return
@@ -112,7 +121,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 }
 
                 //If the course is listed as a prereq
-
                 if(preReqs !=null)
                 {
                     while(preReqs[0].includes(course_num)&& preReqs[0].includes(department))
@@ -120,14 +128,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                        preReqs.shift()
 
                     }
-
                 }
-
                 dbCollection.updateOne( {  year: request.body.year , semester: request.body.semester, department: department ,course_num: course_num},
                     {$set:{description:request.body.courseInfo, credits: credits,prerequisites:preReqs}},(error, res) => {
                         
-
-
                     });
 
             }
@@ -143,18 +147,11 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             console.log(result)
             //department,course_num,section,semester,year,timeslot
             for (var x =0; x < result.length; x++){
-                delete result[x]["description"]
-                delete result[x]["prerequisites"]
-                delete result[x]["credits"]
                 console.log(result[x]["department"] + "," + result[x]["course_num"] + "," +result[x]["section"] + "," +result[x]["semester"] + "," +result[x]["year"] + "," +result[x]["timeslot"] )
 
             }
-
             response.json(result);
         });
-
-
-
     });
         
     router.get("/allOfferedCourses", (request, response) => {
@@ -165,8 +162,9 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
     router.post("/addCourse", (request, response) => {
-        const courseItem = request.body;                
+        const courseItem = request.body;  
         var newCourse = new courseModel(courseItem);;
+        console.log(newCourse)
         newCourse.save()
         response.json();
 
@@ -198,18 +196,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
-    router.delete("/deleteAllOfferedCourses", (request, response) => {
-      
-        console.log("Delete All Item");
-        dbCollection.deleteMany({sbu_id: "OFFERING"},function(error, result) {
-            if (error) throw error;
-            // send back entire updated list after successful request
-            dbCollection.find({sbu_id:"OFFERING"}).toArray(function(_error, _result) {
-                if (_error) throw _error;
-                response.json(_result);
-            });
-        });
-    });
+
    
 }, function(err) { // failureCallback
     throw (err);

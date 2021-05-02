@@ -50,7 +50,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
     });
 
-
     router.post("/addComment",(request, response) =>{
         console.log(     request.body.sbu_id,           request.body.commentToAdd            )
         dbCollection.updateOne({ sbu_id: request.body.sbu_id }, {
@@ -73,7 +72,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
 
             for( var i =0; i < result.comments.length; i++){
                 if ( newCommentsArray[i] ===  request.body.commnetToDelete) { 
-    
                     newCommentsArray.splice(i, 1); 
                 }
         
@@ -294,7 +292,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         }
         const item = request.body;
 
-        console.log("Editing item: ", itemId, " to be ", item);
         dbCollection.updateOne({ sbu_id: itemId }, { $set: item }, (error, result) => {
             if (error) throw error;
             // send back entire updated list, to make sure frontend data is up-to-date
@@ -309,7 +306,6 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
     router.put("/updateStudentCoursePlan", (request, response) => {
 
         const newPlan = request.body.coursePlan
-        console.log("NEW COURSE PLAN" ,newPlan)
         if(newPlan !=null)
         dbCollection.updateOne({ sbu_id: newPlan.sbu_id }, { $set: {coursePlan: newPlan} }, (error, result) => {
        
