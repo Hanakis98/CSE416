@@ -101,11 +101,11 @@ export default class Trends extends Component{
                     </FormGroup>
 
                     <Button color="success" onClick={this.generateGraph}>Generate Graph</Button>
-                    
+
                 </Row>
 
                 <Row xs="1">
-                    <p>GRAPH GOES HERE</p>
+                    <canvas id="myChart" width="400" height="400"></canvas>
                 </Row>
             </Container>
         );
