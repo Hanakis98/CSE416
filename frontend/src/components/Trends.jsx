@@ -1,24 +1,36 @@
 import {  Component } from 'react';
 import  React  from 'react';
-import { Container, Row, Col, Form, Label, Input, FormGroup } from 'reactstrap';
+import { Button, Container, Row, Col, Label, Input, FormGroup } from 'reactstrap';
 
 export default class Trends extends Component{
     constructor(props) {
         super(props);
         this.state = {
             major: "",
-            course: ""
+            course: "",
+            semesterStart: "",
+            yearStart: "",
+            semesterEnd: "",
+            yearEnd: ""
         };
     }
+
+    generateGraph = (m, c, semS, yS, semE, yE) => {
+        const data = {major: m, course: c, semesterStart: semS, yearStart: yS, semesterEnd: semE, yearEnd: yE }
+
+        console.log(data);
+
+    }
+
     render(){
         return (
             
             <Container>
-                <Row xs="2">
+                <Row xs="1">
                     <FormGroup row>
-                        <Label for="major" sm={3}>Major</Label>
-                        <Col sm={8}>
-                        <Input type="select" id="major" onChange = {e=> this.setState( {major: e.target.value })} >
+                        <Label for="major">Major</Label>
+                        <Col style={{marginLeft: '3.75rem'}} sm={{ size: 'auto'}}>
+                        <Input type="select" id="major"  onChange  = {e=> this.setState( {major: e.target.value })} >
                         <option value="None">None</option>
 
                         <option value="AMS">AMS</option>
@@ -30,8 +42,8 @@ export default class Trends extends Component{
                     </FormGroup>
 
                     <FormGroup row>
-                        <Label for="course" sm={3}>Course</Label>
-                        <Col sm={8}>
+                        <Label for="course">Course</Label>
+                        <Col style={{marginLeft: '3.3rem'}} sm={{ size: 'auto', alignItems: 'center' }}>
                         <Input type="select" id="course"  onChange = {e=> this.setState( {course: e.target.value })}>
                         {this.state.major === 'None' && <>
                                         <option>None</option>
@@ -56,11 +68,42 @@ export default class Trends extends Component{
                                         <option>ESE2</option>
                                         <option>ESE3</option>
                         </>}
-                        </Input>
-                            
+                        </Input>     
                         </Col>
                     </FormGroup>
+
+                    <FormGroup row>
+                        <Label for="semesterStart">Semester Start</Label>
+                        <Col sm={{ size: 'auto' }}>
+                            <Input id="semesterStart" onChange = {e=> this.setState( {semesterStart: e.target.value })} />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup row>
+                        <Label for="yearStart">Year Start</Label>
+                        <Col style={{marginLeft: '2.3rem'}}sm={{ size: 'auto'}}>
+                            <Input id="yearStart" onChange = {e=> this.setState( {yearStart: e.target.value })} />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup row>
+                        <Label for="semesterEnd">Semester End </Label>
+                        <Col style={{marginLeft: '.5rem'}} sm={{ size: 'auto' }}>
+                            <Input id="semesterEnd" onChange = {e=> this.setState( {semesterEnd: e.target.value })} />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup row>
+                        <Label for="yearEnd">Year End</Label>
+                        <Col style={{marginLeft: '2.7rem'}} sm={{ size: 'auto' }}>
+                            <Input id="yearEnd" onChange = {e=> this.setState( {yearEnd: e.target.value })} />
+                        </Col>
+                    </FormGroup>
+
+                    <Button color="success" onClick={this.generateGraph}>Generate Graph</Button>
+                    
                 </Row>
+
                 <Row xs="1">
                     <p>GRAPH GOES HERE</p>
                 </Row>
