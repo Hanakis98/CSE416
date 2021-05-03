@@ -73,6 +73,8 @@ export default class Trends extends Component{
             // //Logic goes here
             // console.log(this.state.semesterStart + " " + this.state.yearStart)
             for(var i = 0 ; i < response.data.semestersAndYears.length; i++){
+                if(this.state.semesterStart="" || this.state.semesterEnd=="")
+                    break
                 if(response.data.semestersAndYears[i] != (this.state.semesterStart + " " + this.state.yearStart)){
                     console.log("shift")
                     response.data.semestersAndYears.shift()
@@ -86,6 +88,8 @@ export default class Trends extends Component{
             // console.log(this.state.semesterEnd + " " + this.state.yearEnd)
 
             for(var i = response.data.semestersAndYears.length-1; i>0; i--){
+                if(this.state.semesterStart="" || this.state.semesterEnd=="")
+                break
                 console.log(response.data.semestersAndYears[i] == (this.state.semesterEnd + " " + this.state.yearEnd))
                 if(response.data.semestersAndYears[i] != (this.state.semesterEnd + " " + this.state.yearEnd)){
                     // console.log("shift2")
