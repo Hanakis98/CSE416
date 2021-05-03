@@ -1,6 +1,8 @@
 import {  Component } from 'react';
 import  React  from 'react';
 import { Button, Container, Row, Col, Label, Input, FormGroup } from 'reactstrap';
+import { backendDomain } from './../App.js';
+import axios from 'axios';
 
 
 export default class Trends extends Component{
@@ -17,7 +19,7 @@ export default class Trends extends Component{
     }
 
     generateGraph = () => {
-        
+        console.log("ts")
         const data = {
             major: this.state.major,
             course: this.state.course,
@@ -26,9 +28,28 @@ export default class Trends extends Component{
             semesterEnd: this.state.semesterStart,
             yearEnd: this.state.yearEnd
         }
+        axios.post(  backendDomain + '/courses/getEnrollmentTrend',  {
+         
+            method:"POST",
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+              },
+              major: this.state.major,
+              course: this.state.course,
 
-        console.log(data);
-
+            // responseType: 'json',
+          
+            
+      
+          }).then(r=>{
+            //Logic goes here
+            
+            console.log(r.data)
+            
+            
+            })
+ 
 
     }
 
@@ -54,31 +75,10 @@ export default class Trends extends Component{
                     <FormGroup row>
                         <Label for="course">Course</Label>
                         <Col style={{marginLeft: '3.3rem'}} sm={{ size: 'auto', alignItems: 'center' }}>
-                        <Input type="select" id="course"  onChange = {e=> this.setState( {course: e.target.value })}>
-                        {this.state.major === 'None' && <>
-                                        <option>None</option>
-                        </>}
-                        {this.state.major === 'AMS' && <>
-                                        <option>AMS1</option>
-                                        <option>AMS2</option>
-                                        <option>AMS3</option>
-                        </>}
-                        {this.state.major === 'BMI' && <>
-                                        <option>BMI1</option>
-                                        <option>BMI2</option>
-                                        <option>BMI3</option>
-                        </>}
-                        {this.state.major === 'CSE' && <>
-                                        <option>CSE1</option>
-                                        <option>CSE2</option>
-                                        <option>CSE3</option>
-                        </>}
-                        {this.state.major === 'ESE' && <>
-                                        <option>ESE1</option>
-                                        <option>ESE2</option>
-                                        <option>ESE3</option>
-                        </>}
+                        <Input  id="course"  onChange = {e=> this.setState( {course: e.target.value })}>
+                     
                         </Input>     
+                        
                         </Col>
                     </FormGroup>
 

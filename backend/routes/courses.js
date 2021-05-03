@@ -65,9 +65,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         //get a specific course and if it does not exist, create it
         var enrollmentNumbers = []
         var semesterAndYear = []
-        console.log(request.body.department, request.body.course_num)
-        dbCollection.find({department:request.body.department, course_num:request.body.course_num }).toArray((error, result) => {
-            console.log(result)
+        console.log(request.body.major, request.body.course)
+        dbCollection.find({department:request.body.major, course_num:request.body.course }).toArray((error, result) => {
             for(var x = 0; x < result.length; x ++){
                 enrollmentNumbers.push(result[x].enrollment)
                 semesterAndYear.push(result[x].semester + " " + result[x].year)
