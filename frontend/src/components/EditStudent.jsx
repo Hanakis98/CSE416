@@ -223,6 +223,24 @@ export default class EditStudentAsStudent extends Component{
     }
     
     addCourseToPlan = (department,courseNum,semester,year,section) => {
+        if(this.state.coursePlan==null){
+            fetch(backendDomain + '/coursePlans/newCoursePlan', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ sbu_id: this.state.sbu_id })
+            })
+            fetch(backendDomain + '/students/regrabCoursePlan', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                }, credentials: 'include', 
+                body: JSON.stringify({sbu_id:this.state.sbu_id})
+            })
+           
+        }
         console.log(department,courseNum,semester,year,section)
         fetch(backendDomain + "/courses/getCourseIfItExists", {
             method: 'POST', // or 'PUT'
