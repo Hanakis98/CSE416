@@ -270,12 +270,12 @@ export default class EditStudentAsStudent extends Component{
             }} />
         }
         return (
-            <Container>
+            <Container fluid={true} style={{ paddingLeft:"100px",paddingRight:"100px"}}>
                 <Row style={{ justifyContent: 'center'}}>
                     <p style={{fontSize: "22px", fontWeight: "bold"}}>Viewing Student: {this.state.firstName + " " + this.state.lastName}</p>
                 </Row>
-                <Row>
-                    <Col sm={4} style={{padding:"5px", margin:"0px", justifyContent: 'center', alignItems: 'center'}} >
+                <Row >
+                    <Col xs={4} xl={3} style={{padding:"5px", margin:"0px", justifyContent: 'center', alignItems: 'center'}} >
                         <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Edit Student Info</p>
                         <Form>
                             <FormGroup row style={{alignItems: 'center'}}>
@@ -383,7 +383,7 @@ export default class EditStudentAsStudent extends Component{
                             
                         </Form>
                     </Col>
-                    <Col sm={8} style={{padding:"5px", margin:"0px"}}>
+                    <Col xs={8} xl={6} style={{padding:"5px", margin:"0px"}}>
                         <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Course Plan</p>
                         <Table  xs="3">
                             <thead><tr>
@@ -421,39 +421,38 @@ export default class EditStudentAsStudent extends Component{
                                               
                          <AddCourseModal buttonLabel="Add Course" addCourseToPlan={this.addCourseToPlan}></AddCourseModal>
                          <AddCourseWarningModal  toggle={this.toggleAddCourseWarningModal} modal={this.state.showAddCourseWarningModal}></AddCourseWarningModal>
-
+                    </Col>
+                    <Col xs={4} xl={3} style={{padding:"5px", margin:"0px"}}>
                         <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Comments</p>
-
-                        <Table  xs="3">
+                        <Table>
                             <thead><tr>
-                    
                             </tr></thead>
                             <tbody>
                                 {this.state.comments.length !==0 && this.state.comments.map(x =>
                                 <tr>
                                     <td>{x}</td>
-
-                                        <br></br>
-                                
+                                    <br></br>
                                 </tr>
                                 )}
-                                   {gpdLoggedIn==1 &&  <td> 
-                                    <FormGroup row style={{alignItems: 'center'}}>
-                                        <Col sm={8}><Input type="text" id="commentToAdd"    onChange = {e=> this.setState( { commentToAdd: e.target.value})}/></Col>
-                                        <br></br>
-                                        <Row>
-                                        <Button onClick = {(e) => this.addComment(this.state.commentToAdd, this.state.sbu_id)} color="success" style={{width:"120px",margin:"5px"}} >Add Comment</Button>
-                                        <Button onClick = {(e) => this.addCommentAndNotify(this.state.commentToAdd, this.state.sbu_id)} color="success" style={{width:"120px",margin:"5px"}} >Add Comment and Notify</Button>
-                                        </Row>
+                                {gpdLoggedIn==1 &&  <>
+                                    <FormGroup row style={{alignItems: 'center',padding:"20px"}}>
+                                        <Col style={{padding:"0px",margin:"2px"}}><Input type="text" id="commentToAdd"    onChange = {e=> this.setState( { commentToAdd: e.target.value})}/></Col>
+
+                                        {console.log(this.state.emailNotifCheckbox)}
+                                        
+                                        <Button onClick = {(e) => this.state.emailNotifCheckbox ? this.addCommentAndNotify(this.state.commentToAdd, this.state.sbu_id) : this.addComment(this.state.commentToAdd, this.state.sbu_id)} color="success" style={{width:"60px",margin:"2px"}} >Save</Button>
+                                        <Label check style={{width:"85px",paddingLeft:"25px", justifyContent: 'center'}}>
+                                            <Input type="checkbox" onClick = {e => this.setState({emailNotifCheckbox: e.target.checked})} />
+                                                Notify by Email
+                                        </Label>
                                     </FormGroup>
-                                    </td>}
+                                </>}
                             </tbody>
-                           
                         </Table>
                     </Col>
                 </Row>
                 <Row >
-                    <Col sm={4} style={{padding:"5px", margin:"0px", justifyContent: 'center', alignItems: 'center'}}>
+                    <Col xs={4} xl={3} style={{padding:"5px", margin:"0px", justifyContent: 'center', alignItems: 'center'}}>
                         <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Suggest Course Plan</p>
                         <Form>
                             <FormGroup row style={{alignItems: 'center'}}>
@@ -502,14 +501,15 @@ export default class EditStudentAsStudent extends Component{
 
                         </Form>
                     </Col>
-                    <Col sm={8} style={{ justifyContent: 'center', alignItems: 'center'}}>
-                    <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Suggested Course Plans</p>
+                    <Col xs={8} xl={6} style={{ justifyContent: 'center', alignItems: 'center'}}>
+                        <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Suggested Course Plans</p>
                     </Col> 
+                    <Col xs={4} xl={3} style={{padding:"5px", margin:"0px", maxHeight:"400px"}}>
+                        <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Degree Requirements</p>
+                        <div><pre>{JSON.stringify(this.state.degreeRequirements, null, 2) }</pre></div>
+                    </Col>
                 </Row>
-                Degree Requirements
-                <div><pre>{JSON.stringify(this.state.degreeRequirements, null, 2) }</pre></div>;
             </Container>
-            
         );
     }
 }
