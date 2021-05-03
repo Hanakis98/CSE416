@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import { backendDomain } from '../App.js';
 import AddCourseModal from './AddCourseModal'
 import AddCourseWarningModal from './AddCourseWarningModal'
-
+var axios = require("axios")
 var sha = require("sha1")
 var u=0;
 
@@ -29,7 +29,8 @@ export default class EditStudentAsStudent extends Component{
             graduation_semester: "",
             graduation_year: "",
             comments: [],
-            commentToAdd:""
+            commentToAdd:"",
+            degreeRequirements:[]
         }; 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -58,40 +59,52 @@ export default class EditStudentAsStudent extends Component{
                 })
             .then(response => response.json())
             .then(data => {
-                //console.log(data);
-                if(data.notAllowed != null){
-                    //auth fail from api call?
-                    Cookies.set("gpdLoggedIn", "0");
-                    Cookies.set("studentLoggedIn", "0");
-                    this.setState({});
-                    return;
-                }
-                this.setState ( {
-                    firstName: data.first_name,
-                    lastName: data.last_name,
-                    email: data.email,
-                    password: "",
-                    department: data.department,
-                    track: data.track,
-                    sbu_id: data.sbu_id,
-                    studentUserName:u,
-                    entry_semester: data.entry_semester,
-                    entry_year : data.entry_year,
-                    graduation_semester: data.graduation_semester,
-                    graduation_year: data.graduation_year,
-                    comments: data.comments
+                        //console.log(data);
+                        if(data.notAllowed != null){
+                            //auth fail from api call?
+                            Cookies.set("gpdLoggedIn", "0");
+                            Cookies.set("studentLoggedIn", "0");
+                            this.setState({});
+                            return;
+                        }
 
-                });
-                if(data.coursePlan != null){
-                    this.setState ( {
-                        courses: data.coursePlan.courses
-                    }); 
-                }
+                    
+                        this.setState ( {
+                            firstName: data.first_name,
+                            lastName: data.last_name,
+                            email: data.email,
+                            password: "",
+                            department: data.department,
+                            track: data.track,
+                            sbu_id: data.sbu_id,
+                            studentUserName:u,
+                            entry_semester: data.entry_semester,
+                            entry_year : data.entry_year,
+                            graduation_semester: data.graduation_semester,
+                            graduation_year: data.graduation_year,
+                            comments: data.comments
+
+                        })
+
+                        if(data.coursePlan != null){
+                            this.setState ( {
+                                courses: data.coursePlan.courses
+                            }); 
+                        }
+                            console.log("Dep",data.department)
+                          axios.post(backendDomain + "/degreeRequirements/getDegreeRequriement", {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    } ,
+                                    credentials: 'include', 
+                                   department :data.department
+                                }).then(data=>console.log(this.setState({degreeRequirements:data.data}))
+                        );
+                                    
 
             })
             .catch((error) => {
-                console.error('Error:', error);
-                console.log("testst");
+               
             });
     }
 
@@ -134,23 +147,36 @@ export default class EditStudentAsStudent extends Component{
 
             });
     }
-    deleteCourseFromPlan = (sbu_id,department,courseNum,semester,year)=>{
-        
-        console.log( (semester))
-        fetch(backendDomain + "/coursePlans/deleteCourseFromPlan", {
+  async  deleteCourseFromPlan (sbu_id,department,courseNum,semester,year){
+
+
+      await   fetch(backendDomain + "/coursePlans/deleteCourseFromPlan", {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
             } ,credentials: 'include', 
             body: JSON.stringify({sbu_id: sbu_id , department: department, course_num: courseNum,semester: semester,year: year})
-                })   ;
+                })   
+     await        
             fetch(backendDomain + "/students/regrabCoursePlan", {
-                    method: 'POST', // or 'PUT'
-                    headers: {
-                        'Content-Type': 'application/json',
-                    } ,credentials: 'include', 
-                    body: JSON.stringify({sbu_id: sbu_id })
-                        }).then(data=>            window.location.reload() )   ;
+                        method: 'POST', // or 'PUT'
+                        headers: {
+                            'Content-Type': 'application/json',
+                        } ,credentials: 'include', 
+                        body: JSON.stringify({sbu_id: sbu_id })
+                            }).then(data=>            window.location.reload() )   ;
+    
+    await        
+    fetch(backendDomain + "/students/regrabCoursePlan", {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                } ,credentials: 'include', 
+                body: JSON.stringify({sbu_id: sbu_id })
+                    }).then(data=>            window.location.reload() )   ;     
+
+
+
 
     }
     handleChange(event){
@@ -231,15 +257,12 @@ export default class EditStudentAsStudent extends Component{
             })
 
     }
+
     render(){
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
         const studentLoggedIn=Cookies.get("studentLoggedIn");
         //TODO: use a separate token auth API request to do this instead of the response from the GET
-        
-        // if(api call fails due to no authentication){
-        //     Cookies.set('gpdLoggedIn', '0');
-        //     Cookies.set('studentLoggedIn', '0');
-        // }
+ 
         if(gpdLoggedIn !== "1" && studentLoggedIn !== "1"){
             return <Redirect to={{
                 pathname:'/', 
@@ -346,7 +369,10 @@ export default class EditStudentAsStudent extends Component{
                             <Row style={{padding:"0px", margin:"0px"}}>
                                 <Col sm={2}>
                                     <Button onClick = {this.updateStudent} color="success" style={{}} >Save</Button>
+
                                 </Col>
+                                <br></br>
+                             
                                 <Col sm={10} style={{}}>
                                     { this.state.error === 1 &&
                                     <Alert color="danger" style={{margin:"0px", padding:"6px"}}>
@@ -382,6 +408,7 @@ export default class EditStudentAsStudent extends Component{
                                     <td>{x.newCourse.year}</td>
                                     <td>{x.newCourse.timeslot}  </td>
                                     {x.grade && <td>{x.grade}  </td>}
+                                    {!x.grade && <td>{"N/A"}  </td>}
 
                                    {(gpdLoggedIn==1 || x.grade=="") && <td> 
                                      <Button onClick={(e) => this.deleteCourseFromPlan(this.state.sbu_id,x.newCourse.department,x.newCourse.course_num,x.newCourse.semester,x.newCourse.year)}>Delete</Button>  
@@ -477,9 +504,12 @@ export default class EditStudentAsStudent extends Component{
                     </Col>
                     <Col sm={8} style={{ justifyContent: 'center', alignItems: 'center'}}>
                     <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Suggested Course Plans</p>
-                    </Col>
+                    </Col> 
                 </Row>
+                Degree Requirements
+                <div><pre>{JSON.stringify(this.state.degreeRequirements, null, 2) }</pre></div>;
             </Container>
+            
         );
     }
 }

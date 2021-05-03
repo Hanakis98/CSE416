@@ -460,7 +460,37 @@ export default class Students extends Component {
         var newShowModal = !this.state.showFilterWarningModal
         this.setState({ showFilterWarningModal: newShowModal })
     }
+    importDegreeReqs= async event => {
 
+        var file = event.target.files[0]
+        
+        let text = await file.text()
+
+        var departmentDegreeReq = JSON.parse(text).shortName
+        // fetch(backendDomain + '/students/updateDegreeReqs', {
+        //     method: 'POST', // or 'PUT'
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     }, credentials: 'include', 
+        //     body: JSON.stringify({sbu_id: this.state.sbu_id,degreeReqs:JSON.parse(text)} )
+        // })
+        fetch(backendDomain + '/degreeRequirements/deleteDegreeRequirements', {
+            method: 'DELETE', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            }, credentials: 'include', 
+            body: JSON.stringify({department:departmentDegreeReq} )
+        })
+        fetch(backendDomain + '/degreeRequirements/addDegreeRequriements', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            }, credentials: 'include', 
+            body: JSON.stringify(JSON.parse(text) )
+        })
+        this.setState ( {
+        });
+    }
     
 
     render() {
@@ -503,7 +533,13 @@ export default class Students extends Component {
                         <Button style={{ margin: "5px", width: "140px" }} onClick={(e) => this.uploadCoursePlanData.click()}>Import Student Course Plans</Button>
 
                         {/* <Button style={{ margin:"5px", width:"100px"}} onClick={this.deleteAllStudent} color="danger">Delete All Students</Button> */}
+                        <Col >
 
+                    <input id="myInput" type="file" ref={(ref) => this.uploadDegreeReq = ref} style={{ display: 'none' }} onChange={this.importDegreeReqs} />
+                    <Button  onClick={(e) => this.uploadDegreeReq.click()}>Import Degree Requirements</Button>
+                    {/* <Button style={{ margin: "5px", width: "140px" }} onClick={(e) => this.uploadCoursePlanData.click()}>Import Student Course Plans</Button> */}
+
+                    </Col>
                     </Col>
                     <Col xs={2}>
                         <DeleteAllModal buttonLabel="Delete All Students" style={{ margin: "5px", width: "100px" }}></DeleteAllModal>
