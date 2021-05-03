@@ -72,7 +72,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
                 semesterAndYear.push(result[x].semester + " " + result[x].year)
 
             }
+            console.log({enrollmentNumbers: enrollmentNumbers, semestersAndYears: semesterAndYear})
             response.json({enrollmentNumbers: enrollmentNumbers, semestersAndYears: semesterAndYear})
+            response.send()
+            return
 
         });
             

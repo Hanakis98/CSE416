@@ -8,3 +8,4 @@ export { default as AddStudent } from "./AddStudent";
 export { default as InvalidLogin } from "./InvalidLogin";
 // export { default as EditStudentAsAdvisor } from "./EditStudentAsAdvisor";
 export { default as EditStudent } from "./EditStudent";
+export { default as BarChar } from "./BarChart";

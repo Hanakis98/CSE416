@@ -411,7 +411,7 @@ export default class EditStudentAsStudent extends Component{
                                     {!x.grade && <td>{"N/A"}  </td>}
 
                                    {( x.grade=="" || x.grade==null) && <td> 
-                                     <Button onClick={(e) => this.deleteCourseFromPlan(this.state.sbu_id,x.newCourse.department,x.newCourse.course_num,x.newCourse.semester,x.newCourse.year)}>Delete</Button>  
+                                     <Button  size = "sm" onClick={(e) => this.deleteCourseFromPlan(this.state.sbu_id,x.newCourse.department,x.newCourse.course_num,x.newCourse.semester,x.newCourse.year)}>Delete</Button>  
                                     </td>}
                                 </tr>
                                 )}
