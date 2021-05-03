@@ -73,7 +73,7 @@ export default class EditStudentAsStudent extends Component{
                             firstName: data.first_name,
                             lastName: data.last_name,
                             email: data.email,
-                            password: "",
+                            //password: "",
                             department: data.department,
                             track: data.track,
                             sbu_id: data.sbu_id,
@@ -117,7 +117,7 @@ export default class EditStudentAsStudent extends Component{
             email: this.state.email,
             department:  this.state.department,
             track: this.state.track,
-            password: this.state.password,
+            // password: this.state.password,
             entry_semester: this.state.entry_semester,
             entry_year : this.state.entry_year,
             graduation_semester: this.state.graduation_semester,
@@ -299,10 +299,10 @@ export default class EditStudentAsStudent extends Component{
                                 <Col sm={8}><Input type="text" id="email" value={this.state.email}  onChange = {e=> this.setState( {email: e.target.value })}/></Col>
                             </FormGroup>
                         
-                            <FormGroup row style={{alignItems: 'center'}}>
+                            {/* <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="password" sm={4}>Password</Label>
                                 <Col sm={8}><Input type="text" id="password"   onChange = {e=> this.setState( {password:sha( e.target.value+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja") })}/></Col>
-                            </FormGroup>
+                            </FormGroup> */}
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="entry_semester" sm={4}>Entry Semester</Label>
                                 <Col sm={8}><Input type="text" id="entry_semester"value={this.state.entry_semester}   onChange = {e=> this.setState( { entry_semester : e.target.value})}/></Col>
@@ -410,7 +410,7 @@ export default class EditStudentAsStudent extends Component{
                                     {x.grade && <td>{x.grade}  </td>}
                                     {!x.grade && <td>{"N/A"}  </td>}
 
-                                   {(gpdLoggedIn==1 || x.grade=="") && <td> 
+                                   {( x.grade=="" || x.grade==null) && <td> 
                                      <Button onClick={(e) => this.deleteCourseFromPlan(this.state.sbu_id,x.newCourse.department,x.newCourse.course_num,x.newCourse.semester,x.newCourse.year)}>Delete</Button>  
                                     </td>}
                                 </tr>
