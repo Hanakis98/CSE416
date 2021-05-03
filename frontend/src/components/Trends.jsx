@@ -2,6 +2,7 @@ import {  Component } from 'react';
 import  React  from 'react';
 import { Button, Container, Row, Col, Label, Input, FormGroup } from 'reactstrap';
 
+
 export default class Trends extends Component{
     constructor(props) {
         super(props);
@@ -15,8 +16,16 @@ export default class Trends extends Component{
         };
     }
 
-    generateGraph = (m, c, semS, yS, semE, yE) => {
-        const data = {major: m, course: c, semesterStart: semS, yearStart: yS, semesterEnd: semE, yearEnd: yE }
+    generateGraph = () => {
+        
+        const data = {
+            major: this.state.major,
+            course: this.state.course,
+            semesterStart: this.state.semesterStart,
+            yearStart: this.state.yearStart,
+            semesterEnd: this.state.semesterStart,
+            yearEnd: this.state.yearEnd
+        }
 
         console.log(data);
 
