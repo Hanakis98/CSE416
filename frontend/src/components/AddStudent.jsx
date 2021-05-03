@@ -2,6 +2,7 @@ import {  Component } from 'react';
 import  React  from 'react';
 import { Alert, Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
 import { backendDomain } from './../App.js';
+import axios from 'axios';
 
 var sha = require("sha1")
 
@@ -23,6 +24,7 @@ export default class AddStudent extends Component{
             entry_semester:"",
             graduation_year:"",
             graduation_semester:"",
+            degreeRequirements:"",
             coursePlan: []
         };
         
@@ -58,25 +60,37 @@ export default class AddStudent extends Component{
 
             coursePlan: []
         }
-        fetch(backendDomain + '/students/addStudent', {
+        axios.post(backendDomain + '/degreeRequirements/getDegreeRequriement', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(json_data),
+            department:  this.state.major,
             credentials:"include"
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                window.location = '/students';
-
+        }).then(data=> {json_data.degreeRequirements = data.data 
+            ;console.log(data)
+            console.log(json_data)
+            fetch(backendDomain + '/students/addStudent', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(json_data),
+                credentials:"include"
             })
-            .catch((error) => {
-                console.error('Error:', error);
-
-            });
-
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    window.location = '/students';
+    
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+    
+                });
+    
+        })
+      
     }
     render(){
         return (
@@ -123,7 +137,7 @@ export default class AddStudent extends Component{
                     </FormGroup>
                     
                     <FormGroup row>
-                        <Label for="password" sm={3}>Password</Label>
+                        <Label for="id" sm={3}>Password</Label>
                         <Col sm={8}><Input type="text" id="password" onChange = {e=> this.setState( {password:sha( e.target.value+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja") })}/></Col>
                     </FormGroup>
                     <FormGroup row>
@@ -133,7 +147,7 @@ export default class AddStudent extends Component{
                         <option value="None">None</option>
                         <option value="AMS">AMS</option>
                         <option value="CSE">CSE</option>
-                        <option value="ESE">ESE</option>
+                        <option value="ECE">ECE</option>
                         <option value="BMI">BMI</option>
                         </Input>
                         
@@ -159,10 +173,10 @@ export default class AddStudent extends Component{
                                     <option value="tbt">Translational Bioinformatics with Thesis</option>
                                     <option value="tbp">Translational Bioinformatics with Project</option>
                                 </>}
-                                {(this.state.major === 'ESE' || this.state.major === 'CSE' ) && 
+                                {(this.state.major === 'ECE' || this.state.major === 'CSE' ) && 
                                     <option value="t">Thesis</option>
                                 }
-                                {this.state.major === 'ESE' && 
+                                {this.state.major === 'ECE' && 
                                     <option value="nt">Non-Thesis</option>
                                 }
                                 {this.state.major === 'CSE' &&<> 

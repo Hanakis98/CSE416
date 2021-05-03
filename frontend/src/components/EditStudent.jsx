@@ -221,7 +221,6 @@ export default class EditStudentAsStudent extends Component{
         this.setState({ showAddCourseWarningModal: newShowModal })
 
     }
-    
     addCourseToPlan = (department,courseNum,semester,year,section) => {
         if(this.state.coursePlan==null){
             fetch(backendDomain + '/coursePlans/newCoursePlan', {
@@ -256,7 +255,8 @@ export default class EditStudentAsStudent extends Component{
                 if(data.department == null)
                 {
                     this.toggleAddCourseWarningModal()
-                    this.setState({ showAddCourseModal: false })}
+                    this.setState({ showAddCourseModal: false })
+                }
             });  
 
             fetch(backendDomain + '/coursePlans/addCourseToPlan', {
@@ -439,6 +439,8 @@ export default class EditStudentAsStudent extends Component{
                                               
                          <AddCourseModal buttonLabel="Add Course" addCourseToPlan={this.addCourseToPlan}></AddCourseModal>
                          <AddCourseWarningModal  toggle={this.toggleAddCourseWarningModal} modal={this.state.showAddCourseWarningModal}></AddCourseWarningModal>
+                         <AddCourseWarningModal  toggle={this.toggleAddCourseWarningModal} modal={this.state.showAddCourseWarningModal}></AddCourseWarningModal>
+
                     </Col>
                     <Col xs={4} xl={3} style={{padding:"5px", margin:"0px"}}>
                         <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Comments</p>

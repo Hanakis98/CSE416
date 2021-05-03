@@ -68,15 +68,16 @@ export default class Trends extends Component{
             // enrollmentNumbers: (2)  semestersAndYears:
       
           }).then(response=>{
-            // console.log(response)
+             console.log(response)
 
             // //Logic goes here
-            // console.log(this.state.semesterStart + " " + this.state.yearStart)
+             console.log(this.state.semesterStart + " " + this.state.yearStart)
+             console.log(response.data.semestersAndYears)
             for(var i = 0 ; i < response.data.semestersAndYears.length; i++){
-                if(this.state.semesterStart="" || this.state.semesterEnd=="")
+                if(this.state.semesterStart=="" || this.state.semesterEnd=="")
                     break
                 if(response.data.semestersAndYears[i] != (this.state.semesterStart + " " + this.state.yearStart)){
-                    console.log("shift")
+                    console.log(response.data.semestersAndYears[i],"shift",(this.state.semesterStart + " " + this.state.yearStart))
                     response.data.semestersAndYears.shift()
                     response.data.enrollmentNumbers.shift()
 
@@ -85,7 +86,7 @@ export default class Trends extends Component{
                     break
                 }
             }
-            // console.log(this.state.semesterEnd + " " + this.state.yearEnd)
+             console.log(this.state.semesterEnd + " " + this.state.yearEnd)
 
             for(var i = response.data.semestersAndYears.length-1; i>0; i--){
                 if(this.state.semesterStart="" || this.state.semesterEnd=="")
