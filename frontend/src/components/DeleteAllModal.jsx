@@ -14,7 +14,18 @@ const DeleteAllModal = (props) => {
 
     const toggleAndDelete = (id) =>{
       setModal(!modal)
-
+      fetch(backendDomain + '/coursePlans/deleteAllPlans', {
+        method: 'DELETE', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        }, credentials: 'include', 
+    })
+    fetch(backendDomain + '/courses/deleteAllCourses', {
+        method: 'DELETE', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        }, credentials: 'include', 
+    })
       fetch(backendDomain + '/students/deleteAllStudent', {
         method: 'DELETE', // or 'PUT'
         headers: {

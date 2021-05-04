@@ -83,7 +83,7 @@ export default class Students extends Component {
     
     //Build JSON for import student data
     buildJSONfromRow = (row) => {
-        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[5], entry_year: row[6], requirement_version_semester: row[7], requirement_version_year: row[8], graduation_semester: row[10], graduation_year: row[11], password:sha("passSaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"), coursePlan :null , comments:[]}
+        let json = { sbu_id: row[0], first_name: row[1], last_name: row[2], email: row[3], department: row[4], track: row[5], entry_semester: row[6], entry_year: row[7], requirement_version_semester: row[8], requirement_version_year: row[9], graduation_semester: row[10], graduation_year: row[11], password:sha(row[12]+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja"), coursePlan :null , comments:[]}
         return json
     }
     //Go through all the student data and create new student 
@@ -185,7 +185,10 @@ export default class Students extends Component {
 
                 await this.meth3(sbIDs)
                 console.log("wait3")
-
+                await this.meth3(sbIDs)
+                console.log("wait3")
+                await this.meth3(sbIDs)
+                console.log("wait3")
                 //AddCourses To there course plan
 
                 console.log(sbIDs)
