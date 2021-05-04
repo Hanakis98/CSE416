@@ -16,6 +16,40 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
+    router.get("/AMSDegreeRequirements", (request, response) => { // get ALL
+        // return updated list
+        dbCollection.find({shortName: {$eq: "AMS"}}).toArray((error, result) => {
+            if (error) throw error;
+            response.json(result);
+        });
+    });
+
+    router.get("/CSEDegreeRequirements", (request, response) => { // get ALL
+        // return updated list
+        dbCollection.find({shortName: {$eq: "CSE"}}).toArray((error, result) => {
+            if (error) throw error;
+            response.json(result);
+        });
+    });
+
+    router.get("/ECEDegreeRequirements", (request, response) => { // get ALL
+        // return updated list
+        dbCollection.find({shortName: {$eq: "ECE"}}).toArray((error, result) => {
+            if (error) throw error;
+            response.json(result);
+        });
+    });
+
+    router.get("/BMIDegreeRequirements", (request, response) => { // get ALL
+        // return updated list
+        dbCollection.find({shortName: {$eq: "BMI"}}).toArray((error, result) => {
+            if (error) throw error;
+            response.json(result);
+        });
+    });
+
+    
+
     router.post("/addDegreeRequriements", (request, response) => {
         const degreeRequriement =  request.body;
         dbCollection.insertOne(degreeRequriement, (error, result) => { // callback of insertOne

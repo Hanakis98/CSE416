@@ -108,9 +108,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             return
             }
         });
-
-
     });
+
+
+
     router.post("/scrapeCourseInfo", (request, response) => {
             const regexForCourseShortHand = /[A-Z]{3} \d{3}:/g;
             const regexForCourseCredits = /\d credits/g;
@@ -184,6 +185,10 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             response.json(result);
         });
     });
+
+    
+
+
     router.post("/addCourse", (request, response) => {
         const courseItem = request.body;  
         var newCourse = new courseModel(courseItem);;

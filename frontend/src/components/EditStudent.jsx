@@ -2,6 +2,7 @@ import {Component}  from 'react';
 import  React  from 'react';
 import { Redirect } from "react-router-dom";
 import { Alert, Table, Container, Row, Col, Form, Button, Label, Input, FormGroup } from 'reactstrap';
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import Cookies from 'js-cookie';
 import { backendDomain } from '../App.js';
 import AddCourseModal from './AddCourseModal'
@@ -30,7 +31,12 @@ export default class EditStudentAsStudent extends Component{
             graduation_year: "",
             comments: [],
             commentToAdd:"",
-            degreeRequirements:[]
+            maxNumCourses: 4,
+            preferredCourses: [],
+            avoidCourses: [],
+            suggestedCoursePlans: [],
+            currentPage: 0,
+            similarStudents: []
         }; 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,6 +44,7 @@ export default class EditStudentAsStudent extends Component{
 
     componentDidMount(){
         this.fetchStudentInfo()//.then(n => this.setState({}))
+        this.readAllStudent().then(newStudents => this.setState({ similarStudents: newStudents }));
     }
 
     fetchStudentInfo = () => {
@@ -276,6 +283,536 @@ export default class EditStudentAsStudent extends Component{
 
     }
 
+    async getAMSRequirements(){
+       
+        // Gather all the tracks from degree requirements
+        let urlTrack = backendDomain + "/degreeRequirements/AMSDegreeRequirements"
+        let degreeReq = null
+
+        try {
+            const response = await fetch(urlTrack, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                } ,credentials: 'include', 
+                
+            });
+            const exam = await response.json();
+            return exam;
+        } catch (error) {
+            console.error(error);
+        }
+        
+    }
+
+    async getAllCourses(){
+        var route = backendDomain + '/courses/allOfferedCourses/'
+    
+        try {
+            const response = await fetch(route, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                } ,credentials: 'include', 
+                
+            });
+            const exam = await response.json();
+            return exam;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    generateVariation = (coursePlan, coursesBySemester, totalSwaps) => {
+        var anotherPlan = {}
+        for (let i = 0; i < Object.keys(coursePlan).length; i++){
+            anotherPlan[Object.keys(coursePlan)[i]] =  Array.from(coursePlan[Object.keys(coursePlan)[i]])
+        }
+        let maxCoursesPerSemester = this.state.maxNumCourses > 5 ? 4: this.state.maxNumCourses   
+        
+        var swaps = 0
+    
+
+        for (let i = 0; i < Object.keys(coursePlan).length; i++){
+            let courses = coursePlan[Object.keys(coursePlan)[i]]
+            for (let j = 0; j < courses.length; j++){
+                let course = courses[j]
+                let code = courses[j].courseCode
+                let semester = courses[j].semester  
+                
+                // Search Another Semester With this Course and Move it There
+                let semsesters = Object.keys(coursesBySemester)
+                
+                for (let k = 0; k < semsesters.length; k++){
+                    if (semsesters[k] !== semester){
+                        var swapThisSemester = 0
+                        for (let l = 0; l < coursesBySemester[semsesters[k]].length; l++){
+                            let currentCourse = coursesBySemester[semsesters[k]][l]
+                            let currentCode = course.courseCode
+                            if (currentCode === code){
+                                // Another variation detected, remove the current element and find new semester for it
+                                if (anotherPlan[semsesters[k]].length+1 <= maxCoursesPerSemester){
+                                    anotherPlan[semester].splice(anotherPlan[semester].indexOf(currentCourse),  1)
+                                    anotherPlan[semsesters[k]].push(course)
+
+                                    swaps++
+                                    if (swaps === totalSwaps){
+                                        return anotherPlan
+                                    }
+                                }
+                                
+
+                                
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        }
+        return anotherPlan
+    }
+
+    generateSequentialPlans = (electives, coreRequirements, orRequirements, uniqueElectives, uniqueRequirements,totalElectiveCredits) => {        
+        
+        let maxCoursesPerSemester = this.state.maxNumCourses > 5 ? 4: this.state.maxNumCourses        
+
+        for (let i = 0; i < coreRequirements.length; i++){
+            coreRequirements[i].semester = coreRequirements[i].semester + " " + coreRequirements[i].year
+            coreRequirements[i].courseCode = coreRequirements[i].department + " " + coreRequirements[i].course_num
+        }
+
+        for (let i = 0; i < electives.length; i++){
+            electives[i].semester = electives[i].semester + " " + electives[i].year
+            electives[i].courseCode = electives[i].department + " " + electives[i].course_num
+        }
+        
+        let allCourses = electives.concat(coreRequirements)           
+        
+        const coursesBySemester = allCourses.reduce((acc, value) => {
+            // Group initialization
+            if (!acc[value.semester]) {
+              acc[value.semester] = [];
+            }
+           
+            // Grouping
+            acc[value.semester].push(value);
+           
+            return acc;
+        }, {});
+
+        let semsesters = Object.keys(coursesBySemester)
+        let coursePlan = {}
+        var totalElectives = totalElectiveCredits / 3
+        var currentElectives = 0
+        var allCourseCode = []        
+
+        for (let i = 0; i < semsesters.length; i++){
+            coursePlan[semsesters[i]] = []
+            for (let j = 0; j < coursesBySemester[semsesters[i]].length; j++){
+                let course = coursesBySemester[semsesters[i]][j]
+                let code = course.courseCode
+                
+                if (uniqueRequirements.includes(code)){                   
+                    if (coursePlan[semsesters[i]].length  < maxCoursesPerSemester){
+                        coursePlan[semsesters[i]].push(course)
+                        allCourseCode.push(code)                         
+                        uniqueRequirements.splice(uniqueRequirements.indexOf(code), 1)
+                        allCourses.splice(allCourses.indexOf(course), 1)
+                    }
+                }else if (uniqueElectives.includes(code)){           
+                    if (coursePlan[semsesters[i]].length  < maxCoursesPerSemester && currentElectives < totalElectives){
+                        coursePlan[semsesters[i]].push(course)
+                        currentElectives = currentElectives + 1
+                        allCourseCode.push(code)
+                        uniqueElectives.splice(uniqueElectives.indexOf(code), 1)
+                        allCourses.splice(allCourses.indexOf(course), 1)
+                    }
+                }else{
+                    // Check orRequirements
+                    for (let i = 0; i < orRequirements.length; i++){
+                        for (let j = 0; j < orRequirements[i].length; j++){
+                            if (code === orRequirements[i][j] && coursePlan[semsesters[i]].length  < maxCoursesPerSemester){
+                                coursePlan[semsesters[i]].push(course)
+                                allCourseCode.push(code) 
+                                orRequirements[i].splice(j, 2)
+                                allCourses.splice(allCourses.indexOf(course), 1)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // Contigency Something is Not Finished
+        orRequirements = orRequirements.filter(x => x.length !== 0)     
+
+        if (uniqueRequirements.length !== 0){
+            for (let i = 0 ; i < uniqueRequirements.length; i++){
+                // Search for this course 
+                let course = allCourses.filter(x => x.courseCode === uniqueRequirements[i])[0]
+                coursePlan[course.semester].push(course)
+            }
+        }
+        
+        if (orRequirements.length !== 0){
+            for (let i = 0; i < orRequirements.length; i++){
+                for (let j = 0; j < orRequirements[i].length; j++){
+                    let course = allCourses.filter(x => x.courseCode === orRequirements[i][j])[0]
+                    coursePlan[course.semester].push(course)
+                    break
+                }
+            }            
+        }
+        
+        //Shuffle around to get some other course plan 
+        var allPlans = [coursePlan]
+        for (let i = 1; i < 4; i++){
+            var anotherPlan = this.generateVariation(coursePlan, coursesBySemester, i)            
+            allPlans.push(anotherPlan)
+        }
+        allPlans = allPlans.map(x => Object.keys(x).map(function(key){
+            return x[key];
+        }).flat())
+
+        allPlans = this.state.suggestedCoursePlans.concat(allPlans)
+        this.setState({suggestedCoursePlans: allPlans})
+    }
+
+    async regularSuggestAMS() {
+        let degreeReqs = await this.getAMSRequirements()
+        let userEntry = this.state.entry_semester + " " + this.state.entry_year
+        let validDegreeReqCondition = (degreeReq) => (degreeReq.version === userEntry)
+        let validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+        let userTrack = this.state.track
+        let allCourses = await this.getAllCourses()
+        let prefered = this.state.preferredCourses.map(x => x.trim())
+        
+       
+        if (validDegreeReq){
+            
+            // With valid degree requirement, we check their track
+            let trackCondition = (trackReq) => (trackReq.track === userTrack)
+            let trackCourses = validDegreeReq.coreRequirements[validDegreeReq.coreRequirements.findIndex(trackCondition)]
+            
+            // We now verify base on the track, first check all the user completed courses and see if it can apply with either core or electives
+            let coreRequirements = trackCourses.requiredCourses
+            let electivesCondition = trackCourses.electiveCourses[0]
+            let totalElectiveCredits = electivesCondition.totalCredits
+            let userCompletedCourses = this.state.courses.filter(x => x.grade !== 'F').map(x =>  x.newCourse.department + " " + x.newCourse.course_num         )
+            let userCompletedCoursesCode = this.state.courses.filter(x => x.grade !== 'F').map(x => Number(x.newCourse.course_num )        )
+            //let coreRequirementsShortNames = coreRequirements.map(x => x.courseNumber)
+            
+            // No compromise to be made here but the user's selections can be influenced in the electives
+            let uniqueRequirements = []
+            let orRequirements = []
+
+            let coreRequirementsNeeded = coreRequirements.map(x =>{ 
+                
+                if(x.type === "required" && !userCompletedCourses.includes(x.courseNumber.substring(0,7))){     
+                    let course = x.courseNumber.toString().substring(0,7)    
+                    uniqueRequirements.push(course)
+                    return (allCourses.filter(x => x.department + " " + x.course_num === course ))      
+                }else if(x.type === "one of many"){
+                    const range = (start, end) => {
+                        const length = end - start;
+                        return Array.from({ length }, (_, i) => start + i);
+                    }
+
+                    let rangeArr = x.courseRange.substring(3).split("-").map(str => Number(str.replace(/\s/g,'')))
+                    let courseRange = range(rangeArr[0], rangeArr[1])
+                    let satisfied = courseRange.filter(x => userCompletedCoursesCode.indexOf(x) !== -1).length > 0
+                    let possibleCodes = courseRange.map(x => "AMS" + " " + x.toString())
+                    let possibleCourses = allCourses.filter(x => possibleCodes.includes(x.department + " " + x.course_num))   
+                    let code = possibleCourses[0].department + " " + possibleCourses[0].course_num
+                    
+                    if (!satisfied){
+                        uniqueRequirements.push(code)
+                        return possibleCourses[0]
+                    }else{
+                        return satisfied
+                    }                   
+
+
+                }else if(x.type === "rotation"){
+                    let numRotations = x.rotations
+                    let satisfied = userCompletedCourses.filter(course => x.courseNumber === course).length === numRotations    
+                    let course = x.courseNumber.toString()  
+                    for (let i = 0; i < numRotations; i++){
+                        uniqueRequirements.push(course)
+                    }                               
+                   
+                    if (!satisfied){
+                        
+                        return (allCourses.filter(x => x.department + " " + x.course_num === course ))
+                    }else{
+                        return satisfied
+                    }
+
+                   
+                    
+                }else if(x.type === "or"){
+
+                    let satisfiedOneOfTwo = (course) => (userCompletedCourses.includes(course))
+                    let satisfied = x.courseNumber.some(satisfiedOneOfTwo)      
+                    let course = x.courseNumber.toString().split(",")
+                    orRequirements.push(course)
+                    
+                    if (!satisfied){
+                        
+                        return (allCourses.filter( x => course.includes(x.department + " " + x.course_num) || prefered.includes(x.department + " " + x.course_num) ))      
+                    }else{
+                        return satisfied
+                    }
+                    
+                }else{
+                    return true // satifised requirement already
+                }
+            }).filter(x => x != true).flat()
+
+            let avoid = this.state.avoidCourses.map(x => x.trim())
+            console.log(electivesCondition)
+
+            if (electivesCondition.courseRange && !electivesCondition.substitutionRange){               
+                
+                let electives = allCourses.filter(x => electivesCondition.courseRange.includes(x.department + " " + x.course_num))                
+                let suggestedElectives = electives.filter(x => 
+
+                    !avoid.includes(x.department + " " + x.course_num)
+                )      
+                
+                let finalSuggestedElectives = []
+                let finalSuggestedElectivesCode = []
+                let suggestedElectivesCode = suggestedElectives.map(x => (x.department + " " + x.course_num))
+                
+                // Store unique credit count    
+                let totalCreditsPrefered = 0
+                for (let i = 0; i < suggestedElectivesCode.length; i++){
+                    if (  prefered.includes(suggestedElectivesCode[i])   ){
+                        finalSuggestedElectives.push(suggestedElectives[i])
+
+                        if (!finalSuggestedElectivesCode.includes(suggestedElectivesCode[i])){
+                            finalSuggestedElectivesCode.push(suggestedElectivesCode[i])
+                            totalCreditsPrefered += Number(suggestedElectives[i].credits)
+                        }
+                    }
+                }
+                let uniqueElectives = electivesCondition.courseRange
+                this.generateSequentialPlans(suggestedElectives, coreRequirementsNeeded, orRequirements, uniqueElectives, uniqueRequirements,totalElectiveCredits)
+               
+
+            }else if (electivesCondition.substitutionRange){
+                const range = (start, end) => {
+                    const length = end - start;
+                    return Array.from({ length }, (_, i) => start + i);
+                }
+
+
+                let numRangeCourses = electivesCondition.substitutionRange.length
+
+                // Build Ranges
+                let courseRange = electivesCondition.courseRange.substring(3).split("-").map(str => Number(str.replace(/\s/g,'')))
+                courseRange = range(courseRange[0], courseRange[1])
+
+                // Build SubRange
+                let subRanges =  electivesCondition.substitutionRange.map(x => x.substring(3).split("-").map(str => Number(str.replace(/\s/g,''))) )
+                subRanges = subRanges.map(x => range(x[0], x[1])).flat()
+                
+
+                // Build Full Range
+                let fullRange = courseRange.concat(subRanges).map(x => "AMS" + " " + x.toString())
+                let electives = allCourses.filter(x => fullRange.includes(x.department + " " + x.course_num))    
+                let suggestedElectives = electives.filter(x => 
+
+                    !avoid.includes(x.department + " " + x.course_num)
+                ) 
+                
+                this.generateSequentialPlans(suggestedElectives, coreRequirementsNeeded, orRequirements, fullRange, uniqueRequirements,totalElectiveCredits)
+
+            }else if (electivesCondition.allowedCourses){
+                let electives = allCourses.filter(x => electivesCondition.allowedCourses.includes(x.department + " " + x.course_num))   
+                let suggestedElectives = electives.filter(x => 
+
+                    !avoid.includes(x.department + " " + x.course_num)
+                )  
+                this.generateSequentialPlans(suggestedElectives, coreRequirementsNeeded, orRequirements, electivesCondition.allowedCourses, uniqueRequirements,totalElectiveCredits)
+                
+            }else{
+                let electives = allCourses.filter(x => x.department === "AMS")
+                
+                let suggestedElectives = electives.filter(x => 
+
+                    !avoid.includes(x.department + " " + x.course_num)
+                )  
+
+                let uniqueElectives = electives.map(x => x.department + " " + x.course_num)
+               
+                uniqueElectives = [...new Set(uniqueElectives)]
+               
+                this.generateSequentialPlans(suggestedElectives, coreRequirementsNeeded, orRequirements, uniqueElectives, uniqueRequirements,totalElectiveCredits)
+               
+            }
+
+        }
+       
+    }
+
+    readAllStudent = (params) =>  {
+        var route = backendDomain + '/students/allStudents/'
+    
+        return fetch(route, {
+            redirect: 'follow',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            credentials: 'include'
+        })
+            .then(response => response.json())
+
+            .then(data => {
+                console.log('Success:', data);
+                return data
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                return null;
+            });
+    }
+
+    async getCSERequirements(){
+       
+        // Gather all the tracks from degree requirements
+        let urlTrack = backendDomain + "/degreeRequirements/CSEDegreeRequirements"
+        let degreeReq = null
+
+        try {
+            const response = await fetch(urlTrack, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                } ,credentials: 'include', 
+                
+            });
+            const exam = await response.json();
+            return exam;
+        } catch (error) {
+            console.error(error);
+        }
+        
+    }
+
+    async regularSuggestCSE() {
+        let degreeReqs = await this.getCSERequirements()
+        let userEntry = this.state.entry_semester + " " + this.state.entry_year
+        let validDegreeReqCondition = (degreeReq) => (degreeReq.version === userEntry)
+        let validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+        let userTrack = this.state.track
+        let allCourses = await this.getAllCourses()
+        let prefered = this.state.preferredCourses.map(x => x.trim())
+      
+    }
+
+    async regularSuggestESE(){
+
+    }
+
+
+    regularSuggest = () => {
+
+        switch (this.state.department){
+
+            case "AMS":
+                this.regularSuggestAMS()
+            case "CSE":
+                this.regularSuggestCSE()
+            case "ESE":
+                this.regularSuggestESE()
+        }
+
+
+    }
+
+    generateSequentialPlansSmart = (allCourses, allCodes) => {
+        let maxCoursesPerSemester = this.state.maxNumCourses > 5 ? 4: this.state.maxNumCourses 
+        for (let i = 0; i < allCourses.length; i++){
+            allCourses[i].semester = allCourses[i].semester + " " + allCourses[i].year
+            allCourses[i].courseCode = allCourses[i].department + " " + allCourses[i].course_num
+        }
+        const coursesBySemester = allCourses.reduce((acc, value) => {
+            // Group initialization
+            if (!acc[value.semester]) {
+              acc[value.semester] = [];
+            }
+           
+            // Grouping
+            acc[value.semester].push(value);
+           
+            return acc;
+        }, {});
+
+        let semsesters = Object.keys(coursesBySemester)
+        let coursePlan = {}
+        
+        for (let i = 0; i < semsesters.length; i++){
+            coursePlan[semsesters[i]] = []
+            let semesterTimeSlots = []
+            for (let j = 0; j < coursesBySemester[semsesters[i]].length; j++){
+                let course = coursesBySemester[semsesters[i]][j]
+                let code = course.courseCode                
+                
+                if (!semesterTimeSlots.includes(course.timeslot) && coursePlan[semsesters[i]].length  < maxCoursesPerSemester){
+                    coursePlan[semsesters[i]].push(course)                                 
+                    allCodes.splice(allCodes.indexOf(code), 1)
+                    allCourses.splice(allCourses.indexOf(course), 1)
+                    semesterTimeSlots.push(course.timeslot)
+                }
+            }
+        }
+        console.log(allCodes)
+        var allPlans = [coursePlan]
+        
+        allPlans = allPlans.map(x => Object.keys(x).map(function(key){
+            return x[key];
+        }).flat())
+
+        allPlans = this.state.suggestedCoursePlans.concat(allPlans)
+        this.setState({suggestedCoursePlans: allPlans})
+    }
+
+    async smartSuggestAsync()  {
+        // Search Students With Completed Degrees With Same Index   
+            
+        var validStudents = this.state.similarStudents.filter(x => x.department === this.state.department && x.track === this.state.track && x.sbu_id !== this.state.sbu_id && x.completed)
+        if (validStudents.length > 0){
+            var myCourses = this.state.courses.filter(x => x.grade !== 'F' && x.grade).map(x => x.newCourse.department + " " + x.newCourse.course_num)   
+        
+            let similarCourse = validStudents.map(x => 
+                x.coursePlan.courses.map(y => y.newCourse.department + " " + y.newCourse.course_num)
+            )
+
+            let similarCourseNum = similarCourse.map(x => x.flat().filter(z => myCourses.includes(z)).length)
+                    
+            // Get all courses I have not completed       
+            var missingCoursesCode = similarCourse[similarCourseNum.indexOf(Math.max(...similarCourseNum))].filter(z => !myCourses.includes(z))
+            var missingCourses = await this.getAllCourses()
+            missingCourses = missingCourses.filter(y => missingCoursesCode.includes(y.department + " " + y.course_num)   )
+            console.log(missingCourses.length)
+            this.generateSequentialPlansSmart(missingCourses, missingCoursesCode)
+        }else{
+            console.log("No Matching Student in Database")
+        }
+    }
+
+    smartSuggest = () => {
+        this.smartSuggestAsync()
+    }
+
+    handlePageClick = (e, index) => {
+        e.preventDefault();
+        this.setState({currentPage: index})
+       
+    }
+
     render(){
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
         const studentLoggedIn=Cookies.get("studentLoggedIn");
@@ -356,29 +893,29 @@ export default class EditStudentAsStudent extends Component{
                                 <Col sm={8}><Input type="select" id="track" value={this.state.track} onChange = {e=> this.setState( {track: e.target.value })}>
                                     <option value="None">None</option>
                                     {this.state.department === 'AMS' && <>
-                                        <option value="cam">Computational Applied Mathematics</option>
-                                        <option value="cb">Computational Biology</option>
-                                        <option value="or">Operations Research</option>
-                                        <option value="st">Statistics</option>
-                                        <option value="qf">Quantitative Finance</option>
+                                        <option value="Computational Applied Mathematics">Computational Applied Mathematics</option>
+                                        <option value="Computational Biology">Computational Biology</option>
+                                        <option value="Operations Research">Operations Research</option>
+                                        <option value="Statistics">Statistics</option>
+                                        <option value="Quantitative Finance">Quantitative Finance</option>
                                     </>}
                                     {this.state.department === 'BMI' && <>
-                                        <option value="iit">Imaging Informatics with Thesis</option>
-                                        <option value="iip">Imaging Informatics with Project</option>
-                                        <option value="cit">Clinical Informatics with Thesis</option>
-                                        <option value="cip">Clinical Informatics with Project</option>
-                                        <option value="tbt">Translational Bioinformatics with Thesis</option>
-                                        <option value="tbp">Translational Bioinformatics with Project</option>
+                                        <option value="Imaging Informatics with Thesis">Imaging Informatics with Thesis</option>
+                                        <option value="Imaging Informatics with Project">Imaging Informatics with Project</option>
+                                        <option value="Clinical Informatics with Thesis">Clinical Informatics with Thesis</option>
+                                        <option value="Clinical Informatics with Project">Clinical Informatics with Project</option>
+                                        <option value="Translational Bioinformatics with Thesis">Translational Bioinformatics with Thesis</option>
+                                        <option value="Translational Bioinformatics with Project">Translational Bioinformatics with Project</option>
                                     </>}
                                     {(this.state.department === 'ESE' || this.state.department === 'CSE' ) && 
-                                        <option value="t">Thesis</option>
+                                        <option value="Thesis">Thesis</option>
                                     }
                                     {this.state.department === 'ESE' && 
-                                        <option value="nt">Non-Thesis</option>
+                                        <option value="Non-Thesis">Non-Thesis</option>
                                     }
                                     {this.state.department === 'CSE' &&<> 
-                                        <option value="ap">Advanced Project</option>
-                                        <option value="sp">Special Project</option>
+                                        <option value="Advanced Project">Advanced Project</option>
+                                        <option value="Special Project">Special Project</option>
                                     </>}
                                     </Input>
                                 </Col>
@@ -477,22 +1014,17 @@ export default class EditStudentAsStudent extends Component{
                         <Form>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="max_courses" sm={4}>Max Number of Courses per Semester</Label>
-                                    <Col sm={8}><Input type="text" id="max_courses" placeholder={""}   onChange = {e=> this.setState( { })}/></Col>
+                                    <Col sm={8}><Input type="text" id="max_courses" placeholder={""}   onChange = {e=> this.setState( { maxNumCourses: e.target.value })}/></Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="preferred_courses" sm={4}>Preferred Courses</Label>
-                                    <Col sm={8}><Input type="text" id="preferred_courses" placeholder={""}   onChange = {e=> this.setState( { })}/></Col>
+                                    <Col sm={8}><Input type="text" id="preferred_courses" placeholder={""}   onChange = {e=> this.setState( {preferredCourses: e.target.value.split(",") })}/></Col>
                             </FormGroup>
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="avoid_courses" sm={4}>Courses to Avoid</Label>
-                                    <Col sm={8}><Input type="text" id="avoid_courses" placeholder={""}   onChange = {e=> this.setState( { })}/></Col>
+                                    <Col sm={8}><Input type="text" id="avoid_courses" placeholder={""}   onChange = {e=> this.setState( {avoidCourses: e.target.value.split(",") })}/></Col>
                             </FormGroup>
-                            <FormGroup row style={{alignItems: 'center', paddingLeft:"35px"}}>
-                                <Label check>
-                                    <Input type="checkbox" onClick = {e => this.setState({scp_sortByPreference: e.target.checked})} />
-                                    Sort Plans by Preference
-                                </Label>
-                            </FormGroup>
+                            
                             <FormGroup row>
                                 <Label sm={4}>Scheduling Constraints</Label>
                                 <Col>
@@ -513,20 +1045,56 @@ export default class EditStudentAsStudent extends Component{
                                 </Col>
                             </FormGroup>
                             <Row style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <Button onClick = {null} color="success" style={{width:"120px",margin:"5px"}} >Generate Course Plan Suggestions</Button>
-                                <Button onClick = {null} color="success" style={{width:"140px",margin:"5px"}} >Generate Smart Course Plan Suggestions</Button>
+                                <Button onClick = {this.regularSuggest} color="success" style={{width:"120px",margin:"5px"}} >Generate Course Plan Suggestions</Button>
+                                <Button onClick = {this.smartSuggest} color="success" style={{width:"140px",margin:"5px"}} >Generate Smart Course Plan Suggestions</Button>
 
                             </Row>
                             
 
                         </Form>
                     </Col>
-                    <Col xs={8} xl={6} style={{ justifyContent: 'center', alignItems: 'center'}}>
-                        <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Suggested Course Plans</p>
-                    </Col> 
-                    <Col xs={4} xl={3} style={{padding:"5px", margin:"0px", maxHeight:"400px"}}>
-                        <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Degree Requirements</p>
-                        <div><pre>{JSON.stringify(this.state.degreeRequirements, null, 2) }</pre></div>
+                    <Col sm={8} style={{ justifyContent: 'center', alignItems: 'center'}}>
+                    <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Suggested Course Plans</p>
+                    
+                    
+                    <Table xs="3">
+                                <thead><tr>
+                                    <th>Department</th>
+                                    <th>Number</th>
+                                    <th>Section</th>
+                                    <th>Semester</th>
+                                    <th>Year</th>
+                                    <th>Timeslot</th>
+                                </tr></thead>
+                                <tbody>
+                                    {this.state.suggestedCoursePlans.length !==0 && this.state.suggestedCoursePlans[this.state.currentPage].map(x =>
+                                    <tr>
+                                        <td>{x.department }</td>
+                                        <td>{x.course_num}</td>
+                                        <td>{x.section}</td>
+                                        <td>{x.semester}</td>
+                                        <td>{x.year}</td>
+                                        <td>{x.timeslot}  </td>
+                                        
+                                    </tr>
+                                    )}
+                                </tbody>
+                    </Table>
+
+
+                    <Pagination aria-label="plan navigation">
+                       
+                            <PaginationLink first href="#" />
+                            <PaginationLink previous href="#" />
+                            {this.state.suggestedCoursePlans.length !== 0 && this.state.suggestedCoursePlans.map( (x, index) => (
+                                <PaginationItem active={index === this.state.currentPage} key={index}>
+                                    <PaginationLink onClick={e => this.handlePageClick(e, index)}  href="#">{index+1}</PaginationLink>
+                                </PaginationItem>
+                            ))}
+                            
+                    </Pagination>
+
+
                     </Col>
                 </Row>
             </Container>
