@@ -1223,7 +1223,7 @@ export default class EditStudentAsStudent extends Component{
                                         <option value="None">None</option>
                                         <option value="AMS">AMS</option>
                                         <option value="CSE">CSE</option>
-                                        <option value="ESE">ESE</option>
+                                        <option value="ECE">ECE</option>
                                         <option value="BMI">BMI</option>
                                     </Input>
                                 </Col>
@@ -1247,10 +1247,10 @@ export default class EditStudentAsStudent extends Component{
                                         <option value="Translational Bioinformatics with Thesis">Translational Bioinformatics with Thesis</option>
                                         <option value="Translational Bioinformatics with Project">Translational Bioinformatics with Project</option>
                                     </>}
-                                    {(this.state.department === 'ESE' || this.state.department === 'CSE' ) && 
+                                    {(this.state.department === 'ECE' || this.state.department === 'CSE' ) && 
                                         <option value="Thesis">Thesis</option>
                                     }
-                                    {this.state.department === 'ESE' && 
+                                    {this.state.department === 'ECE' && 
                                         <option value="Non-Thesis">Non-Thesis</option>
                                     }
                                     {this.state.department === 'CSE' &&<> 
