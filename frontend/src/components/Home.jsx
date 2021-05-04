@@ -94,7 +94,7 @@ export default class  Home extends Component {
       return <Redirect to='/students' />
     }
     else if(studentLoggedIn === "1"){
-      return <Redirect to='/studenthome' />
+      return <Redirect to= '/EditStudent' />
     }
 
     return (

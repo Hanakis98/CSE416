@@ -15,12 +15,13 @@ const studentSchema = new mongoose.Schema({
   GPA: String,
   department: String,
   track:String,
-  degreeRequirements:Object,
+  // degreeRequirements:{},
   coursePlan: Object,
   entry_semester: String,
   entry_year: String,
   graduation_semester: String,
   graduation_year: String,
+  completeCoursePlan: Boolean,
   comments:[String]
 });
 

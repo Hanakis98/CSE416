@@ -40,7 +40,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             from :'cse316teddy@gmail.com',
             to: request.body.email,
             subject: "MAST System Notification",
-            html: `There is a new comment on your course plan, check it out http://localhost:3000/`
+            html: `There is a new comment on your course plan, \" ` +request.body.commentToAdd + "\""
+
         } 
 
 
@@ -199,6 +200,8 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             graduation_semester: request.body.graduation_semester,
             graduation_year: request.body.graduation_year,
             comments: [],
+            completeCoursePlan:false,
+            degreeRequirements:request.body.degreeRequirements,
             coursePlan: null
         })
 

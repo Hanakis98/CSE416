@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import { backendDomain } from '../App.js';
 import AddCourseModal from './AddCourseModal'
 import AddCourseWarningModal from './AddCourseWarningModal'
-
+var axios = require("axios")
 var sha = require("sha1")
 var u=0;
 
@@ -19,7 +19,7 @@ export default class EditStudentAsStudent extends Component{
             firstName: "",
             lastName: "",
             email: "",
-            password: "",
+                // password: "pass",
             department: "",
             track: "",
             sbu_id: "",
@@ -66,40 +66,52 @@ export default class EditStudentAsStudent extends Component{
                 })
             .then(response => response.json())
             .then(data => {
-                //console.log(data);
-                if(data.notAllowed != null){
-                    //auth fail from api call?
-                    Cookies.set("gpdLoggedIn", "0");
-                    Cookies.set("studentLoggedIn", "0");
-                    this.setState({});
-                    return;
-                }
-                this.setState ( {
-                    firstName: data.first_name,
-                    lastName: data.last_name,
-                    email: data.email,
-                    password: "",
-                    department: data.department,
-                    track: data.track,
-                    sbu_id: data.sbu_id,
-                    studentUserName:u,
-                    entry_semester: data.entry_semester,
-                    entry_year : data.entry_year,
-                    graduation_semester: data.graduation_semester,
-                    graduation_year: data.graduation_year,
-                    comments: data.comments
+                        //console.log(data);
+                        if(data.notAllowed != null){
+                            //auth fail from api call?
+                            Cookies.set("gpdLoggedIn", "0");
+                            Cookies.set("studentLoggedIn", "0");
+                            this.setState({});
+                            return;
+                        }
 
-                });
-                if(data.coursePlan != null){
-                    this.setState ( {
-                        courses: data.coursePlan.courses
-                    }); 
-                }
+                    
+                        this.setState ( {
+                            firstName: data.first_name,
+                            lastName: data.last_name,
+                            email: data.email,
+                            //password: "",
+                            department: data.department,
+                            track: data.track,
+                            sbu_id: data.sbu_id,
+                            studentUserName:u,
+                            entry_semester: data.entry_semester,
+                            entry_year : data.entry_year,
+                            graduation_semester: data.graduation_semester,
+                            graduation_year: data.graduation_year,
+                            comments: data.comments
+
+                        })
+
+                        if(data.coursePlan != null){
+                            this.setState ( {
+                                courses: data.coursePlan.courses
+                            }); 
+                        }
+                            console.log("Dep",data.department)
+                          axios.post(backendDomain + "/degreeRequirements/getDegreeRequriement", {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    } ,
+                                    credentials: 'include', 
+                                   department :data.department
+                                }).then(data=>console.log(this.setState({degreeRequirements:data.data}))
+                        );
+                                    
 
             })
             .catch((error) => {
-                console.error('Error:', error);
-                console.log("testst");
+               
             });
     }
 
@@ -112,7 +124,7 @@ export default class EditStudentAsStudent extends Component{
             email: this.state.email,
             department:  this.state.department,
             track: this.state.track,
-            password: this.state.password,
+            // password: this.state.password,
             entry_semester: this.state.entry_semester,
             entry_year : this.state.entry_year,
             graduation_semester: this.state.graduation_semester,
@@ -142,23 +154,36 @@ export default class EditStudentAsStudent extends Component{
 
             });
     }
-    deleteCourseFromPlan = (sbu_id,department,courseNum,semester,year)=>{
-        
-        console.log( (semester))
-        fetch(backendDomain + "/coursePlans/deleteCourseFromPlan", {
+  async  deleteCourseFromPlan (sbu_id,department,courseNum,semester,year){
+
+
+      await   fetch(backendDomain + "/coursePlans/deleteCourseFromPlan", {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
             } ,credentials: 'include', 
             body: JSON.stringify({sbu_id: sbu_id , department: department, course_num: courseNum,semester: semester,year: year})
-                })   ;
+                })   
+     await        
             fetch(backendDomain + "/students/regrabCoursePlan", {
-                    method: 'POST', // or 'PUT'
-                    headers: {
-                        'Content-Type': 'application/json',
-                    } ,credentials: 'include', 
-                    body: JSON.stringify({sbu_id: sbu_id })
-                        }).then(data=>            window.location.reload() )   ;
+                        method: 'POST', // or 'PUT'
+                        headers: {
+                            'Content-Type': 'application/json',
+                        } ,credentials: 'include', 
+                        body: JSON.stringify({sbu_id: sbu_id })
+                            }).then(data=>            window.location.reload() )   ;
+    
+    await        
+    fetch(backendDomain + "/students/regrabCoursePlan", {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                } ,credentials: 'include', 
+                body: JSON.stringify({sbu_id: sbu_id })
+                    }).then(data=>            window.location.reload() )   ;     
+
+
+
 
     }
     handleChange(event){
@@ -203,8 +228,25 @@ export default class EditStudentAsStudent extends Component{
         this.setState({ showAddCourseWarningModal: newShowModal })
 
     }
-    
     addCourseToPlan = (department,courseNum,semester,year,section) => {
+        if(this.state.coursePlan==null){
+            fetch(backendDomain + '/coursePlans/newCoursePlan', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ sbu_id: this.state.sbu_id })
+            })
+            fetch(backendDomain + '/students/regrabCoursePlan', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                }, credentials: 'include', 
+                body: JSON.stringify({sbu_id:this.state.sbu_id})
+            })
+           
+        }
         console.log(department,courseNum,semester,year,section)
         fetch(backendDomain + "/courses/getCourseIfItExists", {
             method: 'POST', // or 'PUT'
@@ -220,7 +262,8 @@ export default class EditStudentAsStudent extends Component{
                 if(data.department == null)
                 {
                     this.toggleAddCourseWarningModal()
-                    this.setState({ showAddCourseModal: false })}
+                    this.setState({ showAddCourseModal: false })
+                }
             });  
 
             fetch(backendDomain + '/coursePlans/addCourseToPlan', {
@@ -774,11 +817,7 @@ export default class EditStudentAsStudent extends Component{
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
         const studentLoggedIn=Cookies.get("studentLoggedIn");
         //TODO: use a separate token auth API request to do this instead of the response from the GET
-        
-        // if(api call fails due to no authentication){
-        //     Cookies.set('gpdLoggedIn', '0');
-        //     Cookies.set('studentLoggedIn', '0');
-        // }
+ 
         if(gpdLoggedIn !== "1" && studentLoggedIn !== "1"){
             return <Redirect to={{
                 pathname:'/', 
@@ -786,12 +825,12 @@ export default class EditStudentAsStudent extends Component{
             }} />
         }
         return (
-            <Container>
+            <Container fluid={true} style={{ paddingLeft:"100px",paddingRight:"100px"}}>
                 <Row style={{ justifyContent: 'center'}}>
                     <p style={{fontSize: "22px", fontWeight: "bold"}}>Viewing Student: {this.state.firstName + " " + this.state.lastName}</p>
                 </Row>
-                <Row>
-                    <Col sm={4} style={{padding:"5px", margin:"0px", justifyContent: 'center', alignItems: 'center'}} >
+                <Row >
+                    <Col xs={4} xl={3} style={{padding:"5px", margin:"0px", justifyContent: 'center', alignItems: 'center'}} >
                         <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Edit Student Info</p>
                         <Form>
                             <FormGroup row style={{alignItems: 'center'}}>
@@ -815,10 +854,10 @@ export default class EditStudentAsStudent extends Component{
                                 <Col sm={8}><Input type="text" id="email" value={this.state.email}  onChange = {e=> this.setState( {email: e.target.value })}/></Col>
                             </FormGroup>
                         
-                            <FormGroup row style={{alignItems: 'center'}}>
+                            {/* <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="password" sm={4}>Password</Label>
                                 <Col sm={8}><Input type="text" id="password"   onChange = {e=> this.setState( {password:sha( e.target.value+"SaltAndP3pp3r!ghtialkdsflkavnlkanfalglkahtklagnalfkja") })}/></Col>
-                            </FormGroup>
+                            </FormGroup> */}
                             <FormGroup row style={{alignItems: 'center'}}>
                                 <Label for="entry_semester" sm={4}>Entry Semester</Label>
                                 <Col sm={8}><Input type="text" id="entry_semester"value={this.state.entry_semester}   onChange = {e=> this.setState( { entry_semester : e.target.value})}/></Col>
@@ -885,7 +924,10 @@ export default class EditStudentAsStudent extends Component{
                             <Row style={{padding:"0px", margin:"0px"}}>
                                 <Col sm={2}>
                                     <Button onClick = {this.updateStudent} color="success" style={{}} >Save</Button>
+
                                 </Col>
+                                <br></br>
+                             
                                 <Col sm={10} style={{}}>
                                     { this.state.error === 1 &&
                                     <Alert color="danger" style={{margin:"0px", padding:"6px"}}>
@@ -896,7 +938,7 @@ export default class EditStudentAsStudent extends Component{
                             
                         </Form>
                     </Col>
-                    <Col sm={8} style={{padding:"5px", margin:"0px"}}>
+                    <Col xs={8} xl={6} style={{padding:"5px", margin:"0px"}}>
                         <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Course Plan</p>
                         <Table  xs="3">
                             <thead><tr>
@@ -921,9 +963,10 @@ export default class EditStudentAsStudent extends Component{
                                     <td>{x.newCourse.year}</td>
                                     <td>{x.newCourse.timeslot}  </td>
                                     {x.grade && <td>{x.grade}  </td>}
+                                    {!x.grade && <td>{"N/A"}  </td>}
 
-                                   {(gpdLoggedIn==1 || x.grade=="") && <td> 
-                                     <Button onClick={(e) => this.deleteCourseFromPlan(this.state.sbu_id,x.newCourse.department,x.newCourse.course_num,x.newCourse.semester,x.newCourse.year)}>Delete</Button>  
+                                   {( x.grade=="" || x.grade==null) && <td> 
+                                     <Button  size = "sm" onClick={(e) => this.deleteCourseFromPlan(this.state.sbu_id,x.newCourse.department,x.newCourse.course_num,x.newCourse.semester,x.newCourse.year)}>Delete</Button>  
                                     </td>}
                                 </tr>
                                 )}
@@ -933,39 +976,40 @@ export default class EditStudentAsStudent extends Component{
                                               
                          <AddCourseModal buttonLabel="Add Course" addCourseToPlan={this.addCourseToPlan}></AddCourseModal>
                          <AddCourseWarningModal  toggle={this.toggleAddCourseWarningModal} modal={this.state.showAddCourseWarningModal}></AddCourseWarningModal>
+                         <AddCourseWarningModal  toggle={this.toggleAddCourseWarningModal} modal={this.state.showAddCourseWarningModal}></AddCourseWarningModal>
 
+                    </Col>
+                    <Col xs={4} xl={3} style={{padding:"5px", margin:"0px"}}>
                         <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Comments</p>
-
-                        <Table  xs="3">
+                        <Table>
                             <thead><tr>
-                    
                             </tr></thead>
                             <tbody>
                                 {this.state.comments.length !==0 && this.state.comments.map(x =>
                                 <tr>
                                     <td>{x}</td>
-
-                                        <br></br>
-                                
+                                    <br></br>
                                 </tr>
                                 )}
-                                   {gpdLoggedIn==1 &&  <td> 
-                                    <FormGroup row style={{alignItems: 'center'}}>
-                                        <Col sm={8}><Input type="text" id="commentToAdd"    onChange = {e=> this.setState( { commentToAdd: e.target.value})}/></Col>
-                                        <br></br>
-                                        <Row>
-                                        <Button onClick = {(e) => this.addComment(this.state.commentToAdd, this.state.sbu_id)} color="success" style={{width:"120px",margin:"5px"}} >Add Comment</Button>
-                                        <Button onClick = {(e) => this.addCommentAndNotify(this.state.commentToAdd, this.state.sbu_id)} color="success" style={{width:"120px",margin:"5px"}} >Add Comment and Notify</Button>
-                                        </Row>
+                                {gpdLoggedIn==1 &&  <>
+                                    <FormGroup row style={{alignItems: 'center',padding:"20px"}}>
+                                        <Col style={{padding:"0px",margin:"2px"}}><Input type="text" id="commentToAdd"    onChange = {e=> this.setState( { commentToAdd: e.target.value})}/></Col>
+
+                                        {console.log(this.state.emailNotifCheckbox)}
+                                        
+                                        <Button onClick = {(e) => this.state.emailNotifCheckbox ? this.addCommentAndNotify(this.state.commentToAdd, this.state.sbu_id) : this.addComment(this.state.commentToAdd, this.state.sbu_id)} color="success" style={{width:"60px",margin:"2px"}} >Save</Button>
+                                        <Label check style={{width:"85px",paddingLeft:"25px", justifyContent: 'center'}}>
+                                            <Input type="checkbox" onClick = {e => this.setState({emailNotifCheckbox: e.target.checked})} />
+                                                Notify by Email
+                                        </Label>
                                     </FormGroup>
-                                    </td>}
+                                </>}
                             </tbody>
-                           
                         </Table>
                     </Col>
                 </Row>
                 <Row >
-                    <Col sm={4} style={{padding:"5px", margin:"0px", justifyContent: 'center', alignItems: 'center'}}>
+                    <Col xs={4} xl={3} style={{padding:"5px", margin:"0px", justifyContent: 'center', alignItems: 'center'}}>
                         <p style={{textAlign: "center", fontSize: "18px", fontWeight: "bold"}}>Suggest Course Plan</p>
                         <Form>
                             <FormGroup row style={{alignItems: 'center'}}>

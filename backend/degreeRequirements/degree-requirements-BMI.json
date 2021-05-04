@@ -2,23 +2,22 @@
     "longName": "Biomedical Informatics",
     "shortName": "BMI",
     "version": "Spring 2021",
-    "date": "2021-03-17",
-    "minGPA": 3.0,
-    "minCredits": 33,
-    "degreeRequirements":[
+    "date": "2021-05-17",
+    "universalRequirements":[
         {
-            "name":" Introduction to Biomedical Informatics",
+            "name":"Introduction to Biomedical Informatics",
             "courseNumber": "BMI 501",
-            "credits": 3
+            "credits": 3,
+            "substitute": []
         },
         {
-            "name":" Introduction to Biomedical Informatics",
+            "name":"Life Sciences for Biomedical Informatics",
             "courseNumber": "BMI 502",
             "credits": 3,
             "substitute": ["BMI 503"]
         },
         {
-            "name":" Translational Bioinformatics",
+            "name":"Translational Bioinformatics",
             "courseNumber": "BMI 511",
             "credits": 3,
             "substitute": ["BMI 512, 513"]
@@ -35,138 +34,167 @@
             "credits": 3,
             "substitute": [],
             "typeOf": "FullTime"
-
         }
-        
     ],
-    "courseRequirements":[
+    "thesisRequirements":{
+        "credits":21,
+        "courses":[
+            {
+                "name":"M.S. Research and Thesis in Biomedical Informatics",
+                "courseNumber": "BMI 599",
+                "credits": 3,
+                "maxCredits":12
+            },
+            {
+                "maxCredits":6,
+                "courses":[
+                    {
+                        "name":"Special Problems in Biomedical Informatics-Masters",
+                        "courseNumber": "BMI 596"
+                    },
+                    {
+                        "name":"Special Problems in Biomedical Informatics-Doctoral",
+                        "courseNumber": "BMI 696"
+                    }
+                ]
+            },
+            {
+                "name":"M.S. Capstone Project in Biomedical Informatics",
+                "courseNumber": "BMI 598",
+                "maxCredits":0
+            },
+            {
+                "name":"Life Sciences for Biomedical Informatics",
+                "courseNumber": "BMI 502",
+                "credits": 3,
+                "substitute": ["BMI 503"]
+            }
+        ]
+    },
+    "projectRequirements":{
+        "credits":30,
+        "courses":[
+            {
+                "name":"M.S. Capstone Project in Biomedical Informatics",
+                "courseNumber": "BMI 598",
+                "maxCredits":6
+            },
+            {
+                "maxCredits":6,
+                "courses":[
+                    {
+                        "name":"Special Problems in Biomedical Informatics-Masters",
+                        "courseNumber": "BMI 596"
+                    },
+                    {
+                        "name":"Special Problems in Biomedical Informatics-Doctoral",
+                        "courseNumber": "BMI 696"
+                    }
+                ]
+            },
+            {
+                "name":"M.S. Research and Thesis in Biomedical Informatics",
+                "courseNumber": "BMI 599",
+                "maxCredits":0
+            },
+            {
+                "name":"Life Sciences for Biomedical Informatics",
+                "courseNumber": "BMI 502",
+                "credits": 3,
+                "substitute": ["BMI 503"]
+            }
+        ]
+    },
+    "trackRequirements":[
         {
-            "area": "Imaging Informatics - With Capstone Project",
-            "gradeRequirement": "C or Higher",
+            "track":"Imaging Informatics",
             "requiredCourses":[
                 {
-                    "name":"Capstone Project in Biomedical Informatics",
-                    "courseNumber": "BMI 513",
-					"credits": 3
+                    "name":"Imaging Informatics",
+                    "courseNumber": "BMI 513"
                 },
                 {
-                    "name":"Capstone Project in Biomedical Informatics",
-                    "courseNumber": "BMI 514",
-					"credits": 3
-                }
-        
-            ],
-            "type": "all", 
-            "additionalRequirements":[
+                    "name":"Imaging Informatics Analysis",
+                    "courseNumber": "BMI 514"
+                },
                 {
-                    "BMIclasses": 4,
-                    "electives":2
+                    "name":"Data Analytics and Software Stacks",
+                    "courseNumber": "BMI 520"
+                },
+                {
+                    "name":"Software Development in Biomedical Informatics",
+                    "courseNumber": "BMI 530"
                 }
 
+            ],
+            "electiveCourses":[
+                {
+                    "name":"Advanced Topics in Imaging Informatics",
+                    "courseNumber": "BMI 625"
+                }
             ]
         },
-        
         {
-            "area": "Clinical Informatics With Thesis",
-            "gradeRequirement": "C or Higher",
+            "track":"Clinical Informatics",
             "requiredCourses":[
                 {
                     "name":"Clinical Informatics",
-                    "courseNumber": "BMI 511",
-					"credits": 3
+                    "courseNumber": "BMI 512"
                 },
                 {
-                    "name":"Biomedical Nanofabrication",
-                    "courseNumber": "BMI 581",
-					"credits": 3
+                    "name":"Clinical Informatics Practice Patterns",
+                    "courseNumber": "BMI 550"
                 },
                 {
-                    "name":"BMI 520: Lab Rotation I",
-                    "courseNumber": "BMI 520",
-					"credits": 3,
-                    "sub":["BMI 521"]
+                    "name":"Case Studies in Clinical Informatics",
+                    "courseNumber": "BMI 551"
                 }
             ],
-            "type": "at least one of",
-            "additionalRequirements":[
+            "electiveCourses":[
                 {
-                    "BMIclasses": 4,
-                    "electives":2
+                    "name":"Data Analytics and Software Stacks",
+                    "courseNumber": "BMI 520"
+                },
+                {
+                    "name":"Software Development in Biomedical Informatics",
+                    "courseNumber": "BMI 530"
+                },
+                {
+                    "name":"Quality Improvement Methods for Clinical Informatics",
+                    "courseNumber": "BMI 552"
+                },
+                {
+                    "name":"Advanced Topics in Clinical Informatics",
+                    "courseNumber": "BMI 620"
                 }
-
             ]
         },
         {
-            "area": "Translational BioInformatics",
-            "gradeRequirement": "C or Higher",
+            "track":"Translational Bioinformatics",
             "requiredCourses":[
                 {
-                    "name":"Lab Rotation II",
-                    "courseNumber": "BMI 521",
-					"credits": 3
+                    "name":"Translational Bioinformatics",
+                    "courseNumber": "BMI 511"
                 },
                 {
-                    "name":"Biomedical Nanofabrication",
-                    "courseNumber": "BMI 581",
-					"credits": 3
+                    "name":"Data Analytics and Software Stacks",
+                    "courseNumber": "BMI 520"
                 },
                 {
-                    "name":" Lab Rotation I",
-                    "courseNumber": "BMI 520",
-					"credits": 3,
-                    "sub":["BMI 521"]
-                },
-                [
-                    {
-                    "name":"Foundations of Science Communication I",
-                    "courseNumber": "JRN 501",
-					"credits": 3
-                    },
-                    {
-                    "name":"N/A",
-                    "courseNumber": "JRN 502",
-					"credits": null
-                    },
-                    {
-                        "name":"Foundations of Science Communication II",
-                        "courseNumber": "JRN 503",
-                        "credits": 3
-                    },
-                    {
-                        "name":" N/A",
-                        "courseNumber": "JRN 504",
-                        "credits": 3
-                    },
-                    {
-                        "name":"N/A",
-                        "courseNumber": "JRN 508",
-                        "credits": 3
-                    },
-                    {
-                        "name":"N/A",
-                        "courseNumber": "JRN 509",
-                        "credits": 3
-                    },
-                    {
-                        "name":"N/A",
-                        "courseNumber": "JRN 511",
-                        "credits": 3
-                    },
-                    {
-                        "name":"N/A",
-                        "courseNumber": "JRN 512",
-                        "credits": 3
-                    }
-                ]
+                    "name":"Software Development in Biomedical Informatics",
+                    "courseNumber": "BMI 530"
+                }
             ],
-            "type": "at least one of",
-            "additionalRequirements":[
+            "electiveCourses":[
                 {
-                    "BMIclasses": 3,
-                    "electives":3
+                    "name":"Personalized Medicine",
+                    "courseNumber": "BMI 560"
+                },
+                {
+                    "name":"Advanced Topics in Translational Bioinformatics",
+                    "courseNumber": "BMI 622"
                 }
             ]
         }
     ]
-    
 }

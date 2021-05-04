@@ -59,6 +59,29 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
 
 
+    }); 
+ 
+    router.post("/getEnrollmentTrend",(request, response) => {
+        //get a specific course and if it does not exist, create it
+        var enrollmentNumbers = []
+        var semesterAndYear = []
+        console.log(request.body.major, request.body.course)
+        dbCollection.find({department:request.body.major, course_num:request.body.course }).toArray((error, result) => {
+            for(var x = 0; x < result.length; x ++){
+                enrollmentNumbers.push(result[x].enrollment)
+                semesterAndYear.push(result[x].semester + " " + result[x].year)
+
+            }
+            console.log({enrollmentNumbers: enrollmentNumbers, semestersAndYears: semesterAndYear})
+            response.json({enrollmentNumbers: enrollmentNumbers, semestersAndYears: semesterAndYear})
+            response.send()
+            return
+
+        });
+            
+
+
+
     });
   
     router.post("/getCourseIfItExists",(request, response) => {

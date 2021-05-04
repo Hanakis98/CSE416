@@ -80,9 +80,9 @@ class Nav2 extends Component{
                     <NavItem >
                         <Link class="nav-link" to="/EditStudent">Edit My Info</Link>
                     </NavItem>
-                    <NavItem >
+                    {/* <NavItem >
                         <Link class="nav-link" to="">Degree Progress</Link>
-                    </NavItem>
+                    </NavItem> */}
                     </Nav>}
 
                     {(studentLoggedIn === '1' || gpdLoggedIn === '1') &&

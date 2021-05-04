@@ -8,7 +8,7 @@ const collectionName = "DegreeRequirements";
 
 db.initialize(dbName, collectionName, function (dbCollection) { // successCallback
 
-    router.get("/allDegreeRequirements", (request, response) => { // get ALL
+    router.post("/allDegreeRequirements", (request, response) => { // get ALL
         // return updated list
         dbCollection.find().toArray((error, result) => {
             if (error) throw error;
@@ -62,10 +62,17 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
         });
     });
 
+    router.post("/getDegreeRequriement", (request, response) => {
+        const degreeRequriement =  request.body;
+        dbCollection.findOne({shortName: request.body.department}, (error, result) => { // callback of insertOne
+            response.json(result)
+            response.send()
+        });
+    });
+
     router.delete("/deleteDegreeRequirements", (request, response) => {
-        const degreeRequriementID = request.body.id;
-        console.log("Delete item with id: ", degreeRequriementID);
-        dbCollection.deleteOne({ _id: ObjectID(degreeRequriementID) }, function(error, result) {
+   
+        dbCollection.deleteOne({ shortName: request.body.department}, function(error, result) {
             if (error) throw error;
             // send back entire updated list after successful request
             dbCollection.find().toArray(function(_error, _result) {
