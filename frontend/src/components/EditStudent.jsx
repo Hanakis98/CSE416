@@ -563,6 +563,9 @@ export default class EditStudentAsStudent extends Component{
         let userEntry = this.state.entry_semester + " " + this.state.entry_year
         let validDegreeReqCondition = (degreeReq) => (degreeReq.version === userEntry)
         let validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+        if (!validDegreeReq){
+            validDegreeReq = degreeReqs[0]
+        }
         let userTrack = this.state.track
         let allCourses = await this.getAllCourses()
         let prefered = this.state.preferredCourses.map(x => x.trim())
@@ -582,6 +585,8 @@ export default class EditStudentAsStudent extends Component{
             let totalElectiveCredits = electivesCondition.totalCredits
             let userCompletedCourses = this.state.courses.filter(x => x.grade !== 'F').map(x =>  x.newCourse.department + " " + x.newCourse.course_num         )
             let userCompletedCoursesCode = this.state.courses.filter(x => x.grade !== 'F').map(x => Number(x.newCourse.course_num )        )
+           
+            
             //let coreRequirementsShortNames = coreRequirements.map(x => x.courseNumber)
             
             // No compromise to be made here but the user's selections can be influenced in the electives
@@ -679,6 +684,9 @@ export default class EditStudentAsStudent extends Component{
                     }
                 }
                 let uniqueElectives = electivesCondition.courseRange
+                uniqueElectives = uniqueElectives.filter(x => !userCompletedCourses.includes(x)   )
+                
+
                 this.generateSequentialPlans(suggestedElectives, coreRequirementsNeeded, orRequirements, uniqueElectives, uniqueRequirements,totalElectiveCredits)
                
 
@@ -701,7 +709,7 @@ export default class EditStudentAsStudent extends Component{
                 
 
                 // Build Full Range
-                let fullRange = courseRange.concat(subRanges).map(x => "AMS" + " " + x.toString())
+                let fullRange = courseRange.concat(subRanges).map(x => "AMS" + " " + x.toString()).filter(x => !userCompletedCourses.includes(x)   )
                 let electives = allCourses.filter(x => fullRange.includes(x.department + " " + x.course_num))    
                 let suggestedElectives = electives.filter(x => 
 
@@ -716,7 +724,8 @@ export default class EditStudentAsStudent extends Component{
 
                     !avoid.includes(x.department + " " + x.course_num)
                 )  
-                this.generateSequentialPlans(suggestedElectives, coreRequirementsNeeded, orRequirements, electivesCondition.allowedCourses, uniqueRequirements,totalElectiveCredits)
+                let uniqueElectives = electivesCondition.allowedCourses.filter(x => !userCompletedCourses.includes(x)   )
+                this.generateSequentialPlans(suggestedElectives, coreRequirementsNeeded, orRequirements, uniqueElectives, uniqueRequirements,totalElectiveCredits)
                 
             }else{
                 let electives = allCourses.filter(x => x.department === "AMS")
@@ -729,6 +738,7 @@ export default class EditStudentAsStudent extends Component{
                 let uniqueElectives = electives.map(x => x.department + " " + x.course_num)
                
                 uniqueElectives = [...new Set(uniqueElectives)]
+                uniqueElectives = uniqueElectives.filter(x => !userCompletedCourses.includes(x)   )
                
                 this.generateSequentialPlans(suggestedElectives, coreRequirementsNeeded, orRequirements, uniqueElectives, uniqueRequirements,totalElectiveCredits)
                
@@ -816,6 +826,9 @@ export default class EditStudentAsStudent extends Component{
         let userEntry = this.state.entry_semester + " " + this.state.entry_year
         let validDegreeReqCondition = (degreeReq) => (degreeReq.version === userEntry)
         let validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+        if (!validDegreeReq){
+            validDegreeReq = degreeReqs[0]
+        }
         let userTrack = this.state.track
         
         let prefered = this.state.preferredCourses.map(x => x.trim())
@@ -942,6 +955,9 @@ export default class EditStudentAsStudent extends Component{
                 case "CSE":
                     degreeReqs  = await this.getCSERequirements()   
                     validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+                    if (!validDegreeReq){
+                        validDegreeReq = degreeReqs[0]
+                    }
                     minCredits = validDegreeReq.minCredits
                     leftCredits = minCredits - (this.state.courses.filter(x => x.grade !== 'F' && x.grade).length * 3)
                     this.generateSequentialPlansSmart(missingCourses, missingCoursesCode, leftCredits)
@@ -949,6 +965,9 @@ export default class EditStudentAsStudent extends Component{
                 case "AMS":
                     degreeReqs  = await this.getAMSRequirements()    
                     validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+                    if (!validDegreeReq){
+                        validDegreeReq = degreeReqs[0]
+                    }
                     minCredits = validDegreeReq.minCredits
                     leftCredits = minCredits - (this.state.courses.filter(x => x.grade !== 'F' && x.grade).length * 3)
                     this.generateSequentialPlansSmart(missingCourses, missingCoursesCode, leftCredits)
@@ -956,6 +975,9 @@ export default class EditStudentAsStudent extends Component{
                 case "ECE":
                     degreeReqs = await this.getECERequirements()
                     validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+                    if (!validDegreeReq){
+                        validDegreeReq = degreeReqs[0]
+                    }
                     minCredits = validDegreeReq.minCredits
                     leftCredits = minCredits - (this.state.courses.filter(x => x.grade !== 'F' && x.grade).length * 3)
                     console.log(missingCoursesCode)
@@ -964,6 +986,9 @@ export default class EditStudentAsStudent extends Component{
                 case "BMI":
                     degreeReqs = await this.getBMIRequirements()
                     validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+                    if (!validDegreeReq){
+                        validDegreeReq = degreeReqs[0]
+                    }
                     minCredits = validDegreeReq.minCredits
                     leftCredits = minCredits - (this.state.courses.filter(x => x.grade !== 'F' && x.grade).length * 3)
                     console.log(missingCoursesCode)
