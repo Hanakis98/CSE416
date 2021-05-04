@@ -18,7 +18,7 @@ export default class EditStudentAsStudent extends Component{
             firstName: "",
             lastName: "",
             email: "",
-            password: "",
+                // password: "pass",
             department: "",
             track: "",
             sbu_id: "",

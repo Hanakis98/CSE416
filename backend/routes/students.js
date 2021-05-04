@@ -200,6 +200,7 @@ db.initialize(dbName, collectionName, function (dbCollection) { // successCallba
             graduation_semester: request.body.graduation_semester,
             graduation_year: request.body.graduation_year,
             comments: [],
+            completeCoursePlan:false,
             degreeRequirements:request.body.degreeRequirements,
             coursePlan: null
         })

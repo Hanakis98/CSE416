@@ -21,6 +21,7 @@ const studentSchema = new mongoose.Schema({
   entry_year: String,
   graduation_semester: String,
   graduation_year: String,
+  completeCoursePlan: Boolean,
   comments:[String]
 });
 
