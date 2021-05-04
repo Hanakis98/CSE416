@@ -421,6 +421,7 @@ export default class EditStudentAsStudent extends Component{
         let allCoursesCatalog = await this.getAllCourses()
         let preferredCourses = allCoursesCatalog.filter(x => prefered.includes(x.department + " " + x.course_num))   
         
+        
 
         for (let i = 0; i < coreRequirements.length; i++){
             coreRequirements[i].semester = coreRequirements[i].semester + " " + coreRequirements[i].year
@@ -433,7 +434,7 @@ export default class EditStudentAsStudent extends Component{
         }
         
         let allCourses = electives.concat(coreRequirements)  
-        console.log(allCourses)         
+        console.log(uniqueRequirements)         
         
         const coursesBySemester = allCourses.reduce((acc, value) => {
             // Group initialization
@@ -523,7 +524,10 @@ export default class EditStudentAsStudent extends Component{
             for (let i = 0 ; i < uniqueRequirements.length; i++){
                 // Search for this course 
                 let course = allCourses.filter(x => x.courseCode === uniqueRequirements[i])[0]
-                coursePlan[course.semester].push(course)
+                if (course){
+                    coursePlan[course.semester].push(course)
+                }
+                
             }
         }
         console.log(coursePlan)
@@ -531,7 +535,9 @@ export default class EditStudentAsStudent extends Component{
             for (let i = 0; i < orRequirements.length; i++){
                 for (let j = 0; j < orRequirements[i].length; j++){
                     let course = allCourses.filter(x => x.courseCode === orRequirements[i][j])[0]
-                    coursePlan[course.semester].push(course)
+                    if (course){
+                        coursePlan[course.semester].push(course)
+                    }
                     break
                 }
             }            
