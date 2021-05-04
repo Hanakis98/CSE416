@@ -305,6 +305,46 @@ export default class EditStudentAsStudent extends Component{
         
     }
 
+    async getECERequirements(){
+        // Gather all the tracks from degree requirements
+        let urlTrack = backendDomain + "/degreeRequirements/ECEDegreeRequirements"
+        let degreeReq = null
+
+        try {
+            const response = await fetch(urlTrack, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                } ,credentials: 'include', 
+                
+            });
+            const exam = await response.json();
+            return exam;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async getBMIRequirements(){
+        // Gather all the tracks from degree requirements
+        let urlTrack = backendDomain + "/degreeRequirements/BMIDegreeRequirements"
+        let degreeReq = null
+
+        try {
+            const response = await fetch(urlTrack, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                } ,credentials: 'include', 
+                
+            });
+            const exam = await response.json();
+            return exam;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async getAllCourses(){
         var route = backendDomain + '/courses/allOfferedCourses/'
     
@@ -373,9 +413,14 @@ export default class EditStudentAsStudent extends Component{
         return anotherPlan
     }
 
-    generateSequentialPlans = (electives, coreRequirements, orRequirements, uniqueElectives, uniqueRequirements,totalElectiveCredits) => {        
+    async generateSequentialPlans (electives, coreRequirements, orRequirements, uniqueElectives, uniqueRequirements,totalElectiveCredits){        
         
-        let maxCoursesPerSemester = this.state.maxNumCourses > 5 ? 4: this.state.maxNumCourses        
+        let maxCoursesPerSemester = this.state.maxNumCourses > 5 ? 4: this.state.maxNumCourses     
+        let prefered = this.state.preferredCourses.map(x => x.trim())       
+
+        let allCoursesCatalog = await this.getAllCourses()
+        let preferredCourses = allCoursesCatalog.filter(x => prefered.includes(x.department + " " + x.course_num))   
+        
 
         for (let i = 0; i < coreRequirements.length; i++){
             coreRequirements[i].semester = coreRequirements[i].semester + " " + coreRequirements[i].year
@@ -405,10 +450,37 @@ export default class EditStudentAsStudent extends Component{
         let coursePlan = {}
         var totalElectives = totalElectiveCredits / 3
         var currentElectives = 0
-        var allCourseCode = []        
+        var allCourseCode = []     
+      
+        
+        
 
         for (let i = 0; i < semsesters.length; i++){
             coursePlan[semsesters[i]] = []
+            // Before we being the sequential loop, we need to add in the prefered courses
+            for (let p = 0; p < prefered.length; p++){
+
+                for (let k = 0; k < coursesBySemester[semsesters[i]].length; k++){
+                    let course = coursesBySemester[semsesters[i]][k]
+                    let code = course.courseCode
+                    let codeIdx = prefered.indexOf(code)
+                    if (codeIdx !== -1 ){
+                        
+                        if (uniqueElectives.includes(code)){           
+                            if (coursePlan[semsesters[i]].length  < maxCoursesPerSemester && currentElectives < totalElectives){
+                                coursePlan[semsesters[i]].push(course)
+                                currentElectives = currentElectives + 1
+                                allCourseCode.push(code)
+                                uniqueElectives.splice(uniqueElectives.indexOf(code), 1)
+                                allCourses.splice(allCourses.indexOf(course), 1)
+                                console.log("PUSH")
+                            }
+                        }
+                    }
+                }
+            }
+
+
             for (let j = 0; j < coursesBySemester[semsesters[i]].length; j++){
                 let course = coursesBySemester[semsesters[i]][j]
                 let code = course.courseCode
@@ -479,6 +551,7 @@ export default class EditStudentAsStudent extends Component{
     }
 
     async regularSuggestAMS() {
+        
         let degreeReqs = await this.getAMSRequirements()
         let userEntry = this.state.entry_semester + " " + this.state.entry_year
         let validDegreeReqCondition = (degreeReq) => (degreeReq.version === userEntry)
@@ -486,6 +559,7 @@ export default class EditStudentAsStudent extends Component{
         let userTrack = this.state.track
         let allCourses = await this.getAllCourses()
         let prefered = this.state.preferredCourses.map(x => x.trim())
+      
         
        
         if (validDegreeReq){
@@ -493,6 +567,7 @@ export default class EditStudentAsStudent extends Component{
             // With valid degree requirement, we check their track
             let trackCondition = (trackReq) => (trackReq.track === userTrack)
             let trackCourses = validDegreeReq.coreRequirements[validDegreeReq.coreRequirements.findIndex(trackCondition)]
+            
             
             // We now verify base on the track, first check all the user completed courses and see if it can apply with either core or electives
             let coreRequirements = trackCourses.requiredCourses
@@ -570,7 +645,7 @@ export default class EditStudentAsStudent extends Component{
             }).filter(x => x != true).flat()
 
             let avoid = this.state.avoidCourses.map(x => x.trim())
-            console.log(electivesCondition)
+            
 
             if (electivesCondition.courseRange && !electivesCondition.substitutionRange){               
                 
@@ -732,7 +807,7 @@ export default class EditStudentAsStudent extends Component{
 
     }
 
-    generateSequentialPlansSmart = (allCourses, allCodes) => {
+    generateSequentialPlansSmart = (allCourses, allCodes, leftCredits) => {
         let maxCoursesPerSemester = this.state.maxNumCourses > 5 ? 4: this.state.maxNumCourses 
         for (let i = 0; i < allCourses.length; i++){
             allCourses[i].semester = allCourses[i].semester + " " + allCourses[i].year
@@ -752,23 +827,29 @@ export default class EditStudentAsStudent extends Component{
 
         let semsesters = Object.keys(coursesBySemester)
         let coursePlan = {}
+        let totalCredits = 0
         
         for (let i = 0; i < semsesters.length; i++){
             coursePlan[semsesters[i]] = []
             let semesterTimeSlots = []
             for (let j = 0; j < coursesBySemester[semsesters[i]].length; j++){
                 let course = coursesBySemester[semsesters[i]][j]
-                let code = course.courseCode                
+                let code = course.courseCode     
+                if (totalCredits > leftCredits){
+                    break
+                }      
                 
                 if (!semesterTimeSlots.includes(course.timeslot) && coursePlan[semsesters[i]].length  < maxCoursesPerSemester){
                     coursePlan[semsesters[i]].push(course)                                 
                     allCodes.splice(allCodes.indexOf(code), 1)
                     allCourses.splice(allCourses.indexOf(course), 1)
                     semesterTimeSlots.push(course.timeslot)
+                    totalCredits = totalCredits + 3
+                    
                 }
             }
         }
-        console.log(allCodes)
+        
         var allPlans = [coursePlan]
         
         allPlans = allPlans.map(x => Object.keys(x).map(function(key){
@@ -779,13 +860,20 @@ export default class EditStudentAsStudent extends Component{
         this.setState({suggestedCoursePlans: allPlans})
     }
 
+    parseCSERequirements = () => {
+
+    }
+
     async smartSuggestAsync()  {
-        // Search Students With Completed Degrees With Same Index   
+        // Search Students With Completed Degrees With Same Index
+          
             
-        var validStudents = this.state.similarStudents.filter(x => x.department === this.state.department && x.track === this.state.track && x.sbu_id !== this.state.sbu_id && x.completed)
-        if (validStudents.length > 0){
-            var myCourses = this.state.courses.filter(x => x.grade !== 'F' && x.grade).map(x => x.newCourse.department + " " + x.newCourse.course_num)   
+        var validStudents = this.state.similarStudents.filter(x => x.department === this.state.department && x.track === this.state.track && x.sbu_id !== this.state.sbu_id && x.completeCoursePlan)
         
+        if (validStudents.length > 0){
+            var myCourses = this.state.courses.filter(x => x.grade !== 'F' && x.grade).map(x => x.newCourse.department + " " + x.newCourse.course_num)
+            
+            
             let similarCourse = validStudents.map(x => 
                 x.coursePlan.courses.map(y => y.newCourse.department + " " + y.newCourse.course_num)
             )
@@ -796,8 +884,53 @@ export default class EditStudentAsStudent extends Component{
             var missingCoursesCode = similarCourse[similarCourseNum.indexOf(Math.max(...similarCourseNum))].filter(z => !myCourses.includes(z))
             var missingCourses = await this.getAllCourses()
             missingCourses = missingCourses.filter(y => missingCoursesCode.includes(y.department + " " + y.course_num)   )
-            console.log(missingCourses.length)
-            this.generateSequentialPlansSmart(missingCourses, missingCoursesCode)
+            let userEntry = this.state.entry_semester + " " + this.state.entry_year
+            let validDegreeReqCondition = (degreeReq) => (degreeReq.version === userEntry)
+
+            let degreeReqs = null
+            let validDegreeReq = null
+            let minCredits = 0
+            let leftCredits = 0
+
+             // Major specific: Verify if I have completed these areas
+             switch (this.state.department){
+                case "CSE":
+                    degreeReqs  = await this.getCSERequirements()   
+                    validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+                    minCredits = validDegreeReq.minCredits
+                    leftCredits = minCredits - (this.state.courses.filter(x => x.grade !== 'F' && x.grade).length * 3)
+                    this.generateSequentialPlansSmart(missingCourses, missingCoursesCode, leftCredits)
+                    break
+                case "AMS":
+                    degreeReqs  = await this.getAMSRequirements()    
+                    validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+                    minCredits = validDegreeReq.minCredits
+                    leftCredits = minCredits - (this.state.courses.filter(x => x.grade !== 'F' && x.grade).length * 3)
+                    this.generateSequentialPlansSmart(missingCourses, missingCoursesCode, leftCredits)
+                    break
+                case "ECE":
+                    degreeReqs = await this.getECERequirements()
+                    validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+                    minCredits = validDegreeReq.minCredits
+                    leftCredits = minCredits - (this.state.courses.filter(x => x.grade !== 'F' && x.grade).length * 3)
+                    console.log(missingCoursesCode)
+                    this.generateSequentialPlansSmart(missingCourses, missingCoursesCode, leftCredits)
+                    break
+                case "BMI":
+                    degreeReqs = await this.getBMIRequirements()
+                    validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+                    minCredits = validDegreeReq.minCredits
+                    leftCredits = minCredits - (this.state.courses.filter(x => x.grade !== 'F' && x.grade).length * 3)
+                    console.log(missingCoursesCode)
+                    this.generateSequentialPlansSmart(missingCourses, missingCoursesCode, leftCredits)
+                    break
+                
+                    
+            }
+
+
+
+           
         }else{
             console.log("No Matching Student in Database")
         }
@@ -1025,25 +1158,7 @@ export default class EditStudentAsStudent extends Component{
                                     <Col sm={8}><Input type="text" id="avoid_courses" placeholder={""}   onChange = {e=> this.setState( {avoidCourses: e.target.value.split(",") })}/></Col>
                             </FormGroup>
                             
-                            <FormGroup row>
-                                <Label sm={4}>Scheduling Constraints</Label>
-                                <Col>
-                                    <Input type="select" id="major" value={this.state.department} onChange = {e=> this.setState( {scp_day: e.target.value })} >
-                                        <option value="None Selected">None</option>
-                                        <option value="AMS">Day</option>
-                                        <option value="CSE">CSE</option>
-                                        <option value="ESE">ESE</option>
-                                        <option value="BMI">BMI</option>
-                                    </Input>
-                                    <Input type="select" id="major" value={this.state.department} onChange = {e=> this.setState( {scp_time: e.target.value })} >
-                                        <option value="None Selected">None</option>
-                                        <option value="AMS">Time</option>
-                                        <option value="CSE">CSE</option>
-                                        <option value="ESE">ESE</option>
-                                        <option value="BMI">BMI</option>
-                                    </Input>
-                                </Col>
-                            </FormGroup>
+                            
                             <Row style={{justifyContent: 'center', alignItems: 'center'}}>
                                 <Button onClick = {this.regularSuggest} color="success" style={{width:"120px",margin:"5px"}} >Generate Course Plan Suggestions</Button>
                                 <Button onClick = {this.smartSuggest} color="success" style={{width:"140px",margin:"5px"}} >Generate Smart Course Plan Suggestions</Button>
