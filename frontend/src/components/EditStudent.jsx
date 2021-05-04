@@ -410,6 +410,11 @@ export default class EditStudentAsStudent extends Component{
                 }
             }
         }
+        
+       
+        
+
+        
         return anotherPlan
     }
 
@@ -545,10 +550,16 @@ export default class EditStudentAsStudent extends Component{
         
         //Shuffle around to get some other course plan 
         var allPlans = [coursePlan]
-        for (let i = 1; i < 4; i++){
-            var anotherPlan = this.generateVariation(coursePlan, coursesBySemester, i)            
-            allPlans.push(anotherPlan)
+        let numCourses = allCourseCode.length
+        if (numCourses > 5){
+            for (let i = 1; i < 4; i++){
+            
+                var anotherPlan = this.generateVariation(coursePlan, coursesBySemester, 1)            
+                allPlans.push(anotherPlan)
+            }
         }
+
+       
         allPlans = allPlans.map(x => Object.keys(x).map(function(key){
             return x[key];
         }).flat())
@@ -797,7 +808,8 @@ export default class EditStudentAsStudent extends Component{
 
         let allCourses = await this.getAllCourses()
         // Get core requirements 
-        let coreRequirements = degreeReq.courseRequirements.filter(x => x.area !== "Electives")[0]
+        let coreRequirements = degreeReq.courseRequirements.filter(x => x.area !== "Electives")
+        let userCompletedCourses = this.state.courses.filter(x => x.grade !== 'F').map(x =>  x.newCourse.department + " " + x.newCourse.course_num) 
 
         // Get electives
         let electiveReqs = degreeReq.courseRequirements.filter(x => x.area === "Electives")[0]
@@ -810,14 +822,59 @@ export default class EditStudentAsStudent extends Component{
         
         // Check number of courses left to complete
         let userTrackCourses = userTrackReqs.requiredCourses.map(x => x.courseNumber)
-        let neededTrackCourses = userTrackCourses.filter(x => !completedCourseCodes.includes(x))
+        let neededTrackCourses = userTrackCourses.filter(x => !completedCourseCodes.includes(x))        
+        let neededCoreCourses = coreRequirements.map(x => {
+
+            let courseList = x.requiredCourses.map(x => x.courseNumber)
+            let completed = (course) => userCompletedCourses.includes(course)
+            let userCompleted = courseList.some(completed)
+            if (!userCompleted){
+                return courseList[0]
+            }else{
+                return []
+            }
+            
+        }).flat()
+
         
-        let numCourseNeeded = userTrackReqs.numCourses - this.state.courses.filter(x => !userTrackCourses.includes(x)).length
+        let numElectiveCourseNeeded = Math.round(Number(degreeReq.minCredits / 3) - this.state.courses.filter(x => !userTrackCourses.includes(x)).length - neededCoreCourses.length+2)
         
-        // Now we add courses to form a course list, first check to see if all core is completed
+        let electivesRange = electiveReqs.restriction
+        const range = (start, end) => {
+            const length = end - start;
+            return Array.from({ length }, (_, i) => start + i);
+        }
+        let courseRangeNums = electivesRange.split('-').map(x => parseInt(x))
+        let courseRange = range(courseRangeNums[0], courseRangeNums[1]).filter(x => !electiveReqs.exception.includes(x))
+
+        // Generate num Course needed 
+        let coreRequirementsCourses = allCourses.filter(x => neededCoreCourses.includes(x.department + " " + x.course_num  )          )
+        let electiveCourses = allCourses.filter(x => x.department === this.state.department      )
         
+
+        let count = 0
+        let electives = []
+        let uniqueElectives = []
+
+        for (let i = 0; i < numElectiveCourseNeeded*2; i++){
+
+            var randCourse = courseRange[Math.floor(Math.random() * courseRange.length)].toString();
+            let exist = allCourses.filter(x => x.course_num === randCourse &&  x.department === this.state.department &&  !userCompletedCourses.includes(x.department + " " + x.course_num)   )
+            if (exist.length > 0){
+                electives = electives.concat(exist)
+                count++
+                uniqueElectives.push(this.state.department + " " + randCourse)
+            }
+
+            if (count === numElectiveCourseNeeded){
+                break
+            }
+
+        }
+
+        this.generateSequentialPlans(coreRequirementsCourses, electives, [], uniqueElectives, neededCoreCourses, numElectiveCourseNeeded)
         
-        return "HELLO"
+        return uniqueElectives 
         
     }
 
