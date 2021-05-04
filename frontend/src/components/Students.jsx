@@ -494,8 +494,8 @@ export default class Students extends Component {
     
 
     render() {
+        // redirect to login page if the cookies or api response indicate that the user is not logged in
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
-        //TODO: use a separate token auth API request to do this instead of the response from GET /allStudents
         if(gpdLoggedIn !== "1" || this.state.students == null){
             Cookies.set('gpdLoggedIn', '0');
             return <Redirect to={{
@@ -507,44 +507,34 @@ export default class Students extends Component {
             <Container>
                 <Row style={{paddingLeft:"10px", paddingRight:"10px",alignItems: 'center', justifyContent: 'space-between'}}>
                     
-                    <Col sm={3} style={{padding:"0px", margin:"5px"}}>
+                    <Col style={{padding:"0px", margin:"5px"}}>
                         <Label>Search</Label>
                         <Input type="text" id="search" onChange={e => this.searchStudent(e.target.value)}  />
                     </Col>
-
-                    <Col sm={0.1} style={{padding:"0px", margin:"5px"}}>
-                        <FilterModal buttonLabel="Filter" filterStudents={this.searchStudentByCriteria} reloadStudent={this.reloadStudent}></FilterModal>
-                        <FilterWarningModal toggle={this.toggleFilterWarningModal} modal={this.state.showFilterWarningModal}></FilterWarningModal>
-                    </Col>
                    
+                    <FilterModal buttonLabel="Filter" filterStudents={this.searchStudentByCriteria} reloadStudent={this.reloadStudent}></FilterModal>
+                    <FilterWarningModal toggle={this.toggleFilterWarningModal} modal={this.state.showFilterWarningModal}></FilterWarningModal>
+
                     <NavLink href="/add" style={{padding:"0px", margin:"5px"}}>
                         <Button style={{ width:"80px"}} color="success">Add Student</Button>
                     </NavLink>
-
-                    {/* <Col xs={1}></Col> */}
-                    <Col xs={4.5}>
                     <input id="myInput" type="file" ref={(ref) => this.importGrades = ref} style={{ display: 'none' }} onChange={this.importGradesFileChange} />
-                        <Button style={{ margin:"5px", width:"80px"}} onClick={(e) => this.importGrades.click()}  onChange={this.importGradesFileChange}>Import Grades</Button>
+                    <Button style={{ margin:"5px", width:"80px"}} onClick={(e) => this.importGrades.click()}  onChange={this.importGradesFileChange}>Import Grades</Button>
+                
+                    <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onStudentFileChange} />
+                    <Button style={{ margin: "5px", width: "120px" }} onClick={(e) => this.uploadStudentData.click()}>Import Student Data</Button>
+
+                    <input id="myInput" type="file" ref={(ref) => this.uploadCoursePlanData = ref} style={{ display: 'none' }} onChange={this.coursePlanFileChange} />
+                    <Button style={{ margin: "5px", width: "140px" }} onClick={(e) => this.uploadCoursePlanData.click()}>Import Student Course Plans</Button>
                     
-                        <input id="myInput" type="file" ref={(ref) => this.uploadStudentData = ref} style={{ display: 'none' }} onChange={this.onStudentFileChange} />
-                        <Button style={{ margin: "5px", width: "120px" }} onClick={(e) => this.uploadStudentData.click()}>Import Student Data</Button>
-
-                        <input id="myInput" type="file" ref={(ref) => this.uploadCoursePlanData = ref} style={{ display: 'none' }} onChange={this.coursePlanFileChange} />
-                        <Button style={{ margin: "5px", width: "140px" }} onClick={(e) => this.uploadCoursePlanData.click()}>Import Student Course Plans</Button>
-
-                        {/* <Button style={{ margin:"5px", width:"100px"}} onClick={this.deleteAllStudent} color="danger">Delete All Students</Button> */}
-                        <Col >
-
                     <input id="myInput" type="file" ref={(ref) => this.uploadDegreeReq = ref} style={{ display: 'none' }} onChange={this.importDegreeReqs} />
-                    <Button  onClick={(e) => this.uploadDegreeReq.click()}>Import Degree Requirements</Button>
-                    {/* <Button style={{ margin: "5px", width: "140px" }} onClick={(e) => this.uploadCoursePlanData.click()}>Import Student Course Plans</Button> */}
+                    <Button style={{ margin: "5px", width: "140px" }} onClick={(e) => this.uploadDegreeReq.click()}>Import Degree Requirements</Button>
 
-                    </Col>
-                    </Col>
-                    <Col xs={2}>
-                        <DeleteAllModal buttonLabel="Delete All Students" style={{ margin: "5px", width: "100px" }}></DeleteAllModal>
-                    </Col>
-
+                    {/*
+                    <Button style={{ margin: "5px", width: "140px" }} onClick={(e) => this.uploadCoursePlanData.click()}>Import Student Course Plans</Button> 
+                    */}
+                   
+                    <DeleteAllModal buttonLabel="Delete All Students" style={{ margin: "5px", width: "100px" }}></DeleteAllModal>
                 </Row>
 
                 <Table xs="3" style={{ marginTop: "5px" }}>
