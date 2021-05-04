@@ -547,6 +547,14 @@ export default class EditStudentAsStudent extends Component{
                 }
             }            
         }
+        if (this.state.department === "CSE" && uniqueElectives.length !== 0){
+            for (let i = 0; i < uniqueElectives.length; i++){
+                let course = allCourses.filter(x => x.courseCode === uniqueElectives[i])[0]
+                if (course){
+                    coursePlan[course.semester].push(course)
+                }
+            }
+        }
         
         //Shuffle around to get some other course plan 
         var allPlans = [coursePlan]
@@ -804,7 +812,7 @@ export default class EditStudentAsStudent extends Component{
         
     }
 
-    async parseCSERequirements(degreeReq) {
+    async parseCSERequirements(degreeReq, prefered) {
 
         let allCourses = await this.getAllCourses()
         // Get core requirements 
@@ -855,6 +863,8 @@ export default class EditStudentAsStudent extends Component{
         let count = 0
         let electives = []
         let uniqueElectives = []
+        uniqueElectives.concat(prefered)
+        count = count + prefered.length
 
         for (let i = 0; i < numElectiveCourseNeeded*2; i++){
 
@@ -874,7 +884,7 @@ export default class EditStudentAsStudent extends Component{
 
         this.generateSequentialPlans(coreRequirementsCourses, electives, [], uniqueElectives, neededCoreCourses, numElectiveCourseNeeded)
         
-        return uniqueElectives 
+        return uniqueElectives
         
     }
 
@@ -890,8 +900,9 @@ export default class EditStudentAsStudent extends Component{
         
         let prefered = this.state.preferredCourses.map(x => x.trim())
         
-        let hello = await this.parseCSERequirements(validDegreeReq)
+        let hello = await this.parseCSERequirements(validDegreeReq, prefered)
         console.log(hello)
+        
       
     }
 
