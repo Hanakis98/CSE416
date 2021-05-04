@@ -184,11 +184,11 @@ export default class Students extends Component {
                  console.log("wait2")
 
                 await this.meth3(sbIDs)
-                console.log("wait3")
                 await this.meth3(sbIDs)
-                console.log("wait3")
                 await this.meth3(sbIDs)
-                console.log("wait3")
+                await this.meth3(sbIDs)
+                await this.meth3(sbIDs)
+
                 //AddCourses To there course plan
 
                 console.log(sbIDs)
