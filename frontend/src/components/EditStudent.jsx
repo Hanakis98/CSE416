@@ -432,7 +432,8 @@ export default class EditStudentAsStudent extends Component{
             electives[i].courseCode = electives[i].department + " " + electives[i].course_num
         }
         
-        let allCourses = electives.concat(coreRequirements)           
+        let allCourses = electives.concat(coreRequirements)  
+        console.log(allCourses)         
         
         const coursesBySemester = allCourses.reduce((acc, value) => {
             // Group initialization
@@ -525,7 +526,7 @@ export default class EditStudentAsStudent extends Component{
                 coursePlan[course.semester].push(course)
             }
         }
-        
+        console.log(coursePlan)
         if (orRequirements.length !== 0){
             for (let i = 0; i < orRequirements.length; i++){
                 for (let j = 0; j < orRequirements[i].length; j++){
@@ -776,19 +777,56 @@ export default class EditStudentAsStudent extends Component{
         
     }
 
+    async parseCSERequirements(degreeReq) {
+
+        let allCourses = await this.getAllCourses()
+        // Get core requirements 
+        let coreRequirements = degreeReq.courseRequirements.filter(x => x.area !== "Electives")[0]
+
+        // Get electives
+        let electiveReqs = degreeReq.courseRequirements.filter(x => x.area === "Electives")[0]
+
+        // Get track requirements
+        let userTrackReqs = degreeReq.trackRequirements.filter(x => x.track === this.state.track)[0]
+        
+        //Parse all the courses needed
+        let completedCourseCodes = this.state.courses.filter(x => x.grade !== 'F').map(x =>  x.newCourse.department + " " + x.newCourse.course_num)
+        
+        // Check number of courses left to complete
+        let userTrackCourses = userTrackReqs.requiredCourses.map(x => x.courseNumber)
+        let neededTrackCourses = userTrackCourses.filter(x => !completedCourseCodes.includes(x))
+        
+        let numCourseNeeded = userTrackReqs.numCourses - this.state.courses.filter(x => !userTrackCourses.includes(x)).length
+        
+        // Now we add courses to form a course list, first check to see if all core is completed
+        
+        
+        return "HELLO"
+        
+    }
+
     async regularSuggestCSE() {
         let degreeReqs = await this.getCSERequirements()
         let userEntry = this.state.entry_semester + " " + this.state.entry_year
         let validDegreeReqCondition = (degreeReq) => (degreeReq.version === userEntry)
         let validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
         let userTrack = this.state.track
-        let allCourses = await this.getAllCourses()
+        
         let prefered = this.state.preferredCourses.map(x => x.trim())
+        
+        let hello = await this.parseCSERequirements(validDegreeReq)
+        console.log(hello)
       
     }
 
-    async regularSuggestESE(){
-
+    async regularSuggestECE(){
+        let degreeReqs = await this.getECERequirements()
+        let userEntry = this.state.entry_semester + " " + this.state.entry_year
+        let validDegreeReqCondition = (degreeReq) => (degreeReq.version === userEntry)
+        let validDegreeReq = degreeReqs[degreeReqs.findIndex(validDegreeReqCondition)]
+        let userTrack = this.state.track
+        let allCourses = await this.getAllCourses()
+        let prefered = this.state.preferredCourses.map(x => x.trim())
     }
 
 
@@ -798,10 +836,13 @@ export default class EditStudentAsStudent extends Component{
 
             case "AMS":
                 this.regularSuggestAMS()
+                break
             case "CSE":
                 this.regularSuggestCSE()
-            case "ESE":
-                this.regularSuggestESE()
+                break
+            case "ECE":
+                this.regularSuggestECE()
+                break
         }
 
 
@@ -860,9 +901,7 @@ export default class EditStudentAsStudent extends Component{
         this.setState({suggestedCoursePlans: allPlans})
     }
 
-    parseCSERequirements = () => {
-
-    }
+    
 
     async smartSuggestAsync()  {
         // Search Students With Completed Degrees With Same Index
@@ -945,6 +984,86 @@ export default class EditStudentAsStudent extends Component{
         this.setState({currentPage: index})
        
     }
+
+    addCourseToPlanWithTimeSlot = (department,courseNum,semester,year,section, timeslot) => {
+        if(this.state.coursePlan==null){
+            fetch(backendDomain + '/coursePlans/newCoursePlan', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ sbu_id: this.state.sbu_id })
+            })
+            fetch(backendDomain + '/students/regrabCoursePlan', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                }, credentials: 'include', 
+                body: JSON.stringify({sbu_id:this.state.sbu_id})
+            })
+           
+        }
+        console.log(department,courseNum,semester,year,section)
+        fetch(backendDomain + "/courses/getCourseIfItExists", {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            } ,credentials: 'include', 
+            body: JSON.stringify({department: department, course_num:courseNum, semester:semester, year:year,section:section, timeslot:timeslot})
+
+                })
+            .then(response => response.json())
+            .then(data => {
+               
+                if(data.department == null)
+                {
+                    this.toggleAddCourseWarningModal()
+                    this.setState({ showAddCourseModal: false })
+                }
+            });  
+
+            fetch(backendDomain + '/coursePlans/addCourseToPlan', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                }, credentials: 'include',
+                body: JSON.stringify({sbu_id: this.state.sbu_id,department: department, course_num:courseNum, semester:semester, year:year,section:section, timeslot:timeslot})
+            })
+
+            fetch(backendDomain + '/students/regrabCoursePlan', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                }, credentials: 'include', 
+                body: JSON.stringify({sbu_id: this.state.sbu_id})
+            }).then(response => response.json())
+            .then(data => {
+                console.log(data)
+            });  
+
+    }
+
+
+
+    acceptCoursePlan = () => {
+        let courses = this.state.suggestedCoursePlans[this.state.currentPage].flat()
+        for (let i = 0; i < courses.length; i++){
+            let course = courses[i]
+            //addCourseToPlan = (department,courseNum,semester,year,section)
+            let department = course.department
+            let courseNum = course.course_num
+            let semester = course.semester.split(" ")[0]
+            let year = course.year
+            let section = course.section
+            let timeslot = course.timeslot
+            this.addCourseToPlanWithTimeSlot(department, courseNum, semester, year, section, timeslot)
+            console.log(this.state.courses)
+        }        
+        
+    }
+
+
 
     render(){
         const gpdLoggedIn=Cookies.get("gpdLoggedIn");
@@ -1206,6 +1325,7 @@ export default class EditStudentAsStudent extends Component{
                                     <PaginationLink onClick={e => this.handlePageClick(e, index)}  href="#">{index+1}</PaginationLink>
                                 </PaginationItem>
                             ))}
+                            <Button color="success" onClick={this.acceptCoursePlan} style={{width:"120px",margin:"5px"}} >Accept</Button>
                             
                     </Pagination>
 
