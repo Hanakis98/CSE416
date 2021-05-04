@@ -174,27 +174,29 @@ export default class Courses extends Component {
         //console.log(text)
 
         var arr = text.split(/\s\s\s\s/)
-        console.log(arr.length,arr)
+       
         for ( var i =0; i < arr.length ; i++){
 
-            if ( this.state.scrapeDepartment.includes(arr[i].substring(0,20))  )
-            {                 
+            const validDepartment = (department) => (arr[i].substring(0,20)).includes(department)
 
+            if ( this.state.scrapeDepartment.some(validDepartment) )
+            {                 
+                var currrentDepartment = this.state.scrapeDepartment.findIndex(validDepartment)
                 fetch(backendDomain + '/courses/scrapeCourseInfo', {
-                method: 'POST', // or 'PUT'
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include', 
-                body: JSON.stringify( {
-                    courseInfo: arr[i] ,
-                    year: this.state.scrapeYear,
-                    semester: this.state.scrapeSemester,
-                    departments: this.state.scrapeDepartment
-                }) 
-            }).then((response) => {
-                    // process response
-                  })
+                    method: 'POST', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include', 
+                    body: JSON.stringify( {
+                        courseInfo: arr[i] ,
+                        year: this.state.scrapeYear,
+                        semester: this.state.scrapeSemester,
+                        departments: currrentDepartment
+                    }) 
+                }).then((response) => {
+                        // process response
+                      })
             }
         }
         this.readAllCourses().then(courses => this.setState({ courses: courses }))
