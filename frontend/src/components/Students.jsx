@@ -541,11 +541,11 @@ export default class Students extends Component {
                     <thead><tr>
                         <th>Student</th>
                         <th>ID</th>
-                        <th>GPA</th>
+                        {/* <th>GPA</th> */}
                         <th>Degree</th>
-                        <th>Satisfied Reqs</th>
+                        {/* <th>Satisfied Reqs</th>
                         <th>Pending Reqs</th>
-                        <th>Unsatisfied Reqs</th>
+                        <th>Unsatisfied Reqs</th> */}
                         <th>Graduation Semester</th>
                         <th>Semesters Enrolled</th>
                         <th>Course Plan Validity</th>
@@ -558,11 +558,11 @@ export default class Students extends Component {
                             <tr>
                                 <td>{x.first_name + " " + x.last_name}</td>
                                 <td>{x.sbu_id}</td>
-                                <td>3.45</td>
+                                {/* <td>3.45</td> */}
                                 <td>{x.department}</td>
-                                <td>7</td>
+                                {/* <td>7</td>
                                 <td>5</td>
-                                <td>2</td>
+                                <td>2</td> */}
                                 <td>{x.graduation_semester +" " + x.graduation_year}</td>
                                 <td>6</td>
                                 <td>{x.validCoursePlan ? "Valid" : "Invalid"}</td>
